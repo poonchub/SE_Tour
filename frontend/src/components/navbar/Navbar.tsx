@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import "./Navbar.css"
 
-function Navbar(){
+function Navbar(props: { page: string; }){
+
+    const {page} = props
+
     return (
-        <nav className="navbar">
+        <nav className="navbar" 
+            style={{backgroundColor: page=="tourPackage" ? "var(--yellow)" : "transparent"}}
+        >
             <div className="logo-box">
                 <h1>My Logo</h1>
             </div>

@@ -1,6 +1,5 @@
 import Navbar from "../../components/navbar/Navbar"
 import "./Home.css"
-import backgroundImage from '../../assets/images/background/background.jpg';
 import ShowText from "../../components/showText/ShowText";
 import ShowTourSlice from "../../components/showTourSlice/ShowTourSlice";
 import RecPackage from "../../components/recPackage/RecPackage";
@@ -10,9 +9,9 @@ import Footer from "../../components/footer/Footer";
 function Home(){
     return (
         <div className="home-page">
-            <Navbar/>
+            <Navbar page={"home"}/>
             <div className="full-bg"
-                style={{ backgroundImage: `url(${backgroundImage})` }}
+                style={{ backgroundImage: `url(./images/background/background.jpg)` }}
             >
                 <ShowText/>
             </div>
