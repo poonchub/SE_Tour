@@ -1,0 +1,48 @@
+@import "../../styles/ColorSheet.css";
+
+.tour-pavkage-page{
+    width: 100vw;
+    height: 100vh;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    & section{
+        width: 100%;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 60px;
+
+        & .pic-slice{
+            width: 85%;
+            height: 475px;
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+
+            & img{
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        & .subsection{
+            width: 85%;
+            height: 220px;
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        & .package-list{
+            width: 85%;
+            height: 1000px;
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+        }
+    }
+}

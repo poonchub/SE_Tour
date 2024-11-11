@@ -1,0 +1,9 @@
+@import "../../styles/ColorSheet.css";
+
+.show-tour-slice-container{
+    width: 100vw;
+    height: 730px;
+    border-width: 12px 0;
+    border-style: solid;
+    border-image: var(--orange-yellow);
+}

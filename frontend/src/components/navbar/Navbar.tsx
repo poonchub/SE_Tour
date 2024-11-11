@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import "./Navbar.css"
 
 function Navbar(){
@@ -7,9 +8,9 @@ function Navbar(){
                 <h1>My Logo</h1>
             </div>
             <div className="link-page-box">
-                <a href="" className="link-home link">หน้าหลัก</a>
-                <a href="" className="link-tour-package link">ทัวร์แพ็กเกจ</a>
-                <a href="" className="link-profile link">โปรไฟล์</a>
+                <Link to="/" className="link-home link">หน้าหลัก</Link>
+                <Link to="/tour-package" className="link-tour-package link">ทัวร์แพ็กเกจ</Link>
+                <Link to="/profile" className="link-profile link">โปรไฟล์</Link>
             </div>
         </nav>
     )

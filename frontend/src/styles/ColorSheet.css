@@ -1,4 +1,5 @@
 :root {
     --background-color: rgb(246, 249, 252);
     --yellow: #FFF100;
+    --orange-yellow: linear-gradient(to right, #FF8181, #FFF100) 1;
 }

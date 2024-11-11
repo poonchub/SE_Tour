@@ -1,0 +1,7 @@
+@import "../../styles/ColorSheet.css";
+
+.footer-container{
+    width: 100%;
+    height: 270px;
+    background-color: #222222;
+}
