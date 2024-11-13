@@ -11,5 +11,5 @@ type Locations struct {
 
 	Activities	[]Activities	`gorm:"foreignKey:LocationID"`
 
-	Transpportations	[]Transpportations	`gorm:"foreignKey:LocationID"`
+	Transportations	[]Transportations	`gorm:"foreignKey:LocationID"`
 }

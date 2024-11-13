@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Transpportations struct {
+type Transportations struct {
 	gorm.Model
 	DepartureTime	time.Time
 

@@ -21,6 +21,6 @@ type TourPackages struct {
 	EmployeeSchedules	[]EmployeeSchedules	`gorm:"foreignKey:TourPackageID"`
 	TourAccommodations	[]TourAccommodations	`gorm:"foreignKey:TourPackageID"`
 	TourActivities		[]TourActivities	`gorm:"foreignKey:TourPackageID"`
-	Transpportations	[]Transpportations	`gorm:"foreignKey:TourPackageID"`
+	Transportations	[]Transportations	`gorm:"foreignKey:TourPackageID"`
 	Meals		[]Meals			`gorm:"foreignKey:TourPackageID"`
 }

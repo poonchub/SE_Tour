@@ -45,6 +45,8 @@ func SetupDatabase() {
 		&entity.PersonTypes{},
 		&entity.Promotions{},
 		&entity.PromotionStatuses{},
+		&entity.Providers{},
+		&entity.Provinces{},
 		&entity.Roles{},
 		&entity.RoomTypes{},
 		&entity.SalesReports{},
@@ -54,7 +56,7 @@ func SetupDatabase() {
 		&entity.TourImages{},
 		&entity.TourPackages{},
 		&entity.TourPrices{},
-		&entity.Transpportations{},
+		&entity.Transportations{},
 		&entity.TravelInsurances{},
 		&entity.VehicleTypes{},
 	)
