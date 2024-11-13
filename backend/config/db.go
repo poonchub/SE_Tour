@@ -2,8 +2,8 @@ package config
 
 import (
 	"fmt"
-	// "io/ioutil"
-	// "time"
+	"io/ioutil"
+	"time"
 	"toursystem/entity"
 
 	"gorm.io/driver/sqlite"
@@ -130,6 +130,60 @@ func SetupDatabase() {
 		})
 	}
 
+	// Create Provider
+	providers := []*entity.Providers{
+		{
+			ProviderName: "เมืองไทยประกันภัย",
+		},
+		{
+			ProviderName: "เอ็ม เอส ไอ จี",
+		},
+		{
+			ProviderName: "ประกันภัยไทยวิวัฒน์",
+		},
+		{
+			ProviderName: "ทิพยประกันภัย",
+		},
+	}
+	for _, provider := range providers {
+		db.FirstOrCreate(provider, &entity.Providers{
+			ProviderName: provider.ProviderName,
+		})
+	}
+
+	// Create Vehicle Type
+	vehicleTypes := []*entity.VehicleTypes{
+		{
+			TypeName: "รถทัวร์",
+		},
+		{
+			TypeName: "เรือ",
+		},
+	}
+	for _, vehicleType := range vehicleTypes {
+		db.FirstOrCreate(vehicleType, &entity.VehicleTypes{
+			TypeName: vehicleType.TypeName,
+		})
+	}
+
+	// Create Meal Type
+	mealTypes := []*entity.MealTypes{
+		{
+			TypeName: "อาหารเช้า",
+		},
+		{
+			TypeName: "อาหารกลางวัน",
+		},
+		{
+			TypeName: "อาหารเย็น",
+		},
+	}
+	for _, mealType := range mealTypes {
+		db.FirstOrCreate(mealType, &entity.MealTypes{
+			TypeName: mealType.TypeName,
+		})
+	}
+
 	// Create Role
 	roles := []*entity.Roles{
 		{
@@ -148,34 +202,89 @@ func SetupDatabase() {
 		})
 	}
 
-	// Create Vehicle Type
-	vehicleTypes := []*entity.VehicleTypes{
+	// Create Promotion Status
+	promotionStatuses := []*entity.PromotionStatuses{
 		{
-			TypeName: "แอดมิน",
+			StatusName: "เปิดใช้งาน",
 		},
 		{
-			TypeName: "คนขับรถทัวร์",
-		},
-		{
-			TypeName: "ไกด์",
+			StatusName: "ปิดใช้งาน",
 		},
 	}
-	for _, vehicleType := range vehicleTypes {
-		db.FirstOrCreate(vehicleType, &entity.VehicleTypes{
-			TypeName: vehicleType.TypeName,
+	for _, status := range promotionStatuses {
+		db.FirstOrCreate(status, &entity.PromotionStatuses{
+			StatusName: status.StatusName,
+		})
+	}
+
+	// Create Province Status
+	provinces := []*entity.Provinces{
+		{
+			ProvinceName: "ระนอง",
+		},
+		{
+			ProvinceName: "ระยอง",
+		},
+		{
+			ProvinceName: "ยะลา",
+		},
+	}
+	for _, province := range provinces {
+		db.FirstOrCreate(province, &entity.Provinces{
+			ProvinceName: province.ProvinceName,
+		})
+	}
+
+	// Create Location
+	locations := []*entity.Locations{
+		{
+			LocationName: "วัดเกาะพยาม",
+			ProvinceID: 1,
+		},
+		{
+			LocationName: "เกาะค้างคาว",
+			ProvinceID: 1,
+		},
+		{
+			LocationName: "หาดบางเบน",
+			ProvinceID: 1,
+		},
+	}
+	for _, location := range locations {
+		db.FirstOrCreate(location, &entity.Locations{
+			LocationName: location.LocationName,
+			ProvinceID: location.ProvinceID,
+		})
+	}
+
+	// Create Room Type
+	roomtypes := []*entity.RoomTypes{
+		{
+			TypeName: "พักเดี่ยว",
+		},
+		{
+			TypeName: "พักคู่",
+		},
+		{
+			TypeName: "พักสาม",
+		},
+	}
+	for _, roomtype := range roomtypes {
+		db.FirstOrCreate(roomtype, &entity.RoomTypes{
+			TypeName: roomtype.TypeName,
 		})
 	}
 
 	// Create Employee
 	hashedPassword, _ := HashPassword("123456")
 	employee := &entity.Employees{
-		UserName: "NamNam",
-		FirstName:   "Poonchub",
-		LastName:    "Nanawan",
-		Email:       "poonchubnanawan310@gmail.com",
+		UserName: "se",
+		FirstName:   "SE",
+		LastName:    "67",
+		Email:       "se67@gmail.com",
 		Password:    hashedPassword,
 		PhoneNumber: "000-000-0000",
-		ProfilePath: "images/profile/owner/owner_id01.jpg",
+		ProfilePath: "images/profileEmployee/employee1.jpg/",
 		RoleID: 1,
 	}
 	db.FirstOrCreate(employee, &entity.Employees{
@@ -183,73 +292,173 @@ func SetupDatabase() {
 	})
 
 	// Create Customer
-	customers := []*entity.Customers{
-		{	
-			UserName:   "Poonchub",
-			FirstName:   "Poonchub",
-			LastName:    "Nanawan",
-			Email:       "poonchubnanawan320@gmail.com",
-			Password:    hashedPassword,
-			PhoneNumber: "098-594-4576",
-			ProfilePath: "images/profile/customer/",
-		},
-		{	
-			UserName:   "Peter",
-			FirstName:   "Peter",
-			LastName:    "Parker",
-			Email:       "spider@gmail.com",
-			Password:    hashedPassword,
-			PhoneNumber: "098-594-4576",
-			ProfilePath: "images/profile/customer/",
+	customer := &entity.Customers{
+		UserName:   "Peter",
+		FirstName:   "Peter",
+		LastName:    "Parker",
+		Email:       "spider@gmail.com",
+		Password:    hashedPassword,
+		PhoneNumber: "098-594-4576",
+		ProfilePath: "images/profileCustomer/customer1.jpg",
+	}
+	db.FirstOrCreate(customer, &entity.Customers{
+		Email: customer.Email,
+	})
+
+	// Create Tour Package
+	StartDate, _ := time.Parse("2006-01-02", "2024-11-20")
+	EndDate, _ := time.Parse("2006-01-02", "2024-11-22")
+	tourpackage := &entity.TourPackages{
+		PackageCode: "T00001",
+		TourName: "แพ็กเกจทัวร์ทะเลระนอง: เปิดประสบการณ์สู่มนต์เสน่ห์แห่งอันดามันใต้",
+		Description: "สัมผัสความเงียบสงบและธรรมชาติที่บริสุทธิ์ของทะเลระนอง เปิดโลกการท่องเที่ยวสุดเอ็กซ์คลูซีฟกับแพ็กเกจทัวร์ทะเลระนอง ดินแดนที่ยังคงความงดงามดั้งเดิมของธรรมชาติ ทะเลใส หาดทรายขาว และหมู่เกาะที่ซ่อนตัวอยู่ในความสงบ เหมาะสำหรับผู้ที่ต้องการพักผ่อนและหลีกหนีจากความวุ่นวายของชีวิตประจำวัน",
+		StartDate: StartDate,
+		EndDate: EndDate,
+		MaxParticipants: 50,
+	}
+	db.FirstOrCreate(tourpackage, &entity.TourPackages{
+		PackageCode: tourpackage.PackageCode,
+	})
+
+	// Create Promotion
+	ValidFrom, _ := time.Parse("2006-01-02", "2024-11-01")
+	ValidUntil, _ := time.Parse("2006-01-02", "2024-11-30")
+	promotions := []*entity.Promotions{
+		{
+			PromotionCode: "P00001",
+			PromotionName: "ส่วนลด 5% เมื่อซื้อแพ็กเกจครบ 3000 บาท",
+			DiscountPercentage: 5.0,
+			ValidFrom: ValidFrom,
+			ValidUntil: ValidUntil,
+			Minimum_Price: 3000.00,
+			PromotionStatusID: 1,
 		},
 	}
-	for _, customer := range customers {
-		db.FirstOrCreate(customer, &entity.Customers{
-			Email: customer.Email,
+	for _, promotion := range promotions {
+		db.FirstOrCreate(promotion, &entity.Promotions{
+			PromotionCode: promotion.PromotionCode,
 		})
 	}
 
-	
+	// Create Tour Image 
+	for i := uint(1); i <= 1; i++ {
+		dir := fmt.Sprintf("images/tourImages/tourPackage%d", i)
+		count := countFilesInDir(dir)
+		for j := 1; j <= count; j++ {
+			filePath := fmt.Sprintf("images/tourImages/tourPackage%d/tour0%d.jpg", i, j)
+			err := createImage(filePath, i)
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
 
-	
+	// Create Tour Price
+	tourPrices := []*entity.TourPrices{
+		{
+			Price: 8299,
+			TourPackageID: 1,
+			PersonTypeID: 1,
+		},
+		{
+			Price: 7299,
+			TourPackageID: 1,
+			PersonTypeID: 2,
+		},
+	}
+	for _, tourPrice := range tourPrices {
+		db.FirstOrCreate(tourPrice, &entity.TourPrices{
+			TourPackageID: tourPrice.TourPackageID,
+			PersonTypeID: tourPrice.PersonTypeID,
+		})
+	}
 
-	// Create Image 
-	// for i := uint(1); i <= 14; i++ {
-	// 	dir := fmt.Sprintf("images/product/product%d", i)
-	// 	count := countFilesInDir(dir)
-	// 	for j := 1; j <= count; j++ {
-	// 		filePath := fmt.Sprintf("images/product/product%d/p0%d.jpg", i, j)
-	// 		err := createImage(filePath, i)
-	// 		if err != nil {
-	// 			panic(err)
-	// 		}
-	// 	}
-	// }
+	// Create Transportation
+	DepartureTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 08:00:00")
+	DepartureTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 10:00:00")
+	DepartureTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 13:00:00")
+	transportations := []*entity.Transportations{
+		{
+			DepartureTime: DepartureTime1,
+			VehicleTypeID: 1,
+			TourPackageID: 1,
+			LocationID: 1,
+		},
+		{
+			DepartureTime: DepartureTime2,
+			VehicleTypeID: 1,
+			TourPackageID: 1,
+			LocationID: 2,
+		},
+		{
+			DepartureTime: DepartureTime3,
+			VehicleTypeID: 1,
+			TourPackageID: 1,
+			LocationID: 3,
+		},
+	}
+	for _, transportation := range transportations {
+		db.FirstOrCreate(transportation, &entity.Transportations{
+			DepartureTime: transportation.DepartureTime,
+			TourPackageID: transportation.TourPackageID,
+		})
+	}
+
+	// Create Activity
+	StartTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 08:20:00")
+	EndTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 10:00:00")
+	StartTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 11:00:00")
+	EndTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 13:00:00")
+	activities := []*entity.Activities{
+		{
+			ActivityName: "เที่ยวชมวัดเกาะพยาม",
+			Description: "เที่ยวชมวัดเกาะพยาม",
+			StartTime: StartTime1,
+			EndTime: EndTime1,
+			LocationID: 1,
+		},
+		{
+			ActivityName: "พักรับประทานอาหาร",
+			Description: "พักรับประทานอาหาร",
+			StartTime: StartTime2,
+			EndTime: EndTime2,
+			LocationID: 2,
+		},
+	}
+	for _, activity := range activities {
+		db.FirstOrCreate(activity, &entity.Activities{
+			ActivityName: activity.ActivityName,
+			StartTime: activity.StartTime,
+			EndTime: activity.EndTime,
+			LocationID: activity.LocationID,
+		})
+	}
+
 }
 
 
-// func createImage(filePath string, id uint) error {
+func createImage(filePath string, id uint) error {
 
-// 	image := entity.Image{FilePath: filePath, ProductID: id}
+	image := entity.TourImages{FilePath: filePath, TourPackageID: id}
 
-// 	if err := db.Where("file_path = ?", &image.FilePath).FirstOrCreate(&image).Error; err != nil {
-// 		return err
-// 	}
-// 	return nil
-// }
+	if err := db.Where("file_path = ?", &image.FilePath).FirstOrCreate(&image).Error; err != nil {
+		return err
+	}
+	return nil
+}
 
-// func countFilesInDir(dir string) int {
-// 	files, err := ioutil.ReadDir(dir)
-// 	if err != nil {
-// 		return 0
-// 	}
+func countFilesInDir(dir string) int {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return 0
+	}
 
-// 	fileCount := 0
-// 	for _, file := range files {
-// 		if !file.IsDir() {
-// 			fileCount++
-// 		}
-// 	}
+	fileCount := 0
+	for _, file := range files {
+		if !file.IsDir() {
+			fileCount++
+		}
+	}
 
-// 	return fileCount
-// }
+	return fileCount
+}
