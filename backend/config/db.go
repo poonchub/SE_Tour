@@ -285,7 +285,7 @@ func SetupDatabase() {
 		Password:    hashedPassword,
 		PhoneNumber: "000-000-0000",
 		ProfilePath: "images/profileEmployee/employee1.jpg/",
-		RoleID: 1,
+		RoleID: 3,
 	}
 	db.FirstOrCreate(employee, &entity.Employees{
 		Email: employee.Email,
@@ -433,6 +433,41 @@ func SetupDatabase() {
 			LocationID: activity.LocationID,
 		})
 	}
+
+	// Create Tour Activity
+	tourActivities := []*entity.TourActivities{
+		{
+			ActivityID: 1,
+			TourPackageID: 1,
+		},
+		{
+			ActivityID: 2,
+			TourPackageID: 1,
+		},
+	}
+	for _, tourActivity := range tourActivities {
+		db.FirstOrCreate(tourActivity, &entity.TourActivities{
+			ActivityID: tourActivity.ActivityID,
+			TourPackageID: tourActivity.TourPackageID,
+		})
+	}
+
+	// Create Accommodation
+	// CheckInDate, _ := time.Parse("2006-01-02", "2024-11-21")
+	// CheckOutDate, _ := time.Parse("2006-01-02", "2024-11-22")
+	// accommodations := []*entity.Accommodations{
+	// 	{
+	// 		HotelName: "",
+	// 		CheckInDate: CheckInDate,
+	// 		CheckOutDate: CheckOutDate,
+
+	// 	},
+	// }
+	// for _, accommodation := range accommodations {
+	// 	db.FirstOrCreate(accommodation, &entity.Accommodations{
+			
+	// 	})
+	// }
 
 }
 
