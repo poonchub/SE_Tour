@@ -7,4 +7,5 @@ type Slips struct {
 	FilePath	string
 	
 	PaymentID	uint
+	Payment		Payments	`gorm:"foreignKey:PaymentID"`
 }

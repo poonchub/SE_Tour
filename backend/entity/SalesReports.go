@@ -4,5 +4,8 @@ import "gorm.io/gorm"
 
 type SalesReports struct {
 	gorm.Model
-	Data	string
+	ReportName	string
+	Data		string
+
+	Payments	[]Payments	`gorm:"foreignKey:SalesReportID"`
 }

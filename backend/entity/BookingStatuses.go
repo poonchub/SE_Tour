@@ -2,7 +2,7 @@ package entity
 
 import "gorm.io/gorm"
 
-type BookingStatus struct {
+type BookingStatuses struct {
 	gorm.Model
 	StatusName	string
 

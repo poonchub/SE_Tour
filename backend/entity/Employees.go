@@ -2,7 +2,7 @@ package entity
 
 import "gorm.io/gorm"
 
-type Staffs struct {
+type Employees struct {
 	gorm.Model
 	UserName 	string
 	FirstName	string
@@ -10,8 +10,10 @@ type Staffs struct {
 	Email		string
 	Password	string
 	PhoneNumber	string
+	ProfilePath	string
 
 	RoleID		uint
+	Role		Roles	`gorm:"foreignKey:RoleID"`
 
-	StaffSchedules	[]StaffSchedules	`gorm:"foreignKey:StaffID"`
+	EmployeeSchedules	[]EmployeeSchedules	`gorm:"foreignKey:EmployeeID"`
 }

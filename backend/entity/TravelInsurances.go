@@ -4,6 +4,12 @@ import "gorm.io/gorm"
 
 type TravelInsurances struct {
 	gorm.Model
-	InsuranceProvider string
-	CoverageDetail    string
+	Price			float32
+	CoverageDetail	string
+
+	BookingID	uint
+	Booking		Bookings	`gorm:"foreignKey:BookingID"`
+
+	ProviderID	uint
+	Provider	Providers	`gorm:"foreignKey:ProviderID"`
 }

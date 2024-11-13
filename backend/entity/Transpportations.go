@@ -11,5 +11,8 @@ type Transpportations struct {
 	DepartureTime	time.Time
 
 	VehicleTypeID	uint
+	VehicleType		VehicleTypes	`gorm:"foreignKey:VehicleTypeID"`
+
 	TourPackageID	uint
+	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
 }

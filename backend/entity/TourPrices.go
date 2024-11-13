@@ -7,5 +7,8 @@ type TourPrices struct {
 	Price 	float32
 
 	TourPackageID	uint
+	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
+
 	PersonTypeID	uint
+	PersonType		PersonTypes		`gorm:"foreignKey:PersonTypeID"`
 }

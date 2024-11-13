@@ -15,6 +15,7 @@ type Promotions struct {
 	Minimum_Price	float32
 
 	PromotionStatusID	uint
+	PromotionStatus		PromotionStatuses	`gorm:"foreignKey:PromotionStatusID"`
 
 	Bookings	[]Bookings	`gorm:"foreignKey:PromotionID"`
 }

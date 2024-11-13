@@ -2,10 +2,13 @@ package entity
 
 import "gorm.io/gorm"
 
-type TourImages struct {
+type Meals struct {
 	gorm.Model
-	FilePath	string
+	MenusDetail	string
 
 	TourPackageID	uint
 	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
+
+	MealTypeID		uint
+	MealType		MealTypes		`gorm:"foreignKey:MealTypeID"`
 }

@@ -2,7 +2,7 @@ package entity
 
 import "gorm.io/gorm"
 
-type PromotionStatus struct {
+type PromotionStatuses struct {
 	gorm.Model
 	StatusName	string
 

@@ -12,7 +12,9 @@ type Activities struct {
 	Description		string
 	StartTime		time.Time
 	EndTime			time.Time
-	Location		string
+
+	LocationID   	uint
+    Location    	Locations   `gorm:"foreignKey:LocationID"`
 
 	TourActivities 	[]TourActivities	`gorm:"foreignKey:ActivityID"`
 }

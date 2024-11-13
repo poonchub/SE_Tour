@@ -6,5 +6,5 @@ type Roles struct {
 	gorm.Model
 	RoleName	string
 
-	Staffs		[]Staffs `gorm:"foreignKey:RoleID"`
+	Employees	[]Employees `gorm:"foreignKey:RoleID"`
 }

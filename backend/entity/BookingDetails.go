@@ -7,5 +7,8 @@ type BookingDetails struct {
 	Quantity	int
 
 	BookingID	uint
+	Booking		Bookings	`gorm:"foreignKey:BookingID"`
+
 	PersonTypeID	uint
+	PersonType	PersonTypes	`gorm:"foreignKey:PersonTypeID"`
 }

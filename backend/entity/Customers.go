@@ -2,7 +2,7 @@ package entity
 
 import "gorm.io/gorm"
 
-type Customer struct {
+type Customers struct {
 	gorm.Model
 	UserName 	string
 	FirstName 	string
@@ -10,6 +10,7 @@ type Customer struct {
 	Email		string
 	Password	string
 	PhoneNumber	string
+	ProfilePath	string
 
 	Bookings	[]Bookings	`gorm:"foreignKey:CustomerID"`
 }
