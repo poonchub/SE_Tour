@@ -10,4 +10,6 @@ type Customer struct {
 	Email		string
 	Password	string
 	PhoneNumber	string
+
+	Bookings	[]Bookings	`gorm:"foreignKey:CustomerID"`
 }

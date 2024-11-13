@@ -12,4 +12,6 @@ type Staffs struct {
 	PhoneNumber	string
 
 	RoleID		uint
+
+	StaffSchedules	[]StaffSchedules	`gorm:"foreignKey:StaffID"`
 }

@@ -13,4 +13,6 @@ type Accommodations struct {
 	CheckOutDate	time.Time
 
 	RoomTypeID	uint
+
+	TourAccommodations	[]TourAccommodations	`gorm:"foreignKey:AccommodationID"`
 }

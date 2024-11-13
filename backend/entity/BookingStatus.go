@@ -5,4 +5,6 @@ import "gorm.io/gorm"
 type BookingStatus struct {
 	gorm.Model
 	StatusName	string
+
+	Bookings	[]Bookings	`gorm:"foreignKey:BookingStatusID"`
 }

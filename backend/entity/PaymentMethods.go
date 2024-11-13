@@ -6,5 +6,5 @@ type PaymentMethods struct {
 	gorm.Model
 	MethodName	string
 
-	
+	Payments	[]Payments	`gorm:"foreignKey:PaymentMethodID"`
 }

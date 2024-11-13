@@ -10,4 +10,6 @@ type Bookings struct {
 	TourPackageID 	uint
 	BookingStatusID	uint
 	PromotionID		uint
+
+	BookingDetails	[]BookingDetails	`gorm:"foreignKey:BookingID"`
 }

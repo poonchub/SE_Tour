@@ -13,4 +13,6 @@ type Activities struct {
 	StartTime		time.Time
 	EndTime			time.Time
 	Location		string
+
+	TourActivities 	[]TourActivities	`gorm:"foreignKey:ActivityID"`
 }

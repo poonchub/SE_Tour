@@ -1,7 +1,9 @@
 package entity
 
-type TravelInsurances struct{
-	InsuranceProvider	string
-	CoverageDetail		string
-	
+import "gorm.io/gorm"
+
+type TravelInsurances struct {
+	gorm.Model
+	InsuranceProvider string
+	CoverageDetail    string
 }
