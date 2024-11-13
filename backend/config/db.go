@@ -146,6 +146,24 @@ func SetupDatabase() {
 		})
 	}
 
+	// Create Vehicle Type
+	vehicleTypes := []*entity.VehicleTypes{
+		{
+			TypeName: "แอดมิน",
+		},
+		{
+			TypeName: "คนขับรถทัวร์",
+		},
+		{
+			TypeName: "ไกด์",
+		},
+	}
+	for _, vehicleType := range vehicleTypes {
+		db.FirstOrCreate(vehicleType, &entity.VehicleTypes{
+			TypeName: vehicleType.TypeName,
+		})
+	}
+
 	// Create Employee
 	hashedPassword, _ := HashPassword("123456")
 	employee := &entity.Employees{
@@ -188,6 +206,8 @@ func SetupDatabase() {
 			Email: customer.Email,
 		})
 	}
+
+	
 
 	
 

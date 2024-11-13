@@ -6,5 +6,10 @@ type Locations struct {
 	gorm.Model
 	LocationName	string
 
+	ProvinceID	uint
+	Province	Provinces	`gorm:"foreignKey:ProvinceID"`
+
 	Activities	[]Activities	`gorm:"foreignKey:LocationID"`
+
+	Transpportations	[]Transpportations	`gorm:"foreignKey:LocationID"`
 }

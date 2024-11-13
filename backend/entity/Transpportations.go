@@ -15,4 +15,7 @@ type Transpportations struct {
 
 	TourPackageID	uint
 	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
+
+	LocationID		uint
+	Location		Locations		`gorm:"foreignKey:LocationID"`
 }
