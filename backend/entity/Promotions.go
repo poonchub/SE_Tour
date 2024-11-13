@@ -9,6 +9,7 @@ import (
 type Promotions struct {
 	gorm.Model
 	PromotionName 	string
+	PromotionCode	string
 	DiscountPercentage	float32
 	ValidFrom	time.Time
 	ValidUntil	time.Time

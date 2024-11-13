@@ -9,6 +9,7 @@ import (
 type TourPackages struct {
 	gorm.Model
 	TourName	string
+	PackageCode	string
 	Description	string
 	StartDate	time.Time
 	EndDate		time.Time
