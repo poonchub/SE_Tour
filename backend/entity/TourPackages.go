@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -11,16 +9,15 @@ type TourPackages struct {
 	TourName	string
 	PackageCode	string
 	Description	string
-	StartDate	time.Time
-	EndDate		time.Time
-	MaxParticipants	int
+	Duration	string
 
 	TourPrices	[]TourPrices	`gorm:"foreignKey:TourPackageID"`
-	Bookings	[]Bookings		`gorm:"foreignKey:TourPackageID"`
+
+	TourSchedules	[]TourSchedules	`gorm:"foreignKey:TourPackageID"`
+
 	TourImages	[]TourImages	`gorm:"foreignKey:TourPackageID"`
-	EmployeeSchedules	[]EmployeeSchedules	`gorm:"foreignKey:TourPackageID"`
-	TourAccommodations	[]TourAccommodations	`gorm:"foreignKey:TourPackageID"`
-	TourActivities		[]TourActivities	`gorm:"foreignKey:TourPackageID"`
+
 	Transportations	[]Transportations	`gorm:"foreignKey:TourPackageID"`
+
 	Meals		[]Meals			`gorm:"foreignKey:TourPackageID"`
 }

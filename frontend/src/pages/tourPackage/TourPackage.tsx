@@ -1,7 +1,22 @@
+import { useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar"
 import "./TourPackage.css"
 
 function TourPackage(){
+
+    // const [tourPackages, setTourPackages] = useState<ProductInterface[]>([]);
+
+    // async function getProducts(){
+    //     let res = await ListProducts()
+    //     if (res) {
+    //         setProducts(res);
+    //     }
+    // }
+
+    useEffect(()=> {
+        // getProducts()
+    }, [])
+
     return (
         <div className="tour-pavkage-page">
             <Navbar page={"tourPackage"}/>

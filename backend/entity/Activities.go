@@ -16,5 +16,6 @@ type Activities struct {
 	LocationID   	uint
     Location    	Locations   `gorm:"foreignKey:LocationID"`
 
-	TourActivities 	[]TourActivities	`gorm:"foreignKey:ActivityID"`
+	TourPackageID	uint
+	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
 }

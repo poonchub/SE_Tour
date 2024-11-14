@@ -2,11 +2,13 @@ package entity
 
 import "gorm.io/gorm"
 
-type TourAccommodations struct {
+type BookingRooms struct {
 	gorm.Model
+	RoomQuantity	int
+
 	AccommodationID	uint
 	Accommodation	Accommodations	`gorm:"foreignKey:AccommodationID"`
 
-	TourPackageID	uint
-	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
+	RoomTypeID	uint
+	RoomType	RoomTypes	`gorm:"foreignKey:RoomTypeID"`
 }

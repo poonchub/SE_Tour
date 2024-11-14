@@ -8,12 +8,14 @@ import (
 
 type Accommodations struct {
 	gorm.Model
-	HotelName	string
-	CheckInDate	time.Time
+	CheckInDate		time.Time
 	CheckOutDate	time.Time
 
-	RoomTypeID	uint
-	RoomType	RoomTypes	`gorm:"foreignKey:RoomTypeID"`
+	TourPackageID	uint
+	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
 
-	TourAccommodations	[]TourAccommodations	`gorm:"foreignKey:AccommodationID"`
+	HotelID		uint
+	Hotel		Hotels	`gorm:"foreignKey:HotelID"`
+
+	BookingRooms	[]BookingRooms	`gorm:"foreignKey:AccommodationID"`
 }

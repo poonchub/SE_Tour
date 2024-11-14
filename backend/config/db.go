@@ -31,11 +31,13 @@ func SetupDatabase() {
 		&entity.Accommodations{},
 		&entity.Activities{},
 		&entity.BookingDetails{},
+		&entity.BookingRooms{},
 		&entity.Bookings{},
 		&entity.BookingStatuses{},
 		&entity.Customers{},
 		&entity.Employees{},
 		&entity.EmployeeSchedules{},
+		&entity.Hotels{},
 		&entity.Locations{},
 		&entity.Meals{},
 		&entity.MealTypes{},
@@ -51,11 +53,11 @@ func SetupDatabase() {
 		&entity.RoomTypes{},
 		&entity.SalesReports{},
 		&entity.Slips{},
-		&entity.TourAccommodations{},
-		&entity.TourActivities{},
 		&entity.TourImages{},
 		&entity.TourPackages{},
 		&entity.TourPrices{},
+		&entity.TourSchedules{},
+		&entity.TourScheduleStatuses{},
 		&entity.Transportations{},
 		&entity.TravelInsurances{},
 		&entity.VehicleTypes{},
@@ -112,16 +114,37 @@ func SetupDatabase() {
 		})
 	}
 
+	// Create Tour Schedule Status
+	tourScheduleStatuses := []*entity.TourScheduleStatuses{
+		{
+			StatusName: "เต็ม",
+		},
+		{
+			StatusName: "ยังไม่เต็ม",
+		},
+		{
+			StatusName: "ถูกยกเลิก",
+		},
+	}
+	for _, status := range tourScheduleStatuses {
+		db.FirstOrCreate(status, &entity.TourScheduleStatuses{
+			StatusName: status.StatusName,
+		})
+	}
+
 	// Create Payment Method
 	paymentMethods := []*entity.PaymentMethods{
 		{
 			MethodName: "Krungthai",
+			LogoPath: "images/logoPaymentMethods/Krung_Thai.png",
 		},
 		{
 			MethodName: "TrueMoney",
+			LogoPath: "images/logoPaymentMethods/True_Money.png",
 		},
 		{
 			MethodName: "SCB",
+			LogoPath: "images/logoPaymentMethods/SCB.png",
 		},
 	}
 	for _, method := range paymentMethods {
@@ -134,15 +157,19 @@ func SetupDatabase() {
 	providers := []*entity.Providers{
 		{
 			ProviderName: "เมืองไทยประกันภัย",
+			LogoPath: "images/logoProviders/เมืองไทยประกันภัย.png",
 		},
 		{
 			ProviderName: "เอ็ม เอส ไอ จี",
+			LogoPath: "images/logoProviders/เอ็ม-เอส-ไอ-จี.png",
 		},
 		{
 			ProviderName: "ประกันภัยไทยวิวัฒน์",
+			LogoPath: "images/logoProviders/ประกันภัยไทยวิวัฒน์.png",
 		},
 		{
 			ProviderName: "ทิพยประกันภัย",
+			LogoPath: "images/logoProviders/ทิพยประกันภัย.png",
 		},
 	}
 	for _, provider := range providers {
@@ -275,6 +302,24 @@ func SetupDatabase() {
 		})
 	}
 
+	// Create Hotel
+	hotels := []*entity.Hotels{
+		{
+			HotelName: "พักดี",
+		},
+		{
+			HotelName: "สบายกาย",
+		},
+		{
+			HotelName: "สบายใจ",
+		},
+	}
+	for _, hotel := range hotels {
+		db.FirstOrCreate(hotel, &entity.Hotels{
+			HotelName: hotel.HotelName,
+		})
+	}
+
 	// Create Employee
 	hashedPassword, _ := HashPassword("123456")
 	employee := &entity.Employees{
@@ -306,19 +351,44 @@ func SetupDatabase() {
 	})
 
 	// Create Tour Package
-	StartDate, _ := time.Parse("2006-01-02", "2024-11-20")
-	EndDate, _ := time.Parse("2006-01-02", "2024-11-22")
 	tourpackage := &entity.TourPackages{
 		PackageCode: "T00001",
 		TourName: "แพ็กเกจทัวร์ทะเลระนอง: เปิดประสบการณ์สู่มนต์เสน่ห์แห่งอันดามันใต้",
 		Description: "สัมผัสความเงียบสงบและธรรมชาติที่บริสุทธิ์ของทะเลระนอง เปิดโลกการท่องเที่ยวสุดเอ็กซ์คลูซีฟกับแพ็กเกจทัวร์ทะเลระนอง ดินแดนที่ยังคงความงดงามดั้งเดิมของธรรมชาติ ทะเลใส หาดทรายขาว และหมู่เกาะที่ซ่อนตัวอยู่ในความสงบ เหมาะสำหรับผู้ที่ต้องการพักผ่อนและหลีกหนีจากความวุ่นวายของชีวิตประจำวัน",
-		StartDate: StartDate,
-		EndDate: EndDate,
-		MaxParticipants: 50,
+		Duration: "2 วัน 2 คืน",
 	}
 	db.FirstOrCreate(tourpackage, &entity.TourPackages{
 		PackageCode: tourpackage.PackageCode,
 	})
+
+	// Create Tour Schedule
+	StartDate1, _ := time.Parse("2006-01-02", "2024-11-20")
+	EndDate1, _ := time.Parse("2006-01-02", "2024-11-21")
+	StartDate2, _ := time.Parse("2006-01-02", "2024-12-01")
+	EndDate2, _ := time.Parse("2006-01-02", "2024-12-02")
+	tourSchedules := []*entity.TourSchedules{
+		{
+			StartDate: StartDate1,
+			EndDate: EndDate1,
+			AvailableSlots: 50,
+			TourPackageID: 1,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate: StartDate2,
+			EndDate: EndDate2,
+			AvailableSlots: 50,
+			TourPackageID: 1,
+			TourScheduleStatusID: 2,
+		},
+	}
+	for _, tourSchedule := range tourSchedules {
+		db.FirstOrCreate(tourSchedule, &entity.TourSchedules{
+			StartDate: tourSchedule.StartDate,
+			EndDate: tourSchedule.EndDate,
+			TourPackageID: tourSchedule.TourPackageID,
+		})
+	}
 
 	// Create Promotion
 	ValidFrom, _ := time.Parse("2006-01-02", "2024-11-01")
@@ -416,6 +486,7 @@ func SetupDatabase() {
 			StartTime: StartTime1,
 			EndTime: EndTime1,
 			LocationID: 1,
+			TourPackageID: 1,
 		},
 		{
 			ActivityName: "พักรับประทานอาหาร",
@@ -423,6 +494,7 @@ func SetupDatabase() {
 			StartTime: StartTime2,
 			EndTime: EndTime2,
 			LocationID: 2,
+			TourPackageID: 1,
 		},
 	}
 	for _, activity := range activities {
@@ -434,40 +506,46 @@ func SetupDatabase() {
 		})
 	}
 
-	// Create Tour Activity
-	tourActivities := []*entity.TourActivities{
+	// Create Accommodation
+	CheckInDate, _ := time.Parse("2006-01-02", "2024-11-20")
+	CheckOutDate, _ := time.Parse("2006-01-02", "2024-11-21")
+	accommodations := []*entity.Accommodations{
 		{
-			ActivityID: 1,
+			CheckInDate: CheckInDate,
+			CheckOutDate: CheckOutDate,
 			TourPackageID: 1,
-		},
-		{
-			ActivityID: 2,
-			TourPackageID: 1,
+			HotelID: 1,
 		},
 	}
-	for _, tourActivity := range tourActivities {
-		db.FirstOrCreate(tourActivity, &entity.TourActivities{
-			ActivityID: tourActivity.ActivityID,
-			TourPackageID: tourActivity.TourPackageID,
+	for _, accommodation := range accommodations {
+		db.FirstOrCreate(accommodation, &entity.Accommodations{
+			CheckInDate: accommodation.CheckInDate,
+			CheckOutDate: accommodation.CheckOutDate,
+			TourPackageID: accommodation.TourPackageID,
+			HotelID: accommodation.HotelID,
 		})
 	}
 
-	// Create Accommodation
-	// CheckInDate, _ := time.Parse("2006-01-02", "2024-11-21")
-	// CheckOutDate, _ := time.Parse("2006-01-02", "2024-11-22")
-	// accommodations := []*entity.Accommodations{
-	// 	{
-	// 		HotelName: "",
-	// 		CheckInDate: CheckInDate,
-	// 		CheckOutDate: CheckOutDate,
+	// Create Booking Room
+	bookingRooms := []*entity.BookingRooms{
+		{
+			RoomQuantity: 0,
+			AccommodationID: 1,
+			RoomTypeID: 1,
+		},
+		{
+			RoomQuantity: 0,
+			AccommodationID: 1,
+			RoomTypeID: 2,
+		},
+	}
+	for _, bookingRoom := range bookingRooms {
+		db.FirstOrCreate(bookingRoom, &entity.BookingRooms{
+			AccommodationID: bookingRoom.AccommodationID,
+			RoomTypeID: bookingRoom.RoomTypeID,
+		})
+	}
 
-	// 	},
-	// }
-	// for _, accommodation := range accommodations {
-	// 	db.FirstOrCreate(accommodation, &entity.Accommodations{
-			
-	// 	})
-	// }
 
 }
 

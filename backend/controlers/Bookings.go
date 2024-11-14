@@ -14,7 +14,7 @@ func ListBookings(c *gin.Context) {
 
 	db := config.DB()
 
-	db.Preload("Customer").Preload("TourPackage").Preload("BookingStatus").Preload("Promotion").Find(&bookings)
+	db.Preload("Customer").Preload("TourSchedule").Preload("BookingStatus").Preload("Promotion").Find(&bookings)
 
 	c.JSON(http.StatusOK, &bookings)
 }
@@ -25,7 +25,7 @@ func GetBookingByID(c *gin.Context) {
 	var booking entity.Bookings
 
 	db := config.DB()
-	results := db.Preload("Customer").Preload("TourPackage").Preload("BookingStatus").Preload("Promotion").First(&booking, ID)
+	results := db.Preload("Customer").Preload("TourSchedule").Preload("BookingStatus").Preload("Promotion").First(&booking, ID)
 	if results.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 		return
@@ -43,7 +43,7 @@ func GetBookingByCustomerID(c *gin.Context) {
 	var bookings []entity.Bookings
 
 	db := config.DB()
-	results := db.Preload("Customer").Preload("TourPackage").Preload("BookingStatus").Preload("Promotion").Find(&bookings, "customer_id=?", ID)
+	results := db.Preload("Customer").Preload("TourSchedule").Preload("BookingStatus").Preload("Promotion").Find(&bookings, "customer_id=?", ID)
 	if results.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 		return
@@ -69,8 +69,8 @@ func CreateBooking(c *gin.Context) {
 		return
 	}
 
-	var tourPackage entity.TourPackages
-	db.First(&tourPackage, booking.TourPackageID)
+	var tourSchedule entity.TourSchedules
+	db.First(&tourSchedule, booking.TourScheduleID)
 	if customer.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "tour packege not found"})
 		return
@@ -86,7 +86,7 @@ func CreateBooking(c *gin.Context) {
 	bk := entity.Bookings{
 		TotalPrice: 0,
 		CustomerID: booking.CustomerID,
-		TourPackageID: booking.TourPackageID,
+		TourScheduleID: booking.TourScheduleID,
 		BookingStatusID: booking.BookingStatusID,
 		PromotionID: booking.PromotionID,
 	}

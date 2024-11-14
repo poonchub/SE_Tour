@@ -6,9 +6,10 @@ import (
 
 type EmployeeSchedules struct {
 	gorm.Model
+
+	TourScheduleID	uint
+	TourSchedule	TourSchedules	`gorm:"foreignKey:TourScheduleID"`
+
 	EmployeeID		uint
 	Employee		Employees	`gorm:"foreignKey:EmployeeID"`
-
-	TourPackageID	uint
-	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`
 }

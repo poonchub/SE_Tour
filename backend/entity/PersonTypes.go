@@ -7,5 +7,6 @@ type PersonTypes struct {
 	TypeName	string
 
 	BookingDetails 	[]BookingDetails `gorm:"foreignKey:PersonTypeID"`
+	
 	TourPrices		[]TourPrices `gorm:"foreignKey:PersonTypeID"`
 }

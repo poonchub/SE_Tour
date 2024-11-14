@@ -6,5 +6,5 @@ type RoomTypes struct {
 	gorm.Model
 	TypeName	string
 
-	Accommodations	[]Accommodations `gorm:"foreignKey:RoomTypeID"`
+	BookingRooms	[]BookingRooms	`gorm:"foreignKey:RoomTypeID"`
 }
