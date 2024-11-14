@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"toursystem/config"
+	controllers "toursystem/controlers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -33,7 +34,14 @@ func main() {
 			AllowHeaders: []string{"Content-Type", "Authorization"},
 		}))
 
-		
+		// Customers
+		router.GET("/customer/:id", controllers.GetCustomerByID)
+
+		// TourImages
+		router.GET("/tour-image/:tourpackageId", controllers.GetTourImageByTourPackageID)
+
+		// TourPackages
+		router.GET("/tour-packages", controllers.ListTourPackages)
 	}
 
 	r.GET("/", func(c *gin.Context) {
