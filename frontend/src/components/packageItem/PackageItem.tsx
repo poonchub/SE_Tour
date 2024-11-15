@@ -8,7 +8,7 @@ function PackageItem(props: { tour: any }) {
 
     const [startPrice, setStartPrice] = useState(999999);
 
-    const imageUrl = `${apiUrl}/${tour.TourImages[0].FilePath}`
+    const imageUrl = `${apiUrl}/${tour.TourImages[0]?.FilePath}`
 
     tour.TourPrices.forEach((price: { Price: any; "": any }) => {
         if (price.Price < startPrice){
@@ -19,12 +19,17 @@ function PackageItem(props: { tour: any }) {
         }
     });
 
+    function setPackageData(id: string){
+        localStorage.setItem("startPrice", startPrice.toString())
+        localStorage.setItem("tourPackageID", id)
+    }
+
     return (
         <div className="package-item-container">
             <div className="title-bg"></div>
             <div className="detail-box">
                 <div className="title"><h3>{tour.TourName}</h3></div>
-                <p className="description">{tour.Description}</p>
+                <p className="description">{tour.TourDescriptions.Intro}</p>
                 <div className="duration-province-box">
                     <div className="sub-box">
                         <div className="icon-box">
@@ -45,8 +50,8 @@ function PackageItem(props: { tour: any }) {
                         <span className="price">฿{startPrice}</span>
                     </div>
                     <div className="sub-box">
-                        <Link to="">
-                            <button className="btn-detail">รายละเอียดทัวร์</button>
+                        <Link to="/tour-select" onClick={()=>setPackageData(tour.ID)}>
+                            <div className="btn-detail">รายละเอียดทัวร์</div>
                         </Link>
                     </div>
                 </div>

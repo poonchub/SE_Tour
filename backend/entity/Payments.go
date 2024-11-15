@@ -17,4 +17,6 @@ type Payments struct {
 
 	SalesReportID	uint
 	SalesReport		SalesReports	`gorm:"foreignKey:SalesReportID"`
+
+	Slips	*Slips	`gorm:"foreignKey:PaymentID"`
 }

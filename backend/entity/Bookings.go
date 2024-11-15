@@ -19,4 +19,6 @@ type Bookings struct {
 	Promotion		Promotions	`gorm:"foreignKey:PromotionID"`
 
 	BookingDetails	[]BookingDetails	`gorm:"foreignKey:BookingID"`
+
+	Payments		*Payments			`gorm:"foreignKey:BookingID"`
 }

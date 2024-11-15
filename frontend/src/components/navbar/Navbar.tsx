@@ -7,7 +7,7 @@ function Navbar(props: { page: string; }){
 
     return (
         <nav className="navbar" 
-            style={{backgroundColor: page=="tourPackage" ? "var(--yellow)" : "transparent"}}
+            style={{backgroundColor: page=="home" ? "transparent" : "var(--yellow)"}}
         >
             <div className="logo-box">
                 <h1>My Logo</h1>

@@ -56,6 +56,23 @@ async function GetTourPackages() {
 
     return res;
 }
+async function GetTourPackageByID(id: Number | undefined) {
+    const requestOptions = {
+        method: "GET",
+    };
+
+    let res = await fetch(`${apiUrl}/tour-package/${id}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
 
 // TourImages
 async function GetTourImageByTourPackageID(id: Number | undefined) {
@@ -80,6 +97,7 @@ export {
 
     // TourPackages
     GetTourPackages,
+    GetTourPackageByID,
 
     // TourImages
     GetTourImageByTourPackageID,

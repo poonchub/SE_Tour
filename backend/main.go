@@ -42,6 +42,8 @@ func main() {
 
 		// TourPackages
 		router.GET("/tour-packages", controllers.ListTourPackages)
+		router.GET("/tour-package/:id", controllers.GetTourPackageByID)
+
 	}
 
 	r.GET("/", func(c *gin.Context) {

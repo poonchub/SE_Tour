@@ -14,10 +14,25 @@ func ListTourPackages(c *gin.Context) {
 
 	db := config.DB()
 
-	if err := db.Preload("Province").Preload("TourPrices").Preload("TourImages").Find(&tourPackages).Error; err != nil {
+	if err := db.Preload("Province").Preload("TourPrices").Preload("TourImages").Preload("TourDescriptions").Find(&tourPackages).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
 
 	c.JSON(http.StatusOK, &tourPackages)
+}
+
+// GET /tour-package/:id
+func GetTourPackageByID(c *gin.Context) {
+	var tourpackage entity.TourPackages
+    id := c.Param("id")
+
+    db := config.DB()
+
+    if err := db.Preload("Province").Preload("TourPrices").Preload("TourImages").Preload("TourDescriptions").First(&tourpackage, "id = ?", id).Error; err != nil {
+        c.JSON(http.StatusNotFound, gin.H{"error": "tour package not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, tourpackage)
 }

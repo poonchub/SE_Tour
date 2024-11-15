@@ -23,7 +23,6 @@ function TourPackage(){
     const tourElements = tourPackages.map((tour, index) => {
         return <PackageItem key={index} tour={tour}/>
     })
-    console.log(tourPackages)
 
     return (
         <div className="tour-pavkage-page">
