@@ -53,6 +53,7 @@ func SetupDatabase() {
 		&entity.RoomTypes{},
 		&entity.SalesReports{},
 		&entity.Slips{},
+		&entity.TourDescriptions{},
 		&entity.TourImages{},
 		&entity.TourPackages{},
 		&entity.TourPrices{},
@@ -60,6 +61,7 @@ func SetupDatabase() {
 		&entity.TourScheduleStatuses{},
 		&entity.Transportations{},
 		&entity.TravelInsurances{},
+		&entity.Vehicles{},
 		&entity.VehicleTypes{},
 	)
 
@@ -136,15 +138,15 @@ func SetupDatabase() {
 	paymentMethods := []*entity.PaymentMethods{
 		{
 			MethodName: "Krungthai",
-			LogoPath: "images/logoPaymentMethods/Krung_Thai.png",
+			LogoPath:   "images/logoPaymentMethods/Krung_Thai.png",
 		},
 		{
 			MethodName: "TrueMoney",
-			LogoPath: "images/logoPaymentMethods/True_Money.png",
+			LogoPath:   "images/logoPaymentMethods/True_Money.png",
 		},
 		{
 			MethodName: "SCB",
-			LogoPath: "images/logoPaymentMethods/SCB.png",
+			LogoPath:   "images/logoPaymentMethods/SCB.png",
 		},
 	}
 	for _, method := range paymentMethods {
@@ -157,19 +159,19 @@ func SetupDatabase() {
 	providers := []*entity.Providers{
 		{
 			ProviderName: "เมืองไทยประกันภัย",
-			LogoPath: "images/logoProviders/เมืองไทยประกันภัย.png",
+			LogoPath:     "images/logoProviders/เมืองไทยประกันภัย.png",
 		},
 		{
 			ProviderName: "เอ็ม เอส ไอ จี",
-			LogoPath: "images/logoProviders/เอ็ม-เอส-ไอ-จี.png",
+			LogoPath:     "images/logoProviders/เอ็ม-เอส-ไอ-จี.png",
 		},
 		{
 			ProviderName: "ประกันภัยไทยวิวัฒน์",
-			LogoPath: "images/logoProviders/ประกันภัยไทยวิวัฒน์.png",
+			LogoPath:     "images/logoProviders/ประกันภัยไทยวิวัฒน์.png",
 		},
 		{
 			ProviderName: "ทิพยประกันภัย",
-			LogoPath: "images/logoProviders/ทิพยประกันภัย.png",
+			LogoPath:     "images/logoProviders/ทิพยประกันภัย.png",
 		},
 	}
 	for _, provider := range providers {
@@ -190,6 +192,23 @@ func SetupDatabase() {
 	for _, vehicleType := range vehicleTypes {
 		db.FirstOrCreate(vehicleType, &entity.VehicleTypes{
 			TypeName: vehicleType.TypeName,
+		})
+	}
+
+	// Create Vehicle Type
+	vehicles := []*entity.Vehicles{
+		{
+			VehicleName:   "รถบัสประจำทัวร์ 1",
+			VehicleTypeID: 1,
+		},
+		{
+			VehicleName:   "เรือประจำทัวร์ 1",
+			VehicleTypeID: 2,
+		},
+	}
+	for _, vehicle := range vehicles {
+		db.FirstOrCreate(vehicle, &entity.Vehicles{
+			VehicleName: vehicle.VehicleName,
 		})
 	}
 
@@ -250,7 +269,7 @@ func SetupDatabase() {
 			ProvinceName: "ระนอง",
 		},
 		{
-			ProvinceName: "ระยอง",
+			ProvinceName: "กระบี่",
 		},
 		{
 			ProvinceName: "ยะลา",
@@ -266,21 +285,17 @@ func SetupDatabase() {
 	locations := []*entity.Locations{
 		{
 			LocationName: "วัดเกาะพยาม",
-			ProvinceID: 1,
 		},
 		{
 			LocationName: "เกาะค้างคาว",
-			ProvinceID: 1,
 		},
 		{
 			LocationName: "หาดบางเบน",
-			ProvinceID: 1,
 		},
 	}
 	for _, location := range locations {
 		db.FirstOrCreate(location, &entity.Locations{
 			LocationName: location.LocationName,
-			ProvinceID: location.ProvinceID,
 		})
 	}
 
@@ -323,14 +338,14 @@ func SetupDatabase() {
 	// Create Employee
 	hashedPassword, _ := HashPassword("123456")
 	employee := &entity.Employees{
-		UserName: "se",
+		UserName:    "se",
 		FirstName:   "SE",
 		LastName:    "67",
 		Email:       "se67@gmail.com",
 		Password:    hashedPassword,
 		PhoneNumber: "000-000-0000",
 		ProfilePath: "images/profileEmployee/employee1.jpg/",
-		RoleID: 3,
+		RoleID:      3,
 	}
 	db.FirstOrCreate(employee, &entity.Employees{
 		Email: employee.Email,
@@ -338,7 +353,7 @@ func SetupDatabase() {
 
 	// Create Customer
 	customer := &entity.Customers{
-		UserName:   "Peter",
+		UserName:    "Peter",
 		FirstName:   "Peter",
 		LastName:    "Parker",
 		Email:       "spider@gmail.com",
@@ -351,15 +366,70 @@ func SetupDatabase() {
 	})
 
 	// Create Tour Package
-	tourpackage := &entity.TourPackages{
-		PackageCode: "T00001",
-		TourName: "แพ็กเกจทัวร์ทะเลระนอง: เปิดประสบการณ์สู่มนต์เสน่ห์แห่งอันดามันใต้",
-		Description: "สัมผัสความเงียบสงบและธรรมชาติที่บริสุทธิ์ของทะเลระนอง เปิดโลกการท่องเที่ยวสุดเอ็กซ์คลูซีฟกับแพ็กเกจทัวร์ทะเลระนอง ดินแดนที่ยังคงความงดงามดั้งเดิมของธรรมชาติ ทะเลใส หาดทรายขาว และหมู่เกาะที่ซ่อนตัวอยู่ในความสงบ เหมาะสำหรับผู้ที่ต้องการพักผ่อนและหลีกหนีจากความวุ่นวายของชีวิตประจำวัน",
-		Duration: "2 วัน 2 คืน",
+	tourPackages := []*entity.TourPackages{
+		{
+			PackageCode: "T00001",
+			TourName:    "แพ็กเกจทัวร์ทะเลระนอง: เปิดประสบการณ์สู่มนต์เสน่ห์แห่งอันดามันใต้",
+			Duration:    "2 วัน 2 คืน",
+			ProvinceID:  1,
+		},
+		{
+			PackageCode: "T00002",
+			TourName:    "แพ็กเกจทัวร์ทะเลกระบี่: สวรรค์แห่งอันดามันที่ต้องสัมผัส",
+			Duration:    "4 วัน 3 คืน",
+			ProvinceID:  2,
+		},
 	}
-	db.FirstOrCreate(tourpackage, &entity.TourPackages{
-		PackageCode: tourpackage.PackageCode,
-	})
+	for _, tourPackage := range tourPackages {
+		db.FirstOrCreate(tourPackage, &entity.TourPackages{
+			PackageCode: tourPackage.PackageCode,
+		})
+	}
+
+	// Create Tour Description
+	tourDescriptions := []*entity.TourDescriptions{
+		{
+			Intro: "สัมผัสความเงียบสงบและธรรมชาติที่บริสุทธิ์ของทะเลระนอง เปิดโลกการท่องเที่ยวสุดเอ็กซ์คลูซีฟกับแพ็กเกจทัวร์ทะเลระนอง ดินแดนที่ยังคงความงดงามดั้งเดิมของธรรมชาติ ทะเลใส หาดทรายขาว และหมู่เกาะที่ซ่อนตัวอยู่ในความสงบ เหมาะสำหรับผู้ที่ต้องการพักผ่อนและหลีกหนีจากความวุ่นวายของชีวิตประจำวัน",
+			PackageDetail: `จังหวัด: ระนอง
+							ระยะเวลา: 2 วัน 2 คืน
+							ที่พัก: รีสอร์ทหรูระดับ 4 ดาว พร้อมวิวทะเลส่วนตัว
+							รวมอาหาร: อาหารครบทุกมื้อ เน้นซีฟู้ดสดใหม่จากทะเลระนอง
+							การเดินทาง: รถรับ-ส่งสนามบินระนอง พร้อมเรือสปีดโบ๊ทส่วนตัวสำหรับทัวร์เกาะ`,
+			TripHighlight:	`
+							🏝️ ทัวร์หมู่เกาะกำและเกาะค้างคาว สัมผัสหาดทรายขาวละเอียดและน้ำทะเลใสราวคริสตัลที่หมู่เกาะกำ เพลิดเพลินกับการดำน้ำตื้น(Snorkeling) เพื่อชมปะการังหลากสีสัน และปลาสวยงามนานาชนิด
+							🌅 ชิลล์บนเกาะพยาม สัมผัสกับวิถีชีวิตเรียบง่ายบนเกาะพยาม เกาะที่ขึ้นชื่อว่า "มัลดีฟส์เมืองไทย" ชมความงดงามของชายหาดที่เงียบสงบและดื่มด่ำกับพระอาทิตย์ตกดินสุดโรแมนติก
+							🛶 ล่องเรือชมป่าชายเลนและน้ำตกปุญญบาล ตื่นตาตื่นใจกับความสมบูรณ์ของป่าชายเลนที่อุดมสมบูรณ์ สำรวจน้ำตกปุญญบาลที่มีน้ำใสไหลเย็นตลอดปี
+							✨ บ่อน้ำพุร้อนรักษะวาริน ผ่อนคลายกับการแช่น้ำแร่ร้อนธรรมชาติที่บ่อน้ำพุร้อนรักษะวาริน สถานที่ท่องเที่ยวเพื่อสุขภาพที่ไม่ควรพลาด`,
+			PlacesHighlight: `
+							🌊 ดำน้ำดูปะการังและปลาสวยงาม: สัมผัสประสบการณ์ดำน้ำที่น่าตื่นเต้นในน้ำทะเลใสแจ๋ว
+							🌴 พักผ่อนท่ามกลางธรรมชาติ: ที่พักสุดหรูที่โอบล้อมด้วยธรรมชาติที่งดงาม
+							🍹 ปาร์ตี้ริมชายหาด: เพลิดเพลินกับปาร์ตี้บาร์บีคิวซีฟู้ดและเครื่องดื่มริมทะเลยามค่ำคืน`,
+			TourPackageID: 1,
+		},
+		{
+			Intro: "สัมผัสความงามทะเลอันดามัน ดินแดนสวรรค์ของนักท่องเที่ยว ค้นพบเสน่ห์ของทะเลกระบี่ด้วยแพ็กเกจทัวร์สุดพิเศษ ที่จะพาคุณไปดื่มด่ำกับธรรมชาติที่สวยงาม น้ำทะเลใส หาดทรายขาวละเอียด และเกาะแก่งน้อยใหญ่ที่รอคอยการมาเยือนของคุณ กระบี่พร้อมมอบประสบการณ์การพักผ่อนที่จะทำให้คุณลืมความวุ่นวายในชีวิตประจำวัน",
+			PackageDetail: `จังหวัด: กระบี่
+							ระยะเวลา: 4 วัน 3 คืน
+							ที่พัก: รีสอร์ทระดับ 4-5 ดาว ริมชายหาดพร้อมวิวทะเลทุกห้องพัก
+							รวมอาหาร: อาหารเช้า, กลางวัน และมื้อค่ำแบบซีฟู้ดสดใหม่ทุกวัน
+							การเดินทาง: รถรับ-ส่งจากสนามบินกระบี่ พร้อมเรือสปีดโบ๊ทส่วนตัวสำหรับทัวร์เกาะ`,
+			TripHighlight:	`
+							🏝️ ทัวร์ 4 เกาะสุดฮิต เยือนเกาะปอดะ, ทะเลแหวก, เกาะไก่ และเกาะทับ สถานที่ท่องเที่ยวที่ขึ้นชื่อที่สุดในกระบี่ เพลิดเพลินกับการดำน้ำชมปะการังและฝูงปลาหลากสีสัน
+							🌅 ล่องเรือหางยาวชมพระอาทิตย์ตก ดื่มด่ำกับความงามของพระอาทิตย์ตกดินที่หาดอ่าวนาง พร้อมบรรยากาศสุดโรแมนติก
+							🛶 พายเรือคายัคที่อ่าวท่าเลน สำรวจป่าโกงกางและถ้ำหินปูนที่ซ่อนตัวอยู่ในป่าชายเลน ด้วยการพายเรือคายัคที่สนุกและท้าทาย
+							✨ เที่ยวหมู่เกาะพีพี ดื่มด่ำกับความสวยงามของเกาะพีพีเล ชมอ่าวมาหยา สถานที่ถ่ายทำภาพยนตร์ชื่อดัง “The Beach” และอ่าวปิเละที่มีน้ำทะเลใสเหมือนกระจก`,
+			PlacesHighlight: `
+							🌊 ดำน้ำตื้น (Snorkeling) ที่อ่าวลิง: สัมผัสชีวิตใต้ทะเลกับปลาหลากสีสันและปะการังที่สมบูรณ์
+							🌴 ชิลล์ริมชายหาดที่ไร่เลย์: พักผ่อนบนหาดทรายขาวละเอียด ท่ามกลางหน้าผาหินปูนสูงตระหง่าน
+							💆 สปาผ่อนคลาย: ผ่อนคลายกับการนวดแผนไทยที่สปาริมชายหาด`,
+			TourPackageID: 2,
+		},
+	}
+	for _, tourDescription := range tourDescriptions {
+		db.FirstOrCreate(tourDescription, &entity.TourDescriptions{
+			TourPackageID: tourDescription.TourPackageID,
+		})
+	}
 
 	// Create Tour Schedule
 	StartDate1, _ := time.Parse("2006-01-02", "2024-11-20")
@@ -368,24 +438,24 @@ func SetupDatabase() {
 	EndDate2, _ := time.Parse("2006-01-02", "2024-12-02")
 	tourSchedules := []*entity.TourSchedules{
 		{
-			StartDate: StartDate1,
-			EndDate: EndDate1,
-			AvailableSlots: 50,
-			TourPackageID: 1,
+			StartDate:            StartDate1,
+			EndDate:              EndDate1,
+			AvailableSlots:       50,
+			TourPackageID:        1,
 			TourScheduleStatusID: 2,
 		},
 		{
-			StartDate: StartDate2,
-			EndDate: EndDate2,
-			AvailableSlots: 50,
-			TourPackageID: 1,
+			StartDate:            StartDate2,
+			EndDate:              EndDate2,
+			AvailableSlots:       50,
+			TourPackageID:        1,
 			TourScheduleStatusID: 2,
 		},
 	}
 	for _, tourSchedule := range tourSchedules {
 		db.FirstOrCreate(tourSchedule, &entity.TourSchedules{
-			StartDate: tourSchedule.StartDate,
-			EndDate: tourSchedule.EndDate,
+			StartDate:     tourSchedule.StartDate,
+			EndDate:       tourSchedule.EndDate,
 			TourPackageID: tourSchedule.TourPackageID,
 		})
 	}
@@ -395,13 +465,13 @@ func SetupDatabase() {
 	ValidUntil, _ := time.Parse("2006-01-02", "2024-11-30")
 	promotions := []*entity.Promotions{
 		{
-			PromotionCode: "P00001",
-			PromotionName: "ส่วนลด 5% เมื่อซื้อแพ็กเกจครบ 3000 บาท",
+			PromotionCode:      "P00001",
+			PromotionName:      "ส่วนลด 5% เมื่อซื้อแพ็กเกจครบ 3000 บาท",
 			DiscountPercentage: 5.0,
-			ValidFrom: ValidFrom,
-			ValidUntil: ValidUntil,
-			Minimum_Price: 3000.00,
-			PromotionStatusID: 1,
+			ValidFrom:          ValidFrom,
+			ValidUntil:         ValidUntil,
+			Minimum_Price:      3000.00,
+			PromotionStatusID:  1,
 		},
 	}
 	for _, promotion := range promotions {
@@ -410,7 +480,7 @@ func SetupDatabase() {
 		})
 	}
 
-	// Create Tour Image 
+	// Create Tour Image
 	for i := uint(1); i <= 1; i++ {
 		dir := fmt.Sprintf("images/tourImages/tourPackage%d", i)
 		count := countFilesInDir(dir)
@@ -426,45 +496,51 @@ func SetupDatabase() {
 	// Create Tour Price
 	tourPrices := []*entity.TourPrices{
 		{
-			Price: 8299,
+			Price:         8299,
 			TourPackageID: 1,
-			PersonTypeID: 1,
+			PersonTypeID:  1,
 		},
 		{
-			Price: 7299,
+			Price:         7299,
 			TourPackageID: 1,
-			PersonTypeID: 2,
+			PersonTypeID:  2,
 		},
 	}
 	for _, tourPrice := range tourPrices {
 		db.FirstOrCreate(tourPrice, &entity.TourPrices{
 			TourPackageID: tourPrice.TourPackageID,
-			PersonTypeID: tourPrice.PersonTypeID,
+			PersonTypeID:  tourPrice.PersonTypeID,
 		})
 	}
 
 	// Create Transportation
 	DepartureTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 08:00:00")
+	ArrivalTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 08:30:00")
 	DepartureTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 10:00:00")
+	ArrivalTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 10:30:00")
 	DepartureTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 13:00:00")
+	ArrivalTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 13:30:00")
 	transportations := []*entity.Transportations{
 		{
 			DepartureTime: DepartureTime1,
-			VehicleTypeID: 1,
+			ArrivalTime:   ArrivalTime1,
+			VehicleID:     1,
 			TourPackageID: 1,
-			LocationID: 1,
+			LocationID:    1,
 		},
 		{
 			DepartureTime: DepartureTime2,
-			VehicleTypeID: 1,
+			ArrivalTime:   ArrivalTime2,
+			VehicleID:     2,
 			TourPackageID: 1,
-			LocationID: 2,
+			LocationID:    2,
 		},
 		{
 			DepartureTime: DepartureTime3,
-			VehicleTypeID: 1,
+			ArrivalTime:   ArrivalTime3,
+			VehicleID:     1,
 			TourPackageID: 1,
-			LocationID: 3,
+			LocationID:    3,
 		},
 	}
 	for _, transportation := range transportations {
@@ -481,28 +557,28 @@ func SetupDatabase() {
 	EndTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 13:00:00")
 	activities := []*entity.Activities{
 		{
-			ActivityName: "เที่ยวชมวัดเกาะพยาม",
-			Description: "เที่ยวชมวัดเกาะพยาม",
-			StartTime: StartTime1,
-			EndTime: EndTime1,
-			LocationID: 1,
+			ActivityName:  "เที่ยวชมวัดเกาะพยาม",
+			Description:   "เที่ยวชมวัดเกาะพยาม",
+			StartTime:     StartTime1,
+			EndTime:       EndTime1,
+			LocationID:    1,
 			TourPackageID: 1,
 		},
 		{
-			ActivityName: "พักรับประทานอาหาร",
-			Description: "พักรับประทานอาหาร",
-			StartTime: StartTime2,
-			EndTime: EndTime2,
-			LocationID: 2,
+			ActivityName:  "พักรับประทานอาหาร",
+			Description:   "พักรับประทานอาหาร",
+			StartTime:     StartTime2,
+			EndTime:       EndTime2,
+			LocationID:    2,
 			TourPackageID: 1,
 		},
 	}
 	for _, activity := range activities {
 		db.FirstOrCreate(activity, &entity.Activities{
 			ActivityName: activity.ActivityName,
-			StartTime: activity.StartTime,
-			EndTime: activity.EndTime,
-			LocationID: activity.LocationID,
+			StartTime:    activity.StartTime,
+			EndTime:      activity.EndTime,
+			LocationID:   activity.LocationID,
 		})
 	}
 
@@ -511,44 +587,42 @@ func SetupDatabase() {
 	CheckOutDate, _ := time.Parse("2006-01-02", "2024-11-21")
 	accommodations := []*entity.Accommodations{
 		{
-			CheckInDate: CheckInDate,
-			CheckOutDate: CheckOutDate,
+			CheckInDate:   CheckInDate,
+			CheckOutDate:  CheckOutDate,
 			TourPackageID: 1,
-			HotelID: 1,
+			HotelID:       1,
 		},
 	}
 	for _, accommodation := range accommodations {
 		db.FirstOrCreate(accommodation, &entity.Accommodations{
-			CheckInDate: accommodation.CheckInDate,
-			CheckOutDate: accommodation.CheckOutDate,
+			CheckInDate:   accommodation.CheckInDate,
+			CheckOutDate:  accommodation.CheckOutDate,
 			TourPackageID: accommodation.TourPackageID,
-			HotelID: accommodation.HotelID,
+			HotelID:       accommodation.HotelID,
 		})
 	}
 
 	// Create Booking Room
 	bookingRooms := []*entity.BookingRooms{
 		{
-			RoomQuantity: 0,
+			RoomQuantity:    0,
 			AccommodationID: 1,
-			RoomTypeID: 1,
+			RoomTypeID:      1,
 		},
 		{
-			RoomQuantity: 0,
+			RoomQuantity:    0,
 			AccommodationID: 1,
-			RoomTypeID: 2,
+			RoomTypeID:      2,
 		},
 	}
 	for _, bookingRoom := range bookingRooms {
 		db.FirstOrCreate(bookingRoom, &entity.BookingRooms{
 			AccommodationID: bookingRoom.AccommodationID,
-			RoomTypeID: bookingRoom.RoomTypeID,
+			RoomTypeID:      bookingRoom.RoomTypeID,
 		})
 	}
 
-
 }
-
 
 func createImage(filePath string, id uint) error {
 

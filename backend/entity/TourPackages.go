@@ -8,8 +8,10 @@ type TourPackages struct {
 	gorm.Model
 	TourName	string
 	PackageCode	string
-	Description	string
 	Duration	string
+
+	ProvinceID	uint
+	Province	Provinces	`gorm:"foreignKey:ProvinceID"`
 
 	TourPrices	[]TourPrices	`gorm:"foreignKey:TourPackageID"`
 
@@ -20,4 +22,10 @@ type TourPackages struct {
 	Transportations	[]Transportations	`gorm:"foreignKey:TourPackageID"`
 
 	Meals		[]Meals			`gorm:"foreignKey:TourPackageID"`
+
+	Accommodations	[]Accommodations	`gorm:"foreignKey:TourPackageID"`
+
+	Activities	[]Activities	`gorm:"foreignKey:TourPackageID"`
+
+	TourDescriptions	[]TourDescriptions	`gorm:"foreignKey:TourPackageID"`
 }

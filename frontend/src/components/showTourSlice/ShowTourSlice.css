@@ -5,5 +5,5 @@
     height: 730px;
     border-width: 12px 0;
     border-style: solid;
-    border-image: var(--orange-yellow);
+    border-image: var(--orange-yellow-for-border);
 }

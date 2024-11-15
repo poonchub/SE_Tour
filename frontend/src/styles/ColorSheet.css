@@ -1,6 +1,9 @@
 :root {
     --background-color: rgb(246, 249, 252);
     --yellow: #FFF100;
-    --orange-yellow: linear-gradient(to right, #FF8181, #FFF100) 1;
+    --orange: #FF3C00;
+    --orange-yellow-for-border: linear-gradient(to right, #FF8181, #FFF100) 1;
+    --orange-yellow-for-bg: linear-gradient(to right, #FF8181, #FFF100);
     --blue: #0094DE;
+    --white: rgb(255, 255, 255);
 }

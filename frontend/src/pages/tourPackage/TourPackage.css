@@ -16,7 +16,7 @@
         margin-top: 60px;
 
         & .pic-slice {
-            width: 85%;
+            width: 75%;
             height: 475px;
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
@@ -33,7 +33,7 @@
         }
 
         & .subsection {
-            width: 85%;
+            width: 75%;
             height: 220px;
             margin-top: 40px;
             display: flex;
@@ -164,15 +164,6 @@
             }
         }
 
-        & .package-list {
-            width: 85%;
-            height: 1000px;
-            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
-            margin-top: 40px;
-            border-radius: 10px;
-            background-color: rgb(255, 255, 255);
-            padding: 20px;
-            
-        }
+        
     }
 }

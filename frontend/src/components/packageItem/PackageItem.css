@@ -1,0 +1,117 @@
+@import "../../styles/ColorSheet.css";
+
+& .package-item-container {
+    width: 75%;
+    height: 295px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 40px;
+    border-radius: 10px;
+    display: flex;
+    position: relative;
+    z-index: 1;
+
+    & .title-bg {
+        position: absolute;
+        height: 60px;
+        width: 62%;
+        border-radius: 10px 0px 0px 0px;
+        background: var(--orange-yellow-for-bg);
+        z-index: -1;
+    }
+
+    & .detail-box {
+        height: 100%;
+        width: 62%;
+        padding: 0px 40px;
+
+        & .title {
+            display: flex;
+            align-items: center;
+            height: 60px;
+
+            & h3 {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                -webkit-line-clamp: 1;
+                line-height: 1.5;
+            }
+        }
+
+        & .description {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            -webkit-line-clamp: 3;
+            margin: 15px 0px;
+        }
+
+        & .duration-province-box {
+            display: flex;
+
+            & .sub-box {
+                display: flex;
+                align-items: center;
+                margin-right: 50px;
+                margin-bottom: 20px;
+
+                & .icon-box {
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 12px;
+
+                    & img {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        & .price-tourDetail-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            & .sub-box {
+                & .title {
+                    color: var(--blue);
+                    font-weight: 500;
+                    height: auto;
+                }
+
+                & .price {
+                    font-weight: 700;
+                    font-size: 1.3rem;
+                    color: var(--orange);
+                }
+
+                & .btn-detail {
+                    border: 2px solid var(--blue);
+                    width: 120px;
+                    height: 40px;
+                    background-color: var(--white);
+                    font-size: 0.85rem;
+                    font-weight: 500;
+                    color: var(--blue);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    & .image-box {
+        height: 100%;
+        width: 38%;
+        border-radius: 0px 10px 10px 0px;
+        overflow: hidden;
+
+
+        & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

@@ -1,21 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar"
 import "./TourPackage.css"
+import { GetTourPackages } from "../../services/http";
+import { TourPackagesInterface } from "../../interfaces/ITourPackages";
+import PackageItem from "../../components/packageItem/PackageItem";
 
 function TourPackage(){
 
-    // const [tourPackages, setTourPackages] = useState<ProductInterface[]>([]);
+    const [tourPackages, setTourPackages] = useState<TourPackagesInterface[]>([]);
 
-    // async function getProducts(){
-    //     let res = await ListProducts()
-    //     if (res) {
-    //         setProducts(res);
-    //     }
-    // }
+    async function getTourPackages(){
+        let res = await GetTourPackages()
+        if (res) {
+            setTourPackages(res);
+        }
+    }
 
     useEffect(()=> {
-        // getProducts()
+        getTourPackages()
     }, [])
+
+    const tourElements = tourPackages.map((tour, index) => {
+        return <PackageItem key={index} tour={tour}/>
+    })
+    console.log(tourPackages)
 
     return (
         <div className="tour-pavkage-page">
@@ -57,7 +65,7 @@ function TourPackage(){
                                 <div className="input-box">
                                     <input type="number" min={0} step={500} defaultValue={0}/>
                                     -
-                                    <input type="number" min={1000}/>   
+                                    <input type="number" min={1000} step={500} defaultValue={1000}/>   
                                 </div>
                             </div>
                             <div className="option4-box option">
@@ -70,9 +78,7 @@ function TourPackage(){
                         </div>
                     </form>
                 </div>
-                <div className="package-list">
-
-                </div>
+                {tourElements}
             </section>
         </div>
     )

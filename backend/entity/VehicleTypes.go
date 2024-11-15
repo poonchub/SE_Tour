@@ -6,5 +6,5 @@ type VehicleTypes struct {
 	gorm.Model
 	TypeName	string
 
-	Transportations	[]Transportations `gorm:"foreignKey:VehicleTypeID"`
+	Vehicles	[]Vehicles `gorm:"foreignKey:VehicleTypeID"`
 }

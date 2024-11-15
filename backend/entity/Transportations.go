@@ -9,9 +9,10 @@ import (
 type Transportations struct {
 	gorm.Model
 	DepartureTime	time.Time
+	ArrivalTime		time.Time
 
-	VehicleTypeID	uint
-	VehicleType		VehicleTypes	`gorm:"foreignKey:VehicleTypeID"`
+	VehicleID	uint
+	Vehicle		Vehicles	`gorm:"foreignKey:VehicleID"`
 
 	TourPackageID	uint
 	TourPackage		TourPackages	`gorm:"foreignKey:TourPackageID"`

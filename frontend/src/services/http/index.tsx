@@ -58,7 +58,7 @@ async function GetTourPackages() {
 }
 
 // TourImages
-async function GetTourImageByCustomerID(id: Number | undefined) {
+async function GetTourImageByTourPackageID(id: Number | undefined) {
     const requestOptions = {
         method: "GET",
     };
@@ -82,5 +82,5 @@ export {
     GetTourPackages,
 
     // TourImages
-    GetTourImageByCustomerID,
+    GetTourImageByTourPackageID,
 }

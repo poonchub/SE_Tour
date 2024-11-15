@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"toursystem/config"
-	controllers "toursystem/controlers"
+	controllers "toursystem/controllers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

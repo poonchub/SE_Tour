@@ -6,5 +6,5 @@ type Provinces struct {
 	gorm.Model
 	ProvinceName	string
 
-	Locations	[]Locations	`gorm:"foreignKey:ProvinceID"`
+	TourPackages	[]TourPackages	`gorm:"foreignKey:ProvinceID"`
 }
