@@ -3,4 +3,5 @@ export interface TourPricesInterface {
     Price?: number;
     TourPackageID?: number;
     PersonTypeID?:  number;
+    RoomTypeID?:    number;
 }

@@ -11,7 +11,7 @@ export interface TourPackagesInterface {
 	Duration?:		string;
 	ProvinceID?:	number;
 	Province?:		ProvincesInterface;
-	TourPrice?:		TourPricesInterface;
-	TourImages?:		TourImagesInterface;
+	TourPrices?:		TourPricesInterface[];
+	TourImages?:		TourImagesInterface[];
 	TourDescriptions?:	TourDescriptionsInterface;
 }

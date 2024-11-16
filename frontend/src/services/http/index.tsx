@@ -36,6 +36,48 @@ export const apiUrl = "http://localhost:8000";
 //   return res;
 // }
 
+// PersonType
+async function GetPersonTypes() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/person-types`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+// RoomType
+async function GetRoomTypes() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/room-types`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 // TourPackages
 async function GetTourPackages() {
     const requestOptions = {
@@ -95,6 +137,12 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
 
 export {
 
+    // PersonTypes
+    GetPersonTypes,
+
+    // RoomTypes
+    GetRoomTypes,
+    
     // TourPackages
     GetTourPackages,
     GetTourPackageByID,

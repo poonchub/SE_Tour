@@ -7,4 +7,6 @@ type RoomTypes struct {
 	TypeName	string
 
 	BookingRooms	[]BookingRooms	`gorm:"foreignKey:RoomTypeID"`
+
+	TourPrices		[]TourPrices	`gorm:"foreignKey:RoomTypeID"`
 }

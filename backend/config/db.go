@@ -68,10 +68,10 @@ func SetupDatabase() {
 	// Create Person Type
 	personTypes := []*entity.PersonTypes{
 		{
-			TypeName: "เด็ก",
+			TypeName: "เด็กเล็ก (อายุ 1-3 ปี)",
 		},
 		{
-			TypeName: "ผู้ใหญ่",
+			TypeName: "เด็ก (อายุ 4-12 ปี) หรือ ผู้ใหญ่",
 		},
 	}
 	for _, personType := range personTypes {
@@ -310,6 +310,12 @@ func SetupDatabase() {
 		{
 			TypeName: "พักสาม",
 		},
+		{
+			TypeName: "เพิ่มเตียงเสริม",
+		},
+		{
+			TypeName: "ไม่เพิ่มเตียงเสริม",
+		},
 	}
 	for _, roomtype := range roomtypes {
 		db.FirstOrCreate(roomtype, &entity.RoomTypes{
@@ -474,30 +480,71 @@ func SetupDatabase() {
 	// Create Tour Price
 	tourPrices := []*entity.TourPrices{
 		{
-			Price: 8299,
+			Price: 500,
 			TourPackageID: 1,
-			PersonTypeID: 1,
+			PersonTypeID: 1,	// เด็กเล็ก
+			RoomTypeID: 4,		// เพิ่มเตียง
 		},
 		{
-			Price: 7299,
+			Price: 0,
 			TourPackageID: 1,
-			PersonTypeID: 2,
+			PersonTypeID: 1,	// เด็กเล็ก
+			RoomTypeID: 5,		// ไม่เพิ่มเตียง
 		},
 		{
-			Price: 4590,
-			TourPackageID: 2,
-			PersonTypeID: 1,
+			Price: 8290,
+			TourPackageID: 1,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 1,		// พักเดี่ยว
 		},
 		{
-			Price: 3990,
+			Price: 6990,
+			TourPackageID: 1,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 2,		// คู่
+		},
+		{
+			Price: 6990,
+			TourPackageID: 1,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 3,		// พักสาม
+		},
+		{
+			Price: 500,
 			TourPackageID: 2,
-			PersonTypeID: 2,
+			PersonTypeID: 1,	// เด็กเล็ก
+			RoomTypeID: 4,		// เพิ่มเตียง
+		},
+		{
+			Price: 0,
+			TourPackageID: 2,
+			PersonTypeID: 1,	// เด็กเล็ก
+			RoomTypeID: 5,		// ไม่เพิ่มเตียง
+		},
+		{
+			Price: 6590,
+			TourPackageID: 2,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 1,		// พักเดี่ยว
+		},
+		{
+			Price: 5190,
+			TourPackageID: 2,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 2,		// คู่
+		},
+		{
+			Price: 5190,
+			TourPackageID: 2,
+			PersonTypeID: 2,	// เด็ก/ผู้ใหญ่
+			RoomTypeID: 3,		// พักสาม
 		},
 	}
 	for _, tourPrice := range tourPrices {
 		db.FirstOrCreate(tourPrice, &entity.TourPrices{
 			TourPackageID: tourPrice.TourPackageID,
 			PersonTypeID:  tourPrice.PersonTypeID,
+			RoomTypeID: tourPrice.RoomTypeID,
 		})
 	}
 

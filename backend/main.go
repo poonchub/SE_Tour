@@ -37,6 +37,12 @@ func main() {
 		// Customers
 		router.GET("/customer/:id", controllers.GetCustomerByID)
 
+		// PersonTypes
+		router.GET("/person-types", controllers.ListPersonTypes)
+
+		// RoomTypes
+		router.GET("/room-types", controllers.ListRoomTypes)
+
 		// TourImages
 		router.GET("/tour-image/:tourpackageId", controllers.GetTourImageByTourPackageID)
 
