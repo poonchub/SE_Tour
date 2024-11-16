@@ -4,32 +4,60 @@ import "./TourPackage.css"
 import { GetTourPackages } from "../../services/http";
 import { TourPackagesInterface } from "../../interfaces/ITourPackages";
 import PackageItem from "../../components/packageItem/PackageItem";
+import Loading from "../../components/loading/Loading";
 
-function TourPackage(){
+function TourPackage() {
 
     const [tourPackages, setTourPackages] = useState<TourPackagesInterface[]>([]);
 
-    async function getTourPackages(){
-        let res = await GetTourPackages()
-        if (res) {
-            setTourPackages(res);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    async function getTourPackages() {
+        try {
+            let res = await GetTourPackages()
+            if (res) {
+                setTourPackages(res);
+            }
+        } catch (error) {
+            console.error('Failed to fetch tour package:', error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
-    useEffect(()=> {
+    const images = [
+        './images/sliceshow/pic1.jpg',
+        './images/sliceshow/pic2.jpg',
+        './images/sliceshow/pic3.jpg',
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) =>
+                prevIndex === images.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 7000);
+        return () => clearInterval(interval);
+    }, [images.length])
+
+    useEffect(() => {
         getTourPackages()
     }, [])
 
     const tourElements = tourPackages.map((tour, index) => {
-        return <PackageItem key={index} tour={tour}/>
+        return <PackageItem key={index} tour={tour} />
     })
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <div className="tour-pavkage-page">
-            <Navbar page={"tourPackage"}/>
+            <Navbar page={"tourPackage"} />
             <section>
                 <div className="pic-slice">
-                    <img src="./images/sliceshow/pic1.jpg" alt="" />
+                    <img src={images[currentIndex]} alt="" />
                 </div>
                 <div className="subsection">
                     <div className="show-mini-promotion">
@@ -41,7 +69,7 @@ function TourPackage(){
                             <div className="img-box">
                                 <img src="./images/icons/search.png" alt="" />
                             </div>
-                            <input type="text" placeholder="ค้นหาแพ็กเกจ..."/>
+                            <input type="text" placeholder="ค้นหาแพ็กเกจ..." />
                         </div>
                         <div className="search-option-box">
                             <div className="option1-box option">
@@ -56,15 +84,15 @@ function TourPackage(){
                                 <div className="input-box">
                                     <input type="date" />
                                     -
-                                    <input type="date" />   
+                                    <input type="date" />
                                 </div>
                             </div>
                             <div className="option3-box option">
                                 <span className="text">ช่วงราคา</span>
                                 <div className="input-box">
-                                    <input type="number" min={0} step={500} defaultValue={0}/>
+                                    <input type="number" min={0} step={500} defaultValue={0} />
                                     -
-                                    <input type="number" min={1000} step={500} defaultValue={1000}/>   
+                                    <input type="number" min={1000} step={500} defaultValue={1000} />
                                 </div>
                             </div>
                             <div className="option4-box option">

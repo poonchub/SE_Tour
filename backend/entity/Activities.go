@@ -10,8 +10,7 @@ type Activities struct {
 	gorm.Model
 	ActivityName	string
 	Description		string
-	StartTime		time.Time
-	EndTime			time.Time
+	DateTime		time.Time
 
 	LocationID   	uint
     Location    	Locations   `gorm:"foreignKey:LocationID"`

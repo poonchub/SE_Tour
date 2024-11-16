@@ -12,7 +12,7 @@
         flex-direction: column;
         flex-direction: column;
         align-items: center;
-        margin-top: 60px;
+        margin-top: 50px;
         padding: 40px;
 
         & .package-detail {
@@ -139,7 +139,7 @@
             height: auto;
             background-color: rgb(255, 255, 255);
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
-            padding: 25px 50px;
+            padding: 30px 50px;
             border-radius: 10px;
             margin-top: 40px;
             display: flex;
@@ -161,6 +161,7 @@
                     }
                 }
             }
+
             & .subsection{
                 width: 100%;
                 display: flex;
@@ -178,7 +179,7 @@
                     & .date-booking-box{
                         display: flex;
                         width: 100%;
-                        height: 40px;
+                        height: 50px;
                         justify-content: space-between;
                         align-items: center;
 
@@ -186,6 +187,7 @@
                             width: 80%;
                             height: 100%;
                             border: 2px solid #B1B1B1;
+                            box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
                             display: flex;
                             align-items: center;
                             padding: 0px 25px;
@@ -202,6 +204,7 @@
                             justify-content: center;
                             font-weight: 700;
                             box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
+                            cursor: pointer;
 
                         }
                         & .booking-btn:hover{
@@ -214,33 +217,80 @@
                         display: flex;
                         flex-direction: column;
                         border: 2px dashed #B1B1B1;
-                        margin-top: 20px;
-                        padding: 15px 25px;
+                        margin-top: 28px;
+                        padding: 25px 25px;
     
                         & .title{
                             font-weight: 600;
-                            margin-bottom: 5px;
+                            margin-bottom: 10px;
+                            font-size: 1.1rem;
                         }
 
                         & .person-type-title{
-                            color: var(--blue);
                             display: flex;
-                            
-                            & .type{
-                                width: 50%;
-                                font-weight: 500;
-                            }
-                        }
+                            justify-content: space-between;
+                            margin-bottom: 30px;
 
-                        & .price-all-box{
-                            display: grid;
-                            grid-template-columns: repeat(2, 1fr)
+                            & .type-box{
+                                display: flex;
+                                width: 46%;
+                                flex-direction: column;
+                                padding: 0px 20px;
+
+                                & .type-title{
+                                    width: 100%;
+                                    color: var(--blue);
+                                    margin-bottom: 10px;
+                                    font-weight: 500;
+                                }
+
+                                & .price-box{
+                                    display: flex;
+                                    width: 100%;
+                                    justify-content: space-between;
+                                    margin: 3px 0px;
+
+                                    & .price{
+                                        color: var(--orange);
+                                        font-weight: 600;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
                 
             } 
+        }
+
+        & .travel-plane{
+            width: 75%;
+            height: auto;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
+            padding: 30px 50px;
+            border-radius: 10px;
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+
+            & .title-box{
+                width: 100%;
+                height: 40px;
+                display: flex;
+                & .img-box{
+                    width: 30px;
+                    height: 30px;
+                    margin-right: 15px;
+
+                    & img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
         }
     }
 }

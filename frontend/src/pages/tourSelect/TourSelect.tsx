@@ -7,6 +7,7 @@ import Loading from "../../components/loading/Loading";
 import Calendar from "../../components/calendar/Calendar";
 import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
 import { RoomTypesInterface } from "../../interfaces/IRoomTypes";
+import Footer from "../../components/footer/Footer";
 
 function TourSelect() {
     const [tourPackage, setTourPackage] = useState<TourPackagesInterface>();
@@ -17,31 +18,40 @@ function TourSelect() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     async function getTourPackage() {
+        const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
+        if (resTourPackage) {
+            setTourPackage(resTourPackage);
+        }
+    }
+
+    async function getPersonTypes() {
+        const resPersonType = await GetPersonTypes();
+        if (resPersonType) {
+            setPersonTypes(resPersonType)
+        }
+    }
+
+    async function getRoomTypes() {
+        const resRoomType = await GetRoomTypes();
+        if (resRoomType) {
+            setRoomTypes(resRoomType)
+        }
+    }
+
+    async function fetchData(){
         try {
-            const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
-            if (resTourPackage) {
-                setTourPackage(resTourPackage);
-            }
-
-            const resPersonType = await GetPersonTypes();
-            if (resPersonType) {
-                setPersonTypes(resPersonType)
-            }
-
-            const resRoomType = await GetRoomTypes();
-            if (resRoomType) {
-                setRoomTypes(resRoomType)
-            }
+            getTourPackage()
+            getPersonTypes()
+            getRoomTypes()
         } catch (error) {
-            console.error('Failed to fetch tour package:', error);
+            console.error('Failed to fetch data:', error);
         } finally {
             setIsLoading(false);
         }
     }
 
     useEffect(() => {
-        getTourPackage();
-
+        fetchData()
     }, [isLoading]);
 
     const startPrice = localStorage.getItem("startPrice");
@@ -70,27 +80,45 @@ function TourSelect() {
         )
     );
 
-
-
-    const priceElement = roomTypes?.map((type, index) => {
+    const priceElement1 = roomTypes?.map((type, index) => {
         const tourPrices = tourPackage?.TourPrices
-        var p
+        var p1
         tourPrices?.forEach((price, _) => {
-            if(price.RoomTypeID==type.ID){
-                p = price.Price?.toLocaleString('th-TH', {
+            if(price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[1]?.ID){
+                p1 = price.Price?.toLocaleString('th-TH', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                 })
+                
             }
         });
-        return (
+        return p1 ? (
             <div className="price-box" key={index}>
-                <span className="type">{type.TypeName}</span>
-                <span className="price">{p}</span>
+                <span className="type-name">{type.TypeName}</span>
+                <span className="price">฿{p1}</span>
             </div>
-        )
+        ) : <></>
     })
-
+    const priceElement2 = roomTypes?.map((type, index) => {
+        const tourPrices = tourPackage?.TourPrices
+        var p2
+        tourPrices?.forEach((price, _) => {
+            if(price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[0]?.ID){
+                p2 = price.Price?.toLocaleString('th-TH', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                })
+                
+            }
+        });
+        return p2 ? (
+            <div className="price-box" key={index}>
+                <span className="type-name">{type.TypeName}</span>
+                <span className="price">฿{p2}</span>
+            </div>
+        ) : <></>
+    })
+    
     console.log(tourPackage?.TourPrices)
     console.log(roomTypes)
 
@@ -147,18 +175,30 @@ function TourSelect() {
                             <div className="price-detail">
                                 <span className="title">ราคาแพ็กเกจ</span>
                                 <div className="person-type-title">
-                                    <span className="type">เด็ก/ผู้ใหญ่ (บาท/ท่าน)</span>
-                                    <span className="type">เด็กเล็ก (บาท/ท่าน)</span>
-                                </div>
-                                <div className="price-all-box">
-                                    {priceElement}
+                                    <div className="type-box">
+                                        <span className="type-title">เด็ก/ผู้ใหญ่ (บาท/ท่าน)</span>
+                                        {priceElement1}
+                                    </div>
+                                    <div className="type-box">
+                                        <span className="type-title">เด็กเล็ก (บาท/ท่าน)</span>
+                                        {priceElement2}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
+                <div className="travel-plane">
+                    <div className="title-box">
+                        <div className="img-box">
+                            <img src="./images/icons/plans.png" alt="" />
+                        </div>
+                        <h2 className="title">แผนการเดินทาง</h2>
+                    </div>
+                </div>
             </section>
+            <Footer/>
         </div>
     )
 }
