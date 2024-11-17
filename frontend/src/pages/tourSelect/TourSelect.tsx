@@ -8,6 +8,7 @@ import Calendar from "../../components/calendar/Calendar";
 import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
 import { RoomTypesInterface } from "../../interfaces/IRoomTypes";
 import Footer from "../../components/footer/Footer";
+import Booking from "../../components/booking/Booking";
 
 function TourSelect() {
     const [tourPackage, setTourPackage] = useState<TourPackagesInterface>();
@@ -17,6 +18,7 @@ function TourSelect() {
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [dateSelectedFormat, setDateSelectedFormat] = useState<string | null>("โปรดเลือกวันที่ต้องการจองจากปฎิทิน");
+    const [bookingPopUp, setBookingPopUp] = useState(<></>);
 
     async function getTourPackage() {
         const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
@@ -137,6 +139,7 @@ function TourSelect() {
         <Loading />
     ) : (
         <div className="tour-select-page">
+            {bookingPopUp}
             <Navbar page={"tourSelect"} />
             <section>
                 <div className="package-detail">
@@ -181,7 +184,9 @@ function TourSelect() {
                         <div className="travel-schedule-detail">
                             <div className="date-booking-box">
                                 <div className="date-booking">{dateSelectedFormat}</div>
-                                <div className="booking-btn">จองทัวร์</div>
+                                <div className="booking-btn" onClick={()=>setBookingPopUp(
+                                    <Booking roomTypes={roomTypes} tourPackage={tourPackage} personTypes={personTypes}/>
+                                )}>จองทัวร์</div>
                             </div>
                             <div className="price-detail">
                                 <span className="title">ราคาแพ็กเกจ</span>
