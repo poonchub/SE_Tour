@@ -57,6 +57,27 @@ async function GetPersonTypes() {
     return res;
 }
 
+// Province
+async function GetProvinces() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/provinces`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 // RoomType
 async function GetRoomTypes() {
     const requestOptions = {
@@ -139,6 +160,9 @@ export {
 
     // PersonTypes
     GetPersonTypes,
+
+    // Province
+    GetProvinces,
 
     // RoomTypes
     GetRoomTypes,

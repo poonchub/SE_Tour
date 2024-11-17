@@ -1,27 +1,41 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar"
 import "./TourPackage.css"
-import { GetTourPackages } from "../../services/http";
+import { GetProvinces, GetTourPackages } from "../../services/http";
 import { TourPackagesInterface } from "../../interfaces/ITourPackages";
 import PackageItem from "../../components/packageItem/PackageItem";
 import Loading from "../../components/loading/Loading";
+import { ProvincesInterface } from "../../interfaces/IProvinces";
 
 function TourPackage() {
 
     const [tourPackages, setTourPackages] = useState<TourPackagesInterface[]>([]);
+    const [provinces, setProvinces] = useState<ProvincesInterface[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isFading, setIsFading] = useState(false);
 
     async function getTourPackages() {
+        let res = await GetTourPackages()
+        if (res) {
+            setTourPackages(res);
+        }
+    }
+
+    async function getTourProvinces() {
+        let res = await GetProvinces()
+        if (res) {
+            setProvinces(res);
+        }
+    }
+
+    async function fetchData() {
         try {
-            let res = await GetTourPackages()
-            if (res) {
-                setTourPackages(res);
-            }
+            getTourPackages()
+            getTourProvinces()
         } catch (error) {
-            console.error('Failed to fetch tour package:', error);
+            console.error('Failed to fetch data:', error);
         } finally {
             setIsLoading(false);
         }
@@ -35,15 +49,17 @@ function TourPackage() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex === images.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 7000);
+            setIsFading(true);
+            setTimeout(() => {
+                setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+                setIsFading(false);
+            }, 400); 
+        }, 5000);
         return () => clearInterval(interval);
     }, [images.length])
 
     useEffect(() => {
-        getTourPackages()
+        fetchData()
     }, [])
 
     const tourElements = tourPackages.map((tour, index) => {
@@ -57,7 +73,7 @@ function TourPackage() {
             <Navbar page={"tourPackage"} />
             <section>
                 <div className="pic-slice">
-                    <img src={images[currentIndex]} alt="" />
+                    <img src={images[currentIndex]} alt="" className={`slideshow-image ${isFading ? 'fade-out' : 'fade-in'}`}/>
                 </div>
                 <div className="subsection">
                     <div className="show-mini-promotion">
@@ -75,8 +91,11 @@ function TourPackage() {
                             <div className="option1-box option">
                                 <span className="text">แพ็กเกจในจังหวัด</span>
                                 <select name="" id="">
-                                    <option value="">ระนอง</option>
-                                    <option value="">สกลนคร</option>
+                                    {
+                                        provinces.map((province, index)=>(
+                                            <option value={province.ID} key={index}>{province.ProvinceName}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <div className="option2-box option">

@@ -29,7 +29,7 @@ func GetTourPackageByID(c *gin.Context) {
 
     db := config.DB()
 
-    if err := db.Preload("Province").Preload("TourPrices.PersonType").Preload("TourImages").Preload("TourDescriptions").Preload("Activities").First(&tourpackage, "id = ?", id).Error; err != nil {
+    if err := db.Preload("Province").Preload("TourPrices.PersonType").Preload("TourImages").Preload("TourDescriptions").Preload("Activities").Preload("TourSchedules").First(&tourpackage, "id = ?", id).Error; err != nil {
         c.JSON(http.StatusNotFound, gin.H{"error": "tour package not found"})
         return
     }

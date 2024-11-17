@@ -40,6 +40,9 @@ func main() {
 		// PersonTypes
 		router.GET("/person-types", controllers.ListPersonTypes)
 
+		// Provinces
+		router.GET("/provinces", controllers.ListProvinces)
+
 		// RoomTypes
 		router.GET("/room-types", controllers.ListRoomTypes)
 

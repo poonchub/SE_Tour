@@ -2,6 +2,7 @@ import { ProvincesInterface } from "./IProvinces";
 import { TourDescriptionsInterface } from "./ITourDescriptions";
 import { TourImagesInterface } from "./ITourImages";
 import { TourPricesInterface } from "./ITourPrices";
+import { TourSchedulesInterface } from "./ITourSchedules";
 
 export interface TourPackagesInterface {
     ID?:			number;
@@ -14,4 +15,5 @@ export interface TourPackagesInterface {
 	TourPrices?:		TourPricesInterface[];
 	TourImages?:		TourImagesInterface[];
 	TourDescriptions?:	TourDescriptionsInterface;
+	TourSchedules?:		TourSchedulesInterface[];
 }

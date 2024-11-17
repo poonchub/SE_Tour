@@ -425,10 +425,12 @@ func SetupDatabase() {
 	}
 
 	// Create Tour Schedule
-	StartDate1, _ := time.Parse("2006-01-02", "2024-11-20")
-	EndDate1, _ := time.Parse("2006-01-02", "2024-11-21")
-	StartDate2, _ := time.Parse("2006-01-02", "2024-12-01")
-	EndDate2, _ := time.Parse("2006-01-02", "2024-12-02")
+	StartDate1, _ := time.Parse("2006-01-02", "2024-11-10")
+	EndDate1, _ := time.Parse("2006-01-02", "2024-11-11")
+	StartDate2, _ := time.Parse("2006-01-02", "2024-11-26")
+	EndDate2, _ := time.Parse("2006-01-02", "2024-11-27")
+	StartDate3, _ := time.Parse("2006-01-02", "2024-12-01")
+	EndDate3, _ := time.Parse("2006-01-02", "2024-12-02")
 	tourSchedules := []*entity.TourSchedules{
 		{
 			StartDate:            StartDate1,
@@ -440,6 +442,13 @@ func SetupDatabase() {
 		{
 			StartDate:            StartDate2,
 			EndDate:              EndDate2,
+			AvailableSlots:       50,
+			TourPackageID:        1,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate:            StartDate3,
+			EndDate:              EndDate3,
 			AvailableSlots:       50,
 			TourPackageID:        1,
 			TourScheduleStatusID: 2,

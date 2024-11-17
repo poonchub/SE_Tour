@@ -16,6 +16,7 @@ function TourSelect() {
 
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [dateSelectedFormat, setDateSelectedFormat] = useState<string | null>("โปรดเลือกวันที่ต้องการจองจากปฎิทิน");
 
     async function getTourPackage() {
         const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
@@ -38,7 +39,7 @@ function TourSelect() {
         }
     }
 
-    async function fetchData(){
+    async function fetchData() {
         try {
             getTourPackage()
             getPersonTypes()
@@ -84,12 +85,11 @@ function TourSelect() {
         const tourPrices = tourPackage?.TourPrices
         var p1
         tourPrices?.forEach((price, _) => {
-            if(price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[1]?.ID){
+            if (price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[1]?.ID) {
                 p1 = price.Price?.toLocaleString('th-TH', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                 })
-                
             }
         });
         return p1 ? (
@@ -97,18 +97,18 @@ function TourSelect() {
                 <span className="type-name">{type.TypeName}</span>
                 <span className="price">฿{p1}</span>
             </div>
-        ) : <></>
+        ) : ""
     })
+
     const priceElement2 = roomTypes?.map((type, index) => {
         const tourPrices = tourPackage?.TourPrices
         var p2
         tourPrices?.forEach((price, _) => {
-            if(price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[0]?.ID){
+            if (price.RoomTypeID === type.ID && price.PersonTypeID === personTypes?.[0]?.ID) {
                 p2 = price.Price?.toLocaleString('th-TH', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                 })
-                
             }
         });
         return p2 ? (
@@ -116,11 +116,22 @@ function TourSelect() {
                 <span className="type-name">{type.TypeName}</span>
                 <span className="price">฿{p2}</span>
             </div>
-        ) : <></>
+        ) : ""
     })
-    
-    console.log(tourPackage?.TourPrices)
-    console.log(roomTypes)
+
+    const schedules = tourPackage?.TourSchedules
+    let dateTime: string[][] = [];
+    let availableDates: string[] = []
+    schedules?.forEach((schedule, index) => {
+        if (!dateTime[index]) {
+          dateTime[index] = [];
+        }
+        if (schedule.StartDate && schedule.EndDate){
+            dateTime[index].push(schedule.StartDate.slice(0,10));
+            dateTime[index].push(schedule.EndDate.slice(0,10));
+            availableDates.push(schedule.StartDate.slice(0,10))
+        }
+    });
 
     return isLoading ? (
         <Loading />
@@ -165,11 +176,11 @@ function TourSelect() {
                     </div>
                     <div className="subsection">
                         <div className="calendar-box">
-                            <Calendar />
+                            <Calendar dateTime={dateTime} setDateSelectedFormat={setDateSelectedFormat} />
                         </div>
                         <div className="travel-schedule-detail">
                             <div className="date-booking-box">
-                                <div className="date-booking">วันที่ 22-23 พฤศจิกายน 2567</div>
+                                <div className="date-booking">{dateSelectedFormat}</div>
                                 <div className="booking-btn">จองทัวร์</div>
                             </div>
                             <div className="price-detail">
@@ -198,7 +209,7 @@ function TourSelect() {
                     </div>
                 </div>
             </section>
-            <Footer/>
+            <Footer />
         </div>
     )
 }
