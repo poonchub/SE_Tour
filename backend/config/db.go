@@ -124,9 +124,6 @@ func SetupDatabase() {
 		{
 			StatusName: "ยังไม่เต็ม",
 		},
-		{
-			StatusName: "ถูกยกเลิก",
-		},
 	}
 	for _, status := range tourScheduleStatuses {
 		db.FirstOrCreate(status, &entity.TourScheduleStatuses{

@@ -34,3 +34,7 @@ body {
   background-color: #292929;
   margin-top: 50px;
 }
+
+input:focus-visible{
+  outline: none;
+}

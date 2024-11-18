@@ -1,6 +1,6 @@
 @import "../../styles/ColorSheet.css";
 
-.booking-container{
+.booking-container {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.700);
@@ -15,15 +15,19 @@
     overflow-x: hidden;
     padding: 20px;
 
-    & .card{
+    & .card {
         width: 75%;
+        height: 70%;
         background-color: var(--background-color);
         border-radius: 10px;
         box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
+        overflow: scroll;
+        overflow-y: auto;
+        overflow-x: hidden;
 
-        & .header{
+        & .header {
             width: 100%;
             height: 50px;
             background-color: var(--yellow);
@@ -36,83 +40,155 @@
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
         }
 
-        & section{
+        & .section-cover{
             width: 100%;
+            height: 100%;
             margin: 0;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             padding: 40px;
+            align-items: stretch;
 
-            & .sub-card{
+            & .sub-card {
                 border-radius: 10px;
                 background-color: var(--white);
                 box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
                 padding: 20px 25px;
 
-                & .title{
+                & .title {
                     color: var(--blue);
                     font-weight: 600;
                     font-size: 1.1rem;
                 }
             }
 
-            & .select-persontype-card{
+            & .select-persontype-card {
                 width: 40%;
 
-                & .add-quantity-box{
+                & .add-quantity-box {
                     display: flex;
                     flex-direction: column;
 
-                    & .title-box{
+                    & .title-box {
                         display: flex;
                         margin: 12px 0px 5px 0px;
 
-                        & span{
+                        & span {
                             font-weight: 600;
                         }
 
-                        & .span2, .span3{text-align: center;}
-                        & .span1, .span3{width: 35%;}
-                        & .span2{width: 30%;}
+                        & .span2,
+                        .span3 {
+                            text-align: center;
+                        }
+
+                        & .span1,
+                        .span3 {
+                            width: 35%;
+                        }
+
+                        & .span2 {
+                            width: 30%;
+                        }
                     }
 
-                    & .price-box{
+                    & .price-box {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
                         margin: 4px 30px;
 
-                        & .type-name{
+                        & .type-name {
                             width: 40%;
                         }
 
-                        & input{
+                        & input {
                             width: 15%;
                             height: 30px;
                             border: 1px solid #D9D9D9;
                             border-radius: 5px;
                             text-align: center;
                         }
-                        
-                        & .price{
+
+                        & .price {
                             width: 40%;
                             text-align: end;
                         }
-                                                
-                        & .reduce-btn{
+                    }
+                }
 
+                & .total-price{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    padding-right: 30px;
+                    font-weight: 600;
+                }
+
+                & hr{
+                    border: none;
+                    border-top: 2px dashed #B1B1B1;
+                    margin: 12px 0;
+                }
+
+            }
+
+            & .booking-data-card {
+                width: 57%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+
+                & form {
+                    display: flex;
+                    width: 100%;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+
+                    & .data-box {
+                        width: 48%;
+                        display: flex;
+                        flex-direction: column;
+                        margin-top: 8px;
+                        margin-bottom: 5px;
+
+                        & .title-input{
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                        }
+
+                        & input{
+                            width: 100%;
+                            height: 35px;
+                            border-radius: 5px;
+                            border: 1px solid #D9D9D9;
+                            font-size: 14px;
+                            color: rgb(94, 94, 94);
+                            padding: 15px;
+                        }
+                    }
+
+                    & .checkbox{
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        margin-top: 6px;
+                        justify-content: flex-end;
+
+                        & input.select-data-customer{
+                            transform: scale(1.2)
+                        }
+
+                        & span{
+                            margin-left: 10px;
                         }
                     }
                 }
-                
-            }
 
-            & .booking-data-card{
-                width: 57%;
 
             }
         }
-        
+
     }
 }

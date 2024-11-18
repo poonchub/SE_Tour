@@ -36,6 +36,25 @@ export const apiUrl = "http://localhost:8000";
 //   return res;
 // }
 
+// Customer
+async function GetCustomerByID(id: Number) {
+    const requestOptions = {
+        method: "GET",
+    };
+
+    let res = await fetch(`${apiUrl}/customer/${id}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
+
 // PersonType
 async function GetPersonTypes() {
     const requestOptions = {
@@ -157,6 +176,9 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
 }
 
 export {
+
+    // Customers
+    GetCustomerByID,
 
     // PersonTypes
     GetPersonTypes,
