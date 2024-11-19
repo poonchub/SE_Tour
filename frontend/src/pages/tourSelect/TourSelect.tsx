@@ -9,15 +9,18 @@ import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
 import { RoomTypesInterface } from "../../interfaces/IRoomTypes";
 import Footer from "../../components/footer/Footer";
 import Booking from "../../components/booking/Booking";
+import { useDateContext } from "../../context/dateContext";
 
 function TourSelect() {
+
+    const { dateSelectedFormat } = useDateContext();
+
     const [tourPackage, setTourPackage] = useState<TourPackagesInterface>();
     const [personTypes, setPersonTypes] = useState<PersonTypesInterface[]>();
     const [roomTypes, setRoomTypes] = useState<RoomTypesInterface[]>();
 
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [dateSelectedFormat, setDateSelectedFormat] = useState<string | null>("โปรดเลือกวันที่ต้องการจองจากปฎิทิน");
     const [bookingPopUp, setBookingPopUp] = useState(<></>);
 
     async function getTourPackage() {
@@ -179,7 +182,7 @@ function TourSelect() {
                     </div>
                     <div className="subsection">
                         <div className="calendar-box">
-                            <Calendar dateTime={dateTime} setDateSelectedFormat={setDateSelectedFormat} />
+                            <Calendar dateTime={dateTime} />
                         </div>
                         <div className="travel-schedule-detail">
                             <div className="date-booking-box">

@@ -1,11 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./Calendar.css"
+import { useDateContext } from "../../context/dateContext";
 
-function Calendar(props: { dateTime: any; setDateSelectedFormat: any; }) {
-    const { dateTime, setDateSelectedFormat } = props
+function Calendar(props: { dateTime: any; }) {
+
+    const { dateSelectedFormat, setDateSelectedFormat } = useDateContext()
+
+    const { dateTime } = props
     const [currentDate, setCurrentDate] = useState(new Date());
 
-    const [dateSelected, setDateSelected] = useState<string | null>();
+    const [dateSelected, setDateSelected] = useState<string>("");
 
     const changeMonth = (offset: number) => {
         const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset));
@@ -26,6 +30,7 @@ function Calendar(props: { dateTime: any; setDateSelectedFormat: any; }) {
             daysArray.push(<td key={`empty-${i}`}></td>);
         }
 
+        var status = 0
         for (let day = 1; day <= daysInMonth; day++) {
             const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
@@ -35,6 +40,7 @@ function Calendar(props: { dateTime: any; setDateSelectedFormat: any; }) {
                 isAvailable = dateTime[i]?.[0]===dateStr ? true : false
                 if (isAvailable){
                     index = i
+                    status+=1
                     break
                 }
             }
@@ -50,6 +56,12 @@ function Calendar(props: { dateTime: any; setDateSelectedFormat: any; }) {
             ];
 
             const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543}`;
+
+            if (isAvailable && status==1 && dateSelectedFormat=="" && dateSelected==""){
+                setDateSelectedFormat(dateStrFormat);
+                setDateSelected(dateStr);
+                status+=1
+            }
 
             daysArray.push(
                 <td
