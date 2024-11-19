@@ -15,6 +15,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
     const [childAdultThreeCount, setChildAdultThreeCount] = useState(0)
     const [infantAddBedCount, setInfantAddBedCount] = useState(0)
     const [infantNoAddBedCount, setNoInfantAddBedCount] = useState(0)
+    const [totalPeople, setTotalPeople] = useState(0)
 
     const [childAdultSinglePrice, setChildAdultSinglePrice] = useState(0)
     const [childAdultDoublePrice, setChildAdultDoublePrice] = useState(0)
@@ -28,6 +29,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
     const [email, setEmail] = useState<string | undefined>("");
 
     const [totalPrice, setTotalPrice] = useState<number>(0)
+
+    const [isDisabled, setIsDisabled] = useState(true);
 
     async function getCustomerByID() {
         let res = await GetCustomerByID(1)
@@ -61,19 +64,9 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
         }
     }
 
-    function handleCheckBox(e: boolean) {
-        if (e) {
-            setFName(customer?.FirstName)
-            setLName(customer?.LastName)
-            setPhoneNumber(customer?.PhoneNumber)
-            setEmail(customer?.Email)
-        }
-        else {
-            setFName("")
-            setLName("")
-            setPhoneNumber("")
-            setEmail("")
-        }
+    function handleCancle() {
+        setIsDisabled(true)
+        setFName(customer?.FirstName)
     }
 
     useEffect(() => {
@@ -86,8 +79,15 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
         if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultDoubleCount == 0) {
             setInfantAddBedCount(0)
             setNoInfantAddBedCount(0)
+            setInfantAddBedPrice(0)
+            setNoInfantAddBedPrice(0)
         }
     }, [childAdultSingleCount, childAdultDoubleCount, childAdultDoubleCount])
+
+    useEffect(() => {
+        const count = childAdultSingleCount + childAdultDoubleCount + childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
+        setTotalPeople(count)
+    }, [childAdultSingleCount, childAdultDoubleCount, childAdultThreeCount, infantAddBedCount, infantNoAddBedCount])
 
     useEffect(() => {
         const total = childAdultSinglePrice + childAdultDoublePrice + childAdultThreePrice + infantAddBedPrice + infantNoAddBedPrice
@@ -157,57 +157,79 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
                             {priceElement}
                         </div>
                         <hr />
-                        <div className="total-price">
-                            <span>ราคารวม</span>
-                            ฿{totalPrice.toLocaleString('th-TH', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            })}
+                        <div className="total-price-box">
+                            <span className="title-total-price">ราคารวม</span>
+                            <span className="total-people">{totalPeople}</span>
+                            <span className="total-price">
+                                ฿{totalPrice.toLocaleString('th-TH', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}
+                            </span>
                         </div>
                         <hr />
                     </div>
-                    <div className="booking-data-card sub-card">
-                        <span className="title">โปรดระบุข้อมูลผู้จอง</span>
-                        <form action="">
-                            <div className="fname data-box">
-                                <span className="title-input">ชื่อ</span>
-                                <input type="text"
-                                    value={fName}
-                                    placeholder="โปรดป้อนชื่อ"
-                                    onChange={(e) => setFName(e.target.value)} required
-                                />
-                            </div>
-                            <div className="fname data-box">
-                                <span className="title-input">นามสกุล</span>
-                                <input type="text"
-                                    value={lName}
-                                    onChange={(e) => setLName(e.target.value)}
-                                    placeholder="โปรดป้อนนามสกุล" required
-                                />
-                            </div>
-                            <div className="fname data-box">
-                                <span className="title-input">เบอร์โทรศัพท์</span>
-                                <input type="text"
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                    placeholder="โปรดป้อนเบอร์โทรศัพท์ (000-000-0000)"
-                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required
-                                />
-                            </div>
-                            <div className="fname data-box">
-                                <span className="title-input">อีเมล</span>
-                                <input type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="โปรดป้อนอีเมล (sa@gmail.com)" required />
-                            </div>
-                            <div className="checkbox">
-                                <input type="checkbox" className="select-data-customer" onChange={(e) => handleCheckBox(e.target.checked)} />
-                                <span>ใช้ข้อมูลของผู้ใช้</span>
-                            </div>
-                        </form>
+                    <div className="card-box">
+                        <div className="booking-data-card sub-card">
+                            <span className="title">ตรวจสอบข้อมูลผู้จอง</span>
+                            <form action="">
+                                <div className="fname data-box">
+                                    <span className="title-input">ชื่อ</span>
+                                    <input type="text"
+                                        defaultValue={customer?.FirstName}
+                                        placeholder="โปรดป้อนชื่อ"
+                                        disabled={isDisabled}
+                                        onChange={(e) => setFName(e.target.value)} required
+                                    />
+                                </div>
+                                <div className="fname data-box">
+                                    <span className="title-input">นามสกุล</span>
+                                    <input type="text"
+                                        defaultValue={customer?.LastName}
+                                        placeholder="โปรดป้อนนามสกุล"
+                                        disabled={isDisabled}
+                                        onChange={(e) => setLName(e.target.value)} required
+                                    />
+                                </div>
+                                <div className="fname data-box">
+                                    <span className="title-input">เบอร์โทรศัพท์</span>
+                                    <input type="text"
+                                        defaultValue={customer?.PhoneNumber}
+                                        placeholder="โปรดป้อนเบอร์โทรศัพท์ (000-000-0000)"
+                                        disabled={isDisabled}
+                                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                        onChange={(e) => setPhoneNumber(e.target.value)} required
+                                    />
+                                </div>
+                                <div className="fname data-box">
+                                    <span className="title-input">อีเมล</span>
+                                    <input type="email"
+                                        defaultValue={customer?.Email}
+                                        placeholder="โปรดป้อนอีเมล (sa@gmail.com)"
+                                        disabled={isDisabled}
+                                        onChange={(e) => setEmail(e.target.value)} required />
+                                </div>
+                                <div className="btn-box">
+                                    {
+                                        isDisabled ? (
+                                            <div className="edit-btn" onClick={() => setIsDisabled(false)}>แก้ไขข้อมูล</div>
+                                        ) : (
+                                            <div className="sub-btn-box">
+                                                <div className="cancel-btn" onClick={() => handleCancle()}>ยกเลิก</div>
+                                                <div className="confirm-btn">บันทึก</div>
+                                            </div>
+                                        )
+                                    }
 
+                                </div>
+                            </form>
+
+                        </div>
+                        <div className="confirm-booking-card sub-card">
+                            <span className="title">ตรวจสอบข้อมูลการจอง</span>
+                        </div>
                     </div>
+
                 </section>
             </div>
         </div>
