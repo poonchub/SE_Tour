@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./Calendar.css"
-import { useDateContext } from "../../context/dateContext";
+import { useDateContext } from "../../context/DateContext";
 
 function Calendar(props: { dateTime: any; }) {
 
@@ -10,6 +10,7 @@ function Calendar(props: { dateTime: any; }) {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const [dateSelected, setDateSelected] = useState<string>("");
+    const [DSFM, setDSFM] = useState("")
 
     const changeMonth = (offset: number) => {
         const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset));
@@ -58,7 +59,7 @@ function Calendar(props: { dateTime: any; }) {
             const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543}`;
 
             if (isAvailable && status==1 && dateSelectedFormat=="" && dateSelected==""){
-                setDateSelectedFormat(dateStrFormat);
+                setDSFM(dateStrFormat);
                 setDateSelected(dateStr);
                 status+=1
             }
@@ -69,7 +70,7 @@ function Calendar(props: { dateTime: any; }) {
                     className={`calendar-day ${isAvailable ? 'available' : ''} ${dateSelected === dateStr ? 'selected' : ''}`}
                     onClick={() => {
                         if (isAvailable) {
-                            setDateSelectedFormat(dateStrFormat);
+                            setDSFM(dateStrFormat);
                             setDateSelected(dateStr);
                         }
                     }}
@@ -86,6 +87,10 @@ function Calendar(props: { dateTime: any; }) {
 
         return weeks.map((week, index) => <tr key={`week-${index}`}>{week}</tr>);
     };
+
+    useEffect(()=>{
+        setDateSelectedFormat(DSFM)
+    },[DSFM])
 
     const dayOfWeeks = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์"]
 
