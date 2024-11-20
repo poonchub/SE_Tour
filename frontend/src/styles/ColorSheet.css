@@ -5,6 +5,7 @@
     --orange-yellow-for-border: linear-gradient(to right, #FF8181, #FFF100) 1;
     --orange-yellow-for-bg: linear-gradient(to right, #FF8181, #FFF100);
     --blue: #0094DE;
+    --lightblue: #1cb2fd;
     --white: rgb(255, 255, 255);
     --green: #98CE44;
 }

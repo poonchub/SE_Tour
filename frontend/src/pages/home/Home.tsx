@@ -11,7 +11,7 @@ function Home(){
         <div className="home-page">
             <Navbar page={"home"}/>
             <div className="full-bg"
-                style={{ backgroundImage: `url(./images/background/background.jpg)` }}
+                style={{ backgroundImage: `url(./images/backgrounds/background.jpg)` }}
             >
                 <ShowText/>
             </div>

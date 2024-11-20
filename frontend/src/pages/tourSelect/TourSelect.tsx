@@ -9,7 +9,7 @@ import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
 import { RoomTypesInterface } from "../../interfaces/IRoomTypes";
 import Footer from "../../components/footer/Footer";
 import Booking from "../../components/booking/Booking";
-import { useDateContext } from "../../context/dateContext";
+import { useDateContext } from "../../context/DateContext";
 
 function TourSelect() {
 
@@ -188,7 +188,7 @@ function TourSelect() {
                             <div className="date-booking-box">
                                 <div className="date-booking">{dateSelectedFormat}</div>
                                 <div className="booking-btn" onClick={()=>setBookingPopUp(
-                                    <Booking roomTypes={roomTypes} tourPackage={tourPackage} personTypes={personTypes}/>
+                                    <Booking roomTypes={roomTypes} tourPackage={tourPackage} personTypes={personTypes} setPopUp={setBookingPopUp}/>
                                 )}>จองทัวร์</div>
                             </div>
                             <div className="price-detail">

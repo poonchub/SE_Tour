@@ -1,14 +1,19 @@
 import { Key, useState, SetStateAction, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
-import { GetCustomerByID } from "../../services/http";
+import { GetCustomerByID, GetPromotionByCode } from "../../services/http";
+import { PromotionsInterface } from "../../interfaces/IPromotions";
+import { useDateContext } from "../../context/DateContext";
 
 
-function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; }) {
+function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; setPopUp: any; }) {
 
-    const { roomTypes, tourPackage, personTypes } = props
+    const { dateSelectedFormat } = useDateContext()
+
+    const { roomTypes, tourPackage, personTypes, setPopUp } = props
 
     const [customer, setCustomer] = useState<CustomersInterface>();
+    const [promotion, setPromotion] = useState<PromotionsInterface>();
 
     const [childAdultSingleCount, setChildAdultSingleCount] = useState(0)
     const [childAdultDoubleCount, setChildAdultDoubleCount] = useState(0)
@@ -28,6 +33,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>("");
     const [email, setEmail] = useState<string | undefined>("");
 
+    const [promotionCode, setPromotionCode] = useState<string | undefined>("")
+
     const [totalPrice, setTotalPrice] = useState<number>(0)
 
     const [isDisabled, setIsDisabled] = useState(true);
@@ -36,6 +43,21 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
         let res = await GetCustomerByID(1)
         if (res) {
             setCustomer(res);
+        }
+    }
+
+    // async function getPromotionByCode() {
+    //     let res = await GetPromotionByCode(promotionCode)
+    //     if (res) {
+    //         setCustomer(res);
+    //     }
+    // }
+
+    async function fetchData() {
+        try {
+            getCustomerByID()
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
         }
     }
 
@@ -69,11 +91,15 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
         setFName(customer?.FirstName)
     }
 
+    async function handleCreateBooking(){
+        
+    }
+
     useEffect(() => {
-        getCustomerByID()
+        fetchData()
     }, [])
 
-    console.log(totalPrice)
+    console.log(tourPackage)
 
     useEffect(() => {
         if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultDoubleCount == 0) {
@@ -111,7 +137,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
         return pfm ? (
             <div key={index}>
                 {
-                    index == 3 ? <span style={{ fontWeight: "600", margin: "12px 0px 5px 0px" }}>เด็กเล็กพักกับผู้ใหญ่</span> : <></>
+                    index == 3 ? <span className="infant-title">เด็กเล็กพักกับผู้ใหญ่</span> : <></>
                 }
                 <div className="price-box">
                     <span className="type-name">{type.TypeName}</span>
@@ -168,6 +194,19 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
                             </span>
                         </div>
                         <hr />
+                        <div className="promotion-box">
+                            <div className="box-for-input">
+                                <span className="title-promotion">โค้ดส่วนลด (ถ้ามี)</span>
+                                <div className="sub-box-input">
+                                    <input className="input-code" type="text" onChange={(e) => setPromotionCode(e.target.value)} />
+                                    <div className="promotion-btn">ใช้โค้ด</div>
+                                </div>
+                            </div>
+                            <div className="discount-box">
+                                <span className="description"></span>
+                                <span className="discount"></span>
+                            </div>
+                        </div>
                     </div>
                     <div className="card-box">
                         <div className="booking-data-card sub-card">
@@ -226,7 +265,34 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; })
 
                         </div>
                         <div className="confirm-booking-card sub-card">
-                            <span className="title">ตรวจสอบข้อมูลการจอง</span>
+                            <div className="detail">
+                                <span className="title">ตรวจสอบข้อมูลการจอง</span>
+                                <div className="tour-name-box sub-box">
+                                    <div className="img-box">
+                                        <img src="./images/icons/tour.png" alt="" />
+                                    </div>
+                                    {tourPackage?.TourName}
+                                </div>
+                                <div className="tour-date-box sub-box">
+                                    <div className="img-box">
+                                        <img src="./images/icons/calendar.png" alt="" />
+                                    </div>
+                                    {dateSelectedFormat}
+                                </div>
+                                <div className="people-quantity-box sub-box">
+                                    <div className="img-box">
+                                        <img src="./images/icons/bag.png" alt="" />
+                                    </div>
+                                    ผู้เดินทางจำนวน {totalPeople} ท่าน
+                                </div>
+                                <div className="btn-box">
+                                    <div className="cancel-btn btn" onClick={()=>setPopUp(<></>)}>ยกเลิก </div>
+                                    <div className="confirm-btn btn">ยืนยันการจอง</div>
+                                </div>
+                            </div>
+                            <div className="picture-box">
+                                <img src="./images/backgrounds/travel.jpg" alt="" />
+                            </div>
                         </div>
                     </div>
 

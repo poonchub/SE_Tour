@@ -40,6 +40,9 @@ func main() {
 		// PersonTypes
 		router.GET("/person-types", controllers.ListPersonTypes)
 
+		// Promotions
+		router.GET("/promotion/:code", controllers.GetPromotionByCode)
+
 		// Provinces
 		router.GET("/provinces", controllers.ListProvinces)
 
