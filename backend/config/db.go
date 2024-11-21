@@ -83,13 +83,16 @@ func SetupDatabase() {
 	// Create Booking Status
 	bookingStatuses := []*entity.BookingStatuses{
 		{
-			StatusName: "ยกเลิกแล้ว",
+			StatusName: "รอการชำระเงิน",
 		},
 		{
 			StatusName: "รอการตรวจสอบ",
 		},
 		{
 			StatusName: "จองสำเร็จ",
+		},
+		{
+			StatusName: "ยกเลิกแล้ว",
 		},
 	}
 	for _, status := range bookingStatuses {
@@ -100,9 +103,6 @@ func SetupDatabase() {
 
 	// Create Payment Status
 	paymentStatuses := []*entity.PaymentStatuses{
-		{
-			StatusName: "รอการชำระเงิน",
-		},
 		{
 			StatusName: "รอการตรวจสอบ",
 		},
@@ -192,7 +192,7 @@ func SetupDatabase() {
 		})
 	}
 
-	// Create Vehicle Type
+	// Create Vehicle
 	vehicles := []*entity.Vehicles{
 		{
 			VehicleName:   "รถบัสประจำทัวร์ 1",
@@ -282,21 +282,27 @@ func SetupDatabase() {
 	locations := []*entity.Locations{
 		{
 			LocationName: "วัดเกาะพยาม",
+			ProvinceID: 1,
 		},
 		{
 			LocationName: "เกาะค้างคาว",
+			ProvinceID: 1,
 		},
 		{
 			LocationName: "หาดบางเบน",
+			ProvinceID: 1,
 		},
 		{
 			LocationName: "สนามบิน",
+			ProvinceID: 1,
 		},
 		{
 			LocationName: "ท่าเรือ",
+			ProvinceID: 1,
 		},
 		{
 			LocationName: "ที่พัก",
+			ProvinceID: 1,
 		},
 	}
 	for _, location := range locations {

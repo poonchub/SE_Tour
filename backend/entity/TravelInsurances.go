@@ -7,9 +7,8 @@ type TravelInsurances struct {
 	Price			float32
 	CoverageDetail	string
 
-	BookingID	uint
-	Booking		Bookings	`gorm:"foreignKey:BookingID"`
-
 	ProviderID	uint
 	Provider	Providers	`gorm:"foreignKey:ProviderID"`
+
+	InsuranceParticipants	[]InsuranceParticipants	`gorm:"foreignKey:TravelInsuranceID"`
 }

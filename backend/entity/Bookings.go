@@ -15,10 +15,12 @@ type Bookings struct {
 	BookingStatusID	uint
 	BookingStatus	BookingStatuses	`gorm:"foreignKey:BookingStatusID"`
 
-	PromotionID		uint
+	PromotionID		*uint
 	Promotion		Promotions	`gorm:"foreignKey:PromotionID"`
 
 	BookingDetails	[]BookingDetails	`gorm:"foreignKey:BookingID"`
+
+	InsuranceParticipants	[]InsuranceParticipants `gorm:"foreignKey:BookingID"`
 
 	Payments		*Payments			`gorm:"foreignKey:BookingID"`
 }

@@ -3,17 +3,22 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 interface DateContextProps {
     dateSelectedFormat: any,
     setDateSelectedFormat: (param: string) => void,
+    dateID: any,
+    setDateID: (param: number) => void,
 }
 
 const DateContext = createContext<DateContextProps>({
     dateSelectedFormat: "",
     setDateSelectedFormat: () => {},
+    dateID: 1,
+    setDateID: () => {},
 });
 
 export const DateProvider = ({ children }: { children: ReactNode }) => {
     const [dateSelectedFormat, setDateSelectedFormat] = useState<string>("");
+    const [dateID, setDateID] = useState<number>(1)
     return (
-        <DateContext.Provider value={{ dateSelectedFormat, setDateSelectedFormat }}>
+        <DateContext.Provider value={{ dateSelectedFormat, setDateSelectedFormat, dateID, setDateID }}>
             {children}
         </DateContext.Provider>
     );

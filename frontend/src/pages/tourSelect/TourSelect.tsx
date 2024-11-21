@@ -11,6 +11,8 @@ import Footer from "../../components/footer/Footer";
 import Booking from "../../components/booking/Booking";
 import { useDateContext } from "../../context/DateContext";
 
+import { message } from "antd";
+
 function TourSelect() {
 
     const { dateSelectedFormat } = useDateContext();
@@ -22,6 +24,7 @@ function TourSelect() {
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [bookingPopUp, setBookingPopUp] = useState(<></>);
+    const [messageApi, contextHolder] = message.useMessage();
 
     async function getTourPackage() {
         const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
@@ -125,23 +128,12 @@ function TourSelect() {
     })
 
     const schedules = tourPackage?.TourSchedules
-    let dateTime: string[][] = [];
-    let availableDates: string[] = []
-    schedules?.forEach((schedule, index) => {
-        if (!dateTime[index]) {
-          dateTime[index] = [];
-        }
-        if (schedule.StartDate && schedule.EndDate){
-            dateTime[index].push(schedule.StartDate.slice(0,10));
-            dateTime[index].push(schedule.EndDate.slice(0,10));
-            availableDates.push(schedule.StartDate.slice(0,10))
-        }
-    });
 
     return isLoading ? (
         <Loading />
     ) : (
         <div className="tour-select-page">
+            {contextHolder}
             {bookingPopUp}
             <Navbar page={"tourSelect"} />
             <section>
@@ -182,13 +174,19 @@ function TourSelect() {
                     </div>
                     <div className="subsection">
                         <div className="calendar-box">
-                            <Calendar dateTime={dateTime} />
+                            <Calendar schedules={schedules} />
                         </div>
                         <div className="travel-schedule-detail">
                             <div className="date-booking-box">
                                 <div className="date-booking">{dateSelectedFormat}</div>
                                 <div className="booking-btn" onClick={()=>setBookingPopUp(
-                                    <Booking roomTypes={roomTypes} tourPackage={tourPackage} personTypes={personTypes} setPopUp={setBookingPopUp}/>
+                                    <Booking 
+                                        roomTypes={roomTypes} 
+                                        tourPackage={tourPackage}
+                                        personTypes={personTypes} 
+                                        setPopUp={setBookingPopUp}
+                                        messageApi={messageApi}
+                                    />
                                 )}>จองทัวร์</div>
                             </div>
                             <div className="price-detail">

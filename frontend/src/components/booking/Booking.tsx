@@ -1,16 +1,17 @@
 import { Key, useState, SetStateAction, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
-import { GetCustomerByID, GetPromotionByCode } from "../../services/http";
+import { CreateBooking, GetCustomerByID, GetPromotionByCode } from "../../services/http";
 import { PromotionsInterface } from "../../interfaces/IPromotions";
 import { useDateContext } from "../../context/DateContext";
+import { BookingsInterface } from "../../interfaces/IBookings";
 
 
-function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; setPopUp: any; }) {
+function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; setPopUp: any; messageApi: any; }) {
 
-    const { dateSelectedFormat } = useDateContext()
+    const { dateSelectedFormat, dateID } = useDateContext()
 
-    const { roomTypes, tourPackage, personTypes, setPopUp } = props
+    const { roomTypes, tourPackage, personTypes, setPopUp, messageApi } = props
 
     const [customer, setCustomer] = useState<CustomersInterface>();
     const [promotion, setPromotion] = useState<PromotionsInterface>();
@@ -92,14 +93,43 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
     }
 
     async function handleCreateBooking(){
-        
+        try{
+
+            const booking: BookingsInterface = {
+                TotalPrice: totalPrice,
+                CustomerID: 1,
+                TourScheduleID: dateID,
+                // PromotionID: 
+            }
+            const res = await CreateBooking(booking)
+            if (res){
+                messageApi.open({
+                    type: "success",
+                    content: "ทำการจองแพ็กเกจทัวร์เรียบร้อยแล้ว",
+                });
+            }
+            else {
+                messageApi.open({
+                    type: "error",
+                    content: "เกิดข้อผิดพลาดในการจองแพ็กเกจทัวร์",
+                });
+            }
+        } catch (error) {
+            console.error("Error creating order:", error);
+            messageApi.open({
+                type: "error",
+                content: "เกิดข้อผิดพลาดในการจองแพ็กเกจทัวร์",
+            });
+        }
+        // setTimeout(() => {
+        //     location.href = "/Payment";
+        //     setIsButtonDisabled(false);
+        // }, 1800);
     }
 
     useEffect(() => {
         fetchData()
     }, [])
-
-    console.log(tourPackage)
 
     useEffect(() => {
         if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultDoubleCount == 0) {
@@ -198,8 +228,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                             <div className="box-for-input">
                                 <span className="title-promotion">โค้ดส่วนลด (ถ้ามี)</span>
                                 <div className="sub-box-input">
-                                    <input className="input-code" type="text" onChange={(e) => setPromotionCode(e.target.value)} />
-                                    <div className="promotion-btn">ใช้โค้ด</div>
+                                    <button className="promotion-btn">ใช้โค้ด</button>
                                 </div>
                             </div>
                             <div className="discount-box">
@@ -251,7 +280,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                                 <div className="btn-box">
                                     {
                                         isDisabled ? (
-                                            <div className="edit-btn" onClick={() => setIsDisabled(false)}>แก้ไขข้อมูล</div>
+                                            <button className="edit-btn" onClick={() => setIsDisabled(false)}>แก้ไขข้อมูล</button>
                                         ) : (
                                             <div className="sub-btn-box">
                                                 <div className="cancel-btn" onClick={() => handleCancle()}>ยกเลิก</div>
@@ -286,8 +315,15 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                                     ผู้เดินทางจำนวน {totalPeople} ท่าน
                                 </div>
                                 <div className="btn-box">
-                                    <div className="cancel-btn btn" onClick={()=>setPopUp(<></>)}>ยกเลิก </div>
-                                    <div className="confirm-btn btn">ยืนยันการจอง</div>
+                                    <button className="cancel-btn btn" onClick={()=>setPopUp(<></>)}>ยกเลิก </button>
+                                    <button className="confirm-btn btn" 
+                                        disabled={totalPeople!=0 ? false : true}
+                                        onClick={handleCreateBooking}
+                                        style={{
+                                            pointerEvents: totalPeople!=0 ? "auto" : "none",
+                                            opacity: totalPeople!=0 ? "1" : "0.6"
+                                        }}
+                                    >ยืนยันการจอง</button>
                                 </div>
                             </div>
                             <div className="picture-box">

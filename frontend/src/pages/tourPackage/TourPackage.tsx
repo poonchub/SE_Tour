@@ -14,7 +14,6 @@ function TourPackage() {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isFading, setIsFading] = useState(false);
 
     async function getTourPackages() {
         let res = await GetTourPackages()
@@ -49,14 +48,12 @@ function TourPackage() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setIsFading(true);
-            setTimeout(() => {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-                setIsFading(false);
-            }, 400); 
-        }, 5000);
+            setCurrentIndex((prevIndex) =>
+                prevIndex === images.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 3000);
         return () => clearInterval(interval);
-    }, [images.length])
+    }, [currentIndex]);
 
     useEffect(() => {
         fetchData()
@@ -72,9 +69,21 @@ function TourPackage() {
         <div className="tour-pavkage-page">
             <Navbar page={"tourPackage"} />
             <section>
-                <div className="pic-slice">
-                    <img src={images[currentIndex]} alt="" className={`slideshow-image ${isFading ? 'fade-out' : 'fade-in'}`}/>
+                <div className="slideshow-container">
+                    <div className="slideshow-wrapper" style={{
+                        transform: `translateX(-${currentIndex * 100}%)`,
+                    }}>
+                        {images.map((image, index) => (
+                            <img
+                                key={index}
+                                src={image}
+                                alt={`Slide ${index}`}
+                                className="slide-image"
+                            />
+                        ))}
+                    </div>
                 </div>
+
                 <div className="subsection">
                     <div className="show-mini-promotion">
 
@@ -92,7 +101,7 @@ function TourPackage() {
                                 <span className="text">แพ็กเกจในจังหวัด</span>
                                 <select name="" id="">
                                     {
-                                        provinces.map((province, index)=>(
+                                        provinces.map((province, index) => (
                                             <option value={province.ID} key={index}>{province.ProvinceName}</option>
                                         ))
                                     }

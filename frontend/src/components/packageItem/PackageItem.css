@@ -92,7 +92,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    border: 2px solid var(--blue);
+                    border: 2px solid var(--lightblue);
                     width: 120px;
                     height: 40px;
                     background-color: var(--white);
@@ -104,7 +104,7 @@
                 }
 
                 & .btn-detail:hover{
-                    background-color: var(--blue);
+                    background-color: var(--lightblue);
                     color: var(--white);
                     border-radius: 5px;
                 }

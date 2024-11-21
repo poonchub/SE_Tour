@@ -38,3 +38,12 @@ body {
 input:focus-visible{
   outline: none;
 }
+
+button {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Noto Sans Thai", sans-serif;
+  font-size: 0.85rem;
+  background-color: transparent;
+}

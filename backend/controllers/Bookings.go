@@ -63,35 +63,34 @@ func CreateBooking(c *gin.Context) {
 	db := config.DB()
 
 	var customer entity.Customers
-	db.First(&customer, booking.CustomerID)
-	if customer.ID == 0 {
+	if err := db.First(&customer, booking.CustomerID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "customer not found"})
 		return
 	}
 
 	var tourSchedule entity.TourSchedules
-	db.First(&tourSchedule, booking.TourScheduleID)
-	if customer.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "tour packege not found"})
+	if err := db.First(&tourSchedule, booking.TourScheduleID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "tour schedule not found"})
 		return
 	}
 
-	var promotion entity.Promotions
-	db.First(&promotion, booking.PromotionID)
-	if customer.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "promotion not found"})
-		return
+	if  booking.PromotionID != nil && *booking.PromotionID != (0) {
+		var promotion entity.Promotions
+		if err := db.First(&promotion, booking.PromotionID).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "promotion not found"})
+			return
+		}
 	}
 
 	bk := entity.Bookings{
-		TotalPrice: 0,
-		CustomerID: booking.CustomerID,
-		TourScheduleID: booking.TourScheduleID,
-		BookingStatusID: booking.BookingStatusID,
-		PromotionID: booking.PromotionID,
+		TotalPrice:      booking.TotalPrice,
+		CustomerID:      booking.CustomerID,
+		TourScheduleID:  booking.TourScheduleID,
+		BookingStatusID: 1,
+		PromotionID:     booking.PromotionID,
 	}
 
-	if err := db.Preload("Customer").Create(&bk).Error; err != nil {
+	if err := db.Create(&bk).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -99,7 +98,8 @@ func CreateBooking(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Created success", "data": bk})
 }
 
-// PATCH /booking
+
+// PATCH /booking/:id
 func UpdateBooking(c *gin.Context) {
 	ID := c.Param("id")
 

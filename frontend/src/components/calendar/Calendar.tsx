@@ -1,16 +1,42 @@
-import { useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import "./Calendar.css"
 import { useDateContext } from "../../context/DateContext";
 
-function Calendar(props: { dateTime: any; }) {
+function Calendar(props: { schedules: any; }) {
 
-    const { dateSelectedFormat, setDateSelectedFormat } = useDateContext()
+    const { dateSelectedFormat, setDateSelectedFormat, dateID, setDateID } = useDateContext()
 
-    const { dateTime } = props
+    const { schedules } = props
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const [dateSelected, setDateSelected] = useState<string>("");
     const [DSFM, setDSFM] = useState("")
+
+    function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string){
+        if (isAvailable) {
+            setDSFM(dateStrFormat);
+            setDateSelected(dateStr);
+            schedules.map((scd: any, index: number)=>{
+                const startDate = scd.StartDate.slice(0,10)
+                if (startDate===dateStr){
+                    setDateID(scd.ID)
+                }
+            })
+        }
+    }
+
+    let dateTime: string[][] = [];
+    let availableDates: string[] = []
+    schedules?.forEach((schedule: { StartDate: string; EndDate: string; }, index: number) => {
+        if (!dateTime[index]) {
+          dateTime[index] = [];
+        }
+        if (schedule.StartDate && schedule.EndDate){
+            dateTime[index].push(schedule.StartDate.slice(0,10));
+            dateTime[index].push(schedule.EndDate.slice(0,10));
+            availableDates.push(schedule.StartDate.slice(0,10))
+        }
+    });
 
     const changeMonth = (offset: number) => {
         const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset));
@@ -68,15 +94,8 @@ function Calendar(props: { dateTime: any; }) {
                 <td
                     key={day}
                     className={`calendar-day ${isAvailable ? 'available' : ''} ${dateSelected === dateStr ? 'selected' : ''}`}
-                    onClick={() => {
-                        if (isAvailable) {
-                            setDSFM(dateStrFormat);
-                            setDateSelected(dateStr);
-                        }
-                    }}
-                >
-                    {day}
-                </td>
+                    onClick={() => handleSetDate(isAvailable, dateStrFormat, dateStr)}
+                >{day}</td>
             );
 
             if ((daysArray.length) % 7 === 0 || day === daysInMonth) {
@@ -84,7 +103,6 @@ function Calendar(props: { dateTime: any; }) {
                 daysArray = [];
             }
         }
-
         return weeks.map((week, index) => <tr key={`week-${index}`}>{week}</tr>);
     };
 

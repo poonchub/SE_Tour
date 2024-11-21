@@ -1,3 +1,5 @@
+import { BookingsInterface } from "../../interfaces/IBookings";
+
 export const apiUrl = "http://localhost:8000";
 
 // async function SignInForCustomer(data: SignInInterface) {
@@ -35,6 +37,25 @@ export const apiUrl = "http://localhost:8000";
 
 //   return res;
 // }
+
+// Booking
+async function CreateBooking(data: BookingsInterface) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    };
+
+    let res = await fetch(`${apiUrl}/booking`, requestOptions).then((res) => {
+        if (res.status == 201) {
+            return res.json();
+        } else {
+            return false;
+        }
+    });
+
+    return res;
+}
 
 // Customer
 async function GetCustomerByID(id: Number) {
@@ -196,6 +217,9 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
 
 export {
 
+    // Bookings
+    CreateBooking,
+
     // Customers
     GetCustomerByID,
 
@@ -210,7 +234,7 @@ export {
 
     // RoomTypes
     GetRoomTypes,
-    
+
     // TourPackages
     GetTourPackages,
     GetTourPackageByID,
