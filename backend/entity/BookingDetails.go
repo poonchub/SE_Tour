@@ -9,6 +9,6 @@ type BookingDetails struct {
 	BookingID	uint
 	Booking		Bookings	`gorm:"foreignKey:BookingID"`
 
-	PersonTypeID	uint
-	PersonType	PersonTypes	`gorm:"foreignKey:PersonTypeID"`
+	TourPriceID	uint
+	TourPrice	TourPrices	`gorm:"foreignKey:TourPriceID"`
 }

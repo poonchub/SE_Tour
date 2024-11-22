@@ -14,4 +14,6 @@ type TourPrices struct {
 
 	RoomTypeID		uint
 	RoomType		RoomTypes	`gorm:"foreignKey:RoomTypeID"`
+
+	BookingDetails	[]BookingDetails	`gorm:"foreignKey:TourPriceID"`
 }

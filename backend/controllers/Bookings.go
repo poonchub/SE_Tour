@@ -37,9 +37,9 @@ func GetBookingByID(c *gin.Context) {
 	c.JSON(http.StatusOK, booking)
 }
 
-// GET /bookings/:id
+// GET /bookings/:customerId
 func GetBookingByCustomerID(c *gin.Context) {
-	ID := c.Param("id")
+	ID := c.Param("customerId")
 	var bookings []entity.Bookings
 
 	db := config.DB()

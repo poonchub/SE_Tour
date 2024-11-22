@@ -1,3 +1,4 @@
+import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 import { BookingsInterface } from "../../interfaces/IBookings";
 
 export const apiUrl = "http://localhost:8000";
@@ -37,6 +38,45 @@ export const apiUrl = "http://localhost:8000";
 
 //   return res;
 // }
+
+// BookingDetail
+async function GetBookingDetails() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/booking-details`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+async function CreateBookingDetail(data: BookingDetailsInterface) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    };
+
+    let res = await fetch(`${apiUrl}/booking-detail`, requestOptions).then((res) => {
+        if (res.status == 201) {
+            return res.json();
+        } else {
+            return false;
+        }
+    });
+
+    return res;
+}
+
 
 // Booking
 async function CreateBooking(data: BookingsInterface) {
@@ -217,6 +257,10 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
 
 export {
 
+    // BookingDetails
+    GetBookingDetails,
+    CreateBookingDetail,
+    
     // Bookings
     CreateBooking,
 

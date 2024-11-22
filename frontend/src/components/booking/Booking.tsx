@@ -5,6 +5,7 @@ import { CreateBooking, GetCustomerByID, GetPromotionByCode } from "../../servic
 import { PromotionsInterface } from "../../interfaces/IPromotions";
 import { useDateContext } from "../../context/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
+import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 
 
 function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; setPopUp: any; messageApi: any; }) {
@@ -101,8 +102,13 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 TourScheduleID: dateID,
                 // PromotionID: 
             }
-            const res = await CreateBooking(booking)
-            if (res){
+            const resBooking = await CreateBooking(booking)
+            if (resBooking){
+
+                // const bookingDetail: BookingDetailsInterface = {
+                //     Quantity: 
+                // }
+
                 messageApi.open({
                     type: "success",
                     content: "ทำการจองแพ็กเกจทัวร์เรียบร้อยแล้ว",

@@ -34,9 +34,13 @@ func main() {
 			AllowHeaders: []string{"Content-Type", "Authorization"},
 		}))
 
+		// BookingDetails
+		router.GET("/booking-details", controllers.ListBookingDetails)
+		router.POST("/booking-detail", controllers.CreateBookingDetail)
+
 		// Bookings
 		router.POST("/booking", controllers.CreateBooking)
-		router.PATCH("booking/:id", controllers.UpdateBooking)
+		router.PATCH("/booking/:id", controllers.UpdateBooking)
 
 		// Customers
 		router.GET("/customer/:id", controllers.GetCustomerByID)
