@@ -1,7 +1,7 @@
 import { Key, useState, SetStateAction, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
-import { CreateBooking, GetCustomerByID, GetPromotionByCode } from "../../services/http";
+import { CreateBooking, CreateBookingDetail, GetCustomerByID, GetPromotionByCode } from "../../services/http";
 import { PromotionsInterface } from "../../interfaces/IPromotions";
 import { useDateContext } from "../../context/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
@@ -93,9 +93,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
         setFName(customer?.FirstName)
     }
 
-    async function handleCreateBooking(){
-        try{
-
+    async function handleCreateBooking() {
+        try {
             const booking: BookingsInterface = {
                 TotalPrice: totalPrice,
                 CustomerID: 1,
@@ -103,16 +102,65 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 // PromotionID: 
             }
             const resBooking = await CreateBooking(booking)
-            if (resBooking){
+            console.log(resBooking.data)
+            if (resBooking) {
 
-                // const bookingDetail: BookingDetailsInterface = {
-                //     Quantity: 
-                // }
+                const bookingDetailsList: BookingDetailsInterface[] = [];
 
-                messageApi.open({
-                    type: "success",
-                    content: "ทำการจองแพ็กเกจทัวร์เรียบร้อยแล้ว",
-                });
+                if (childAdultSingleCount!=0){
+                    bookingDetailsList.push({
+                        Quantity: childAdultSingleCount,
+                        BookingID: resBooking.data.ID,
+                        TourPriceID: tourPrices[0].ID
+                    })
+                }
+                if (childAdultDoubleCount!=0) {
+                    bookingDetailsList.push({
+                        Quantity: childAdultDoubleCount*2,
+                        BookingID: resBooking.data.ID,
+                        TourPriceID: tourPrices[1].ID
+                    })
+                }
+                if (childAdultThreeCount!=0) {
+                    bookingDetailsList.push({
+                        Quantity: childAdultThreeCount*3,
+                        BookingID: resBooking.data.ID,
+                        TourPriceID: tourPrices[2].ID
+                    })
+                }
+                if (infantAddBedCount!=0) {
+                    bookingDetailsList.push({
+                        Quantity: infantAddBedCount,
+                        BookingID: resBooking.data.ID,
+                        TourPriceID: tourPrices[3].ID
+                    })
+                }
+                if (infantNoAddBedCount!=0) {
+                    bookingDetailsList.push({
+                        Quantity: infantNoAddBedCount,
+                        BookingID: resBooking.data.ID,
+                        TourPriceID: tourPrices[4].ID
+                    })
+                }
+
+                const createDetailsPromises = bookingDetailsList.map((detail) =>
+                    CreateBookingDetail(detail)
+                );
+
+                const results = await Promise.all(createDetailsPromises);
+
+                if (results.every((result) => result)) {
+                    messageApi.open({
+                        type: "success",
+                        content: "สร้างการจองแพ็กเกจทัวร์เรียบร้อยแล้ว",
+                    });
+                }
+                else {
+                    messageApi.open({
+                        type: "error",
+                        content: "เกิดข้อผิดพลาดในการจองแพ็กเกจทัวร์",
+                    });
+                }
             }
             else {
                 messageApi.open({
@@ -147,7 +195,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
     }, [childAdultSingleCount, childAdultDoubleCount, childAdultDoubleCount])
 
     useEffect(() => {
-        const count = childAdultSingleCount + childAdultDoubleCount + childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
+        const count = childAdultSingleCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
         setTotalPeople(count)
     }, [childAdultSingleCount, childAdultDoubleCount, childAdultThreeCount, infantAddBedCount, infantNoAddBedCount])
 
@@ -156,11 +204,11 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
         setTotalPrice(total)
     }, [childAdultSinglePrice, childAdultDoublePrice, childAdultThreePrice, infantAddBedPrice, infantNoAddBedPrice])
 
-    const priceElement = roomTypes?.map((type: any, index: Key) => {
-        const tourPrices = tourPackage?.TourPrices
+    const tourPrices = tourPackage?.TourPrices
+    const priceElement = roomTypes?.map((type: any, index: number) => {
         var p: number | undefined
         var pfm: number | undefined
-        tourPrices?.forEach((price: any, _: Key) => {
+        tourPrices?.forEach((price: any, _: number) => {
             if (price.RoomTypeID === type.ID && price.PersonTypeID) {
                 pfm = price.Price?.toLocaleString('th-TH', {
                     minimumFractionDigits: 2,
@@ -177,6 +225,10 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 }
                 <div className="price-box">
                     <span className="type-name">{type.TypeName}</span>
+                    {
+                        index<3 ? <p className="quantity">{index+1} × </p>:
+                        <p className="quantity">{1} × </p>
+                    }
                     <input type="number" value={
                         index == 0 ? childAdultSingleCount : (
                             index == 1 ? childAdultDoubleCount : (
@@ -321,13 +373,13 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                                     ผู้เดินทางจำนวน {totalPeople} ท่าน
                                 </div>
                                 <div className="btn-box">
-                                    <button className="cancel-btn btn" onClick={()=>setPopUp(<></>)}>ยกเลิก </button>
-                                    <button className="confirm-btn btn" 
-                                        disabled={totalPeople!=0 ? false : true}
+                                    <button className="cancel-btn btn" onClick={() => setPopUp(<></>)}>ยกเลิก </button>
+                                    <button className="confirm-btn btn"
+                                        disabled={totalPeople != 0 ? false : true}
                                         onClick={handleCreateBooking}
                                         style={{
-                                            pointerEvents: totalPeople!=0 ? "auto" : "none",
-                                            opacity: totalPeople!=0 ? "1" : "0.6"
+                                            pointerEvents: totalPeople != 0 ? "auto" : "none",
+                                            opacity: totalPeople != 0 ? "1" : "0.6"
                                         }}
                                     >ยืนยันการจอง</button>
                                 </div>

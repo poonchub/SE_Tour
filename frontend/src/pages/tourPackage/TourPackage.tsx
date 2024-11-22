@@ -44,6 +44,9 @@ function TourPackage() {
         './images/sliceshow/pic1.jpg',
         './images/sliceshow/pic2.jpg',
         './images/sliceshow/pic3.jpg',
+        './images/sliceshow/pic4.jpg',
+        './images/sliceshow/pic5.jpg',
+        './images/sliceshow/pic6.jpg',
     ];
 
     useEffect(() => {

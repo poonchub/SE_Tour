@@ -129,6 +129,8 @@ function TourSelect() {
 
     const schedules = tourPackage?.TourSchedules
 
+    console.log(tourPackage?.Activities)
+
     return isLoading ? (
         <Loading />
     ) : (

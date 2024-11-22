@@ -109,6 +109,10 @@
                             width: 40%;
                         }
 
+                        & .quantity{
+                            width: 30px;
+                        }
+
                         & input {
                             width: 15%;
                             height: 30px;
