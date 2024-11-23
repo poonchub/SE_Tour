@@ -4,6 +4,7 @@ import Home from "../pages/home/Home";
 import TourPackage from "../pages/tourPackage/TourPackage";
 import Profile from "../pages/profile/Profile";
 import TourSelect from "../pages/tourSelect/TourSelect";
+import Payment from "../pages/payment/Payment";
 
 const MainRoutes = (): RouteObject => {
     return {
@@ -27,6 +28,10 @@ const MainRoutes = (): RouteObject => {
             {
                 path: "/tour-select",
                 element: <TourSelect />,
+            },
+            {
+                path: "/payment",
+                element: <Payment />,
             },
         ],
     };

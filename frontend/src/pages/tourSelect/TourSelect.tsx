@@ -185,7 +185,6 @@ function TourSelect() {
                                     <Booking 
                                         roomTypes={roomTypes} 
                                         tourPackage={tourPackage}
-                                        personTypes={personTypes} 
                                         setPopUp={setBookingPopUp}
                                         messageApi={messageApi}
                                     />

@@ -39,6 +39,24 @@ export const apiUrl = "http://localhost:8000";
 //   return res;
 // }
 
+async function GenerateQrCode(amount: number){
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({amount}),
+    };
+
+    let res = await fetch(`${apiUrl}/generate-qr`, requestOptions).then((res) => {
+        if (res.status == 200) {
+            return res.json();
+        } else {
+            return false;
+        }
+    });
+
+    return res;
+}
+
 // BookingDetail
 async function GetBookingDetails() {
     const requestOptions = {
@@ -79,6 +97,59 @@ async function CreateBookingDetail(data: BookingDetailsInterface) {
 
 
 // Booking
+async function GetBookings() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+async function GetBookingByID(id: Number) {
+    const requestOptions = {
+        method: "GET",
+    };
+
+    let res = await fetch(`${apiUrl}/booking/${id}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
+async function GetBookingByCustomerID(customerid: Number) {
+    const requestOptions = {
+        method: "GET",
+    };
+
+    let res = await fetch(`${apiUrl}/booking/${customerid}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
 async function CreateBooking(data: BookingsInterface) {
     const requestOptions = {
         method: "POST",
@@ -257,11 +328,16 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
 
 export {
 
+    GenerateQrCode,
+
     // BookingDetails
     GetBookingDetails,
     CreateBookingDetail,
     
     // Bookings
+    GetBookings,
+    GetBookingByID,
+    GetBookingByCustomerID,
     CreateBooking,
 
     // Customers

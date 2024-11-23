@@ -69,7 +69,7 @@ function TourPackage() {
     return isLoading ? (
         <Loading />
     ) : (
-        <div className="tour-pavkage-page">
+        <div className="tour-package-page">
             <Navbar page={"tourPackage"} />
             <section>
                 <div className="slideshow-container">

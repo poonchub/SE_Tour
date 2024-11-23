@@ -1,21 +1,19 @@
-import { Key, useState, SetStateAction, useEffect } from "react"
+import { Key, useState, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
-import { CreateBooking, CreateBookingDetail, GetCustomerByID, GetPromotionByCode } from "../../services/http";
-import { PromotionsInterface } from "../../interfaces/IPromotions";
+import { CreateBooking, CreateBookingDetail, GetCustomerByID } from "../../services/http";
 import { useDateContext } from "../../context/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 
 
-function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; setPopUp: any; messageApi: any; }) {
+function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messageApi: any; }) {
 
     const { dateSelectedFormat, dateID } = useDateContext()
 
-    const { roomTypes, tourPackage, personTypes, setPopUp, messageApi } = props
+    const { roomTypes, tourPackage, setPopUp, messageApi } = props
 
     const [customer, setCustomer] = useState<CustomersInterface>();
-    const [promotion, setPromotion] = useState<PromotionsInterface>();
 
     const [childAdultSingleCount, setChildAdultSingleCount] = useState(0)
     const [childAdultDoubleCount, setChildAdultDoubleCount] = useState(0)
@@ -35,8 +33,6 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>("");
     const [email, setEmail] = useState<string | undefined>("");
 
-    const [promotionCode, setPromotionCode] = useState<string | undefined>("")
-
     const [totalPrice, setTotalPrice] = useState<number>(0)
 
     const [isDisabled, setIsDisabled] = useState(true);
@@ -47,13 +43,6 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
             setCustomer(res);
         }
     }
-
-    // async function getPromotionByCode() {
-    //     let res = await GetPromotionByCode(promotionCode)
-    //     if (res) {
-    //         setCustomer(res);
-    //     }
-    // }
 
     async function fetchData() {
         try {
@@ -102,40 +91,39 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 // PromotionID: 
             }
             const resBooking = await CreateBooking(booking)
-            console.log(resBooking.data)
             if (resBooking) {
 
                 const bookingDetailsList: BookingDetailsInterface[] = [];
 
-                if (childAdultSingleCount!=0){
+                if (childAdultSingleCount != 0) {
                     bookingDetailsList.push({
                         Quantity: childAdultSingleCount,
                         BookingID: resBooking.data.ID,
                         TourPriceID: tourPrices[0].ID
                     })
                 }
-                if (childAdultDoubleCount!=0) {
+                if (childAdultDoubleCount != 0) {
                     bookingDetailsList.push({
-                        Quantity: childAdultDoubleCount*2,
+                        Quantity: childAdultDoubleCount * 2,
                         BookingID: resBooking.data.ID,
                         TourPriceID: tourPrices[1].ID
                     })
                 }
-                if (childAdultThreeCount!=0) {
+                if (childAdultThreeCount != 0) {
                     bookingDetailsList.push({
-                        Quantity: childAdultThreeCount*3,
+                        Quantity: childAdultThreeCount * 3,
                         BookingID: resBooking.data.ID,
                         TourPriceID: tourPrices[2].ID
                     })
                 }
-                if (infantAddBedCount!=0) {
+                if (infantAddBedCount != 0) {
                     bookingDetailsList.push({
                         Quantity: infantAddBedCount,
                         BookingID: resBooking.data.ID,
                         TourPriceID: tourPrices[3].ID
                     })
                 }
-                if (infantNoAddBedCount!=0) {
+                if (infantNoAddBedCount != 0) {
                     bookingDetailsList.push({
                         Quantity: infantNoAddBedCount,
                         BookingID: resBooking.data.ID,
@@ -154,6 +142,11 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                         type: "success",
                         content: "สร้างการจองแพ็กเกจทัวร์เรียบร้อยแล้ว",
                     });
+
+                    localStorage.setItem("booking-id", resBooking.data.ID)
+                    setTimeout(() => {
+                        location.href = "/payment";
+                    }, 1800);
                 }
                 else {
                     messageApi.open({
@@ -168,6 +161,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                     content: "เกิดข้อผิดพลาดในการจองแพ็กเกจทัวร์",
                 });
             }
+
         } catch (error) {
             console.error("Error creating order:", error);
             messageApi.open({
@@ -175,10 +169,6 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 content: "เกิดข้อผิดพลาดในการจองแพ็กเกจทัวร์",
             });
         }
-        // setTimeout(() => {
-        //     location.href = "/Payment";
-        //     setIsButtonDisabled(false);
-        // }, 1800);
     }
 
     useEffect(() => {
@@ -186,23 +176,21 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
     }, [])
 
     useEffect(() => {
-        if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultDoubleCount == 0) {
+        const total = childAdultSinglePrice + 2 * childAdultDoublePrice + 3 * childAdultThreePrice + infantAddBedPrice + infantNoAddBedPrice
+        setTotalPrice(total)
+    }, [childAdultSinglePrice, childAdultDoublePrice, childAdultThreePrice, infantAddBedPrice, infantNoAddBedPrice])
+
+    useEffect(() => {
+        const count = childAdultSingleCount + 2 * childAdultDoubleCount + 3 * childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
+        setTotalPeople(count)
+
+        if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultThreeCount == 0) {
             setInfantAddBedCount(0)
             setNoInfantAddBedCount(0)
             setInfantAddBedPrice(0)
             setNoInfantAddBedPrice(0)
         }
-    }, [childAdultSingleCount, childAdultDoubleCount, childAdultDoubleCount])
-
-    useEffect(() => {
-        const count = childAdultSingleCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
-        setTotalPeople(count)
     }, [childAdultSingleCount, childAdultDoubleCount, childAdultThreeCount, infantAddBedCount, infantNoAddBedCount])
-
-    useEffect(() => {
-        const total = childAdultSinglePrice + childAdultDoublePrice + childAdultThreePrice + infantAddBedPrice + infantNoAddBedPrice
-        setTotalPrice(total)
-    }, [childAdultSinglePrice, childAdultDoublePrice, childAdultThreePrice, infantAddBedPrice, infantNoAddBedPrice])
 
     const tourPrices = tourPackage?.TourPrices
     const priceElement = roomTypes?.map((type: any, index: number) => {
@@ -226,8 +214,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                 <div className="price-box">
                     <span className="type-name">{type.TypeName}</span>
                     {
-                        index<3 ? <p className="quantity">{index+1} × </p>:
-                        <p className="quantity">{1} × </p>
+                        index < 3 ? <p className="quantity">{index + 1} × </p> :
+                            <p className="quantity">{1} × </p>
                     }
                     <input type="number" value={
                         index == 0 ? childAdultSingleCount : (
@@ -242,8 +230,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; personTypes: any; se
                         min={0} />
                     <span className="price">{
                         index == 0 ? childAdultSingleCount : (
-                            index == 1 ? childAdultDoubleCount : (
-                                index == 2 ? childAdultThreeCount : (
+                            index == 1 ? 2 * childAdultDoubleCount : (
+                                index == 2 ? 3 * childAdultThreeCount : (
                                     index == 3 ? infantAddBedCount :
                                         infantNoAddBedCount
                                 )
