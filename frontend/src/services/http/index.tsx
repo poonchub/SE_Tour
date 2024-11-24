@@ -1,5 +1,6 @@
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 import { BookingsInterface } from "../../interfaces/IBookings";
+import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
 
 export const apiUrl = "http://localhost:8000";
 
@@ -39,24 +40,6 @@ export const apiUrl = "http://localhost:8000";
 //   return res;
 // }
 
-async function GenerateQrCode(amount: number){
-    const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({amount}),
-    };
-
-    let res = await fetch(`${apiUrl}/generate-qr`, requestOptions).then((res) => {
-        if (res.status == 200) {
-            return res.json();
-        } else {
-            return false;
-        }
-    });
-
-    return res;
-}
-
 // BookingDetail
 async function GetBookingDetails() {
     const requestOptions = {
@@ -94,7 +77,6 @@ async function CreateBookingDetail(data: BookingDetailsInterface) {
 
     return res;
 }
-
 
 // Booking
 async function GetBookings() {
@@ -326,14 +308,49 @@ async function GetTourImageByTourPackageID(id: Number | undefined) {
     return res;
 }
 
-export {
+// TourSchedules
+async function GetTourScheduleByID(id: Number | undefined) {
+    const requestOptions = {
+        method: "GET",
+    };
 
-    GenerateQrCode,
+    let res = await fetch(`${apiUrl}/tour-schedule/${id}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
+async function UpdateTourScheduleByID(data: TourSchedulesInterface, id: Number | undefined) {
+    const requestOptions = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    };
+
+    let res = await fetch(`${apiUrl}/tour-schedule/${id}`, requestOptions)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+export {
 
     // BookingDetails
     GetBookingDetails,
     CreateBookingDetail,
-    
+
     // Bookings
     GetBookings,
     GetBookingByID,
@@ -361,4 +378,8 @@ export {
 
     // TourImages
     GetTourImageByTourPackageID,
+
+    // TourSchedules
+    GetTourScheduleByID,
+    UpdateTourScheduleByID,
 }

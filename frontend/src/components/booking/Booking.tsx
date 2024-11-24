@@ -1,10 +1,11 @@
 import { Key, useState, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
-import { CreateBooking, CreateBookingDetail, GetCustomerByID } from "../../services/http";
+import { CreateBooking, CreateBookingDetail, GetCustomerByID, GetTourScheduleByID, UpdateTourScheduleByID } from "../../services/http";
 import { useDateContext } from "../../context/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
+import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
 
 
 function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messageApi: any; }) {
@@ -14,6 +15,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
     const { roomTypes, tourPackage, setPopUp, messageApi } = props
 
     const [customer, setCustomer] = useState<CustomersInterface>();
+    const [tourSchedule, setTourSchedule] = useState<TourSchedulesInterface>();
 
     const [childAdultSingleCount, setChildAdultSingleCount] = useState(0)
     const [childAdultDoubleCount, setChildAdultDoubleCount] = useState(0)
@@ -37,6 +39,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
 
     const [isDisabled, setIsDisabled] = useState(true);
 
+    const [isBookingBtnDisabled, setIsBookingDisabled] = useState(false)
+
     async function getCustomerByID() {
         let res = await GetCustomerByID(1)
         if (res) {
@@ -44,9 +48,17 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
         }
     }
 
+    async function getTourSchedule(){
+        let res = await GetTourScheduleByID(dateID)
+        if (res) {
+            setTourSchedule(res)
+        }
+    }
+
     async function fetchData() {
         try {
             getCustomerByID()
+            getTourSchedule()
         } catch (error) {
             console.error('Failed to fetch data:', error);
         }
@@ -82,19 +94,26 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
         setFName(customer?.FirstName)
     }
 
+    console.log(isBookingBtnDisabled)
+
     async function handleCreateBooking() {
         try {
+            setIsBookingDisabled(true)
             const booking: BookingsInterface = {
                 TotalPrice: totalPrice,
                 CustomerID: 1,
-                TourScheduleID: dateID,
-                // PromotionID: 
+                TourScheduleID: dateID, 
             }
             const resBooking = await CreateBooking(booking)
             if (resBooking) {
 
-                const bookingDetailsList: BookingDetailsInterface[] = [];
+                const tourScheduleData: TourSchedulesInterface = {
+                    AvailableSlots: (tourSchedule?.AvailableSlots ?? 0) - totalPeople
+                }
 
+                UpdateTourScheduleByID(tourScheduleData, dateID)
+
+                const bookingDetailsList: BookingDetailsInterface[] = [];
                 if (childAdultSingleCount != 0) {
                     bookingDetailsList.push({
                         Quantity: childAdultSingleCount,
@@ -145,6 +164,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
 
                     localStorage.setItem("booking-id", resBooking.data.ID)
                     setTimeout(() => {
+                        setIsBookingDisabled(false)
                         location.href = "/payment";
                     }, 1800);
                 }
@@ -363,11 +383,11 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                 <div className="btn-box">
                                     <button className="cancel-btn btn" onClick={() => setPopUp(<></>)}>ยกเลิก </button>
                                     <button className="confirm-btn btn"
-                                        disabled={totalPeople != 0 ? false : true}
+                                        disabled={totalPeople!=0 ? isBookingBtnDisabled  : true}
                                         onClick={handleCreateBooking}
                                         style={{
-                                            pointerEvents: totalPeople != 0 ? "auto" : "none",
-                                            opacity: totalPeople != 0 ? "1" : "0.6"
+                                            pointerEvents: totalPeople!=0&&!isBookingBtnDisabled ? "auto" : "none",
+                                            opacity: totalPeople!=0&&!isBookingBtnDisabled ? "1" : "0.6"
                                         }}
                                     >ยืนยันการจอง</button>
                                 </div>

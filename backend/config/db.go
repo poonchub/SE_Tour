@@ -445,9 +445,9 @@ func SetupDatabase() {
 		{
 			StartDate:            StartDate1,
 			EndDate:              EndDate1,
-			AvailableSlots:       50,
+			AvailableSlots:       0,
 			TourPackageID:        1,
-			TourScheduleStatusID: 2,
+			TourScheduleStatusID: 1,
 		},
 		{
 			StartDate:            StartDate2,

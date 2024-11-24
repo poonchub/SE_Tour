@@ -153,8 +153,6 @@ function TourSelect() {
         return groups;
     }, {});
 
-    console.log(groupedDate)
-
     const activitiesElement = groupedDate && Object.entries(groupedDate).map(([date, items]) => {
         return (
             <div key={date} className="date-box">

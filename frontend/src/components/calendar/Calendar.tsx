@@ -12,13 +12,13 @@ function Calendar(props: { schedules: any; }) {
     const [dateSelected, setDateSelected] = useState<string>("");
     const [DSFM, setDSFM] = useState("")
 
-    function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string){
+    function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string) {
         if (isAvailable) {
             setDSFM(dateStrFormat);
             setDateSelected(dateStr);
-            schedules.map((scd: any)=>{
-                const startDate = scd.StartDate.slice(0,10)
-                if (startDate===dateStr){
+            schedules.map((scd: any) => {
+                const startDate = scd.StartDate.slice(0, 10)
+                if (startDate === dateStr) {
                     setDateID(scd.ID)
                 }
             })
@@ -27,14 +27,16 @@ function Calendar(props: { schedules: any; }) {
 
     let dateTime: string[][] = [];
     let availableDates: string[] = []
-    schedules?.forEach((schedule: { StartDate: string; EndDate: string; }, index: number) => {
+    schedules?.forEach((schedule: any, index: number) => {
         if (!dateTime[index]) {
-          dateTime[index] = [];
+            dateTime[index] = [];
         }
-        if (schedule.StartDate && schedule.EndDate){
-            dateTime[index].push(schedule.StartDate.slice(0,10));
-            dateTime[index].push(schedule.EndDate.slice(0,10));
-            availableDates.push(schedule.StartDate.slice(0,10))
+        if (schedule.StartDate && schedule.EndDate) {
+            dateTime[index].push(schedule.StartDate.slice(0, 10));
+            dateTime[index].push(schedule.EndDate.slice(0, 10));
+            dateTime[index].push(schedule.TourScheduleStatus.StatusName);
+            dateTime[index].push(schedule.AvailableSlots);
+            availableDates.push(schedule.StartDate.slice(0, 10))
         }
     });
 
@@ -44,7 +46,6 @@ function Calendar(props: { schedules: any; }) {
     };
 
     const getCalendarDays = () => {
-
         const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
         const daysInMonth = endOfMonth.getDate();
@@ -62,18 +63,25 @@ function Calendar(props: { schedules: any; }) {
             const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
             let isAvailable = false
-            let index = 0
-            for (let i = 0 ; i < dateTime.length ; i++){
-                isAvailable = dateTime[i]?.[0]===dateStr ? true : false
-                if (isAvailable){
+            let index = -1
+            for (let i = 0; i < dateTime.length; i++) {
+                isAvailable = dateTime[i]?.[0] === dateStr ? true : false
+                if (isAvailable && dateTime[i]?.[2] === "ยังไม่เต็ม") {
                     index = i
-                    status+=1
+                    break
+                }
+                if (isAvailable) {
+                    index = i
+                    status += 1
                     break
                 }
             }
-            
+
             const endTime = dateTime[index]?.[1].slice(8, 10);
             const endTimeFormat = endTime?.startsWith("0") ? endTime?.slice(1, 2) : endTime;
+
+            const scheduleStatus = dateTime[index]?.[2]
+            const availableSlots = dateTime[index]?.[3]
 
             const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
 
@@ -82,20 +90,24 @@ function Calendar(props: { schedules: any; }) {
                 "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
             ];
 
-            const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543}`;
+            const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543} | ว่างจำนวน ${availableSlots} ที่นั่ง`;
 
-            if (isAvailable && status==1 && dateSelectedFormat=="" && dateSelected==""){
+            if (isAvailable && status == 1 && dateSelectedFormat == "" && dateSelected == "" && scheduleStatus == "ยังไม่เต็ม") {
+                console.log(scheduleStatus)
                 setDSFM(dateStrFormat);
                 setDateSelected(dateStr);
-                status+=1
+                status += 1
             }
 
             daysArray.push(
-                <td
-                    key={day}
-                    className={`calendar-day ${isAvailable ? 'available' : ''} ${dateSelected === dateStr ? 'selected' : ''}`}
-                    onClick={() => handleSetDate(isAvailable, dateStrFormat, dateStr)}
-                >{day}</td>
+                <td key={day}>
+                    <button    
+                        // className={`calendar-day ${isAvailable ? 'available' : ''} ${dateSelected === dateStr ? 'selected' : (scheduleStatus === "เต็ม" ? "full" : "")}`}
+                        className={`calendar-day ${isAvailable ? (scheduleStatus==="เต็ม" ? "full" : "available") : ''} ${dateSelected === dateStr ? 'selected' : ""}`}
+                        onClick={() => handleSetDate(isAvailable, dateStrFormat, dateStr)}
+                        disabled={scheduleStatus === "เต็ม" ? true : false}
+                    >{scheduleStatus==="เต็ม" ? "เต็ม" : day }</button>
+                </td>
             );
 
             if ((daysArray.length) % 7 === 0 || day === daysInMonth) {
@@ -106,9 +118,9 @@ function Calendar(props: { schedules: any; }) {
         return weeks.map((week, index) => <tr key={`week-${index}`}>{week}</tr>);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         setDateSelectedFormat(DSFM)
-    },[DSFM])
+    }, [DSFM])
 
     const dayOfWeeks = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์"]
 
@@ -117,7 +129,7 @@ function Calendar(props: { schedules: any; }) {
             <div className="calendar-header">
                 <button className="prev-btn btn" onClick={() => changeMonth(-1)}>«</button>
                 <span>
-                    {currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()+543}
+                    {currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear() + 543}
                 </span>
                 <button className="next-btn btn" onClick={() => changeMonth(1)}>»</button>
             </div>
@@ -133,7 +145,7 @@ function Calendar(props: { schedules: any; }) {
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
     );
 }

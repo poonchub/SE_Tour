@@ -19,18 +19,19 @@ function Payment() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [phoneNumber, setPhoneNumber] = useState("084-786-6591");
-    const [amount, setAmount] = useState(10000.00);
+    const [amount, setAmount] = useState(0.00);
     const [qrCode, setqrCode] = useState("sample");
 
     function handleQR() {
         setqrCode(generatePayload(phoneNumber, { amount }));
     }
-    console.log(qrCode)
 
     async function getBookingByID() {
-        const resBooking = await GetBookingByID(1);
-        if (resBooking) {
-            setBooking(resBooking)
+        if (bookingID) {
+            const resBooking = await GetBookingByID(Number(bookingID));
+            if (resBooking) {
+                setBooking(resBooking)
+            }
         }
     }
 
@@ -46,9 +47,17 @@ function Payment() {
 
     useEffect(() => {
         fetchData()
-        // generateQrCode()
-        handleQR()
     }, [])
+
+    useEffect(()=>{
+        if (booking?.TotalPrice){
+            setAmount(booking?.TotalPrice)
+        }
+    }, [booking])
+
+    useEffect(()=>{
+        handleQR()
+    }, [amount])
 
     const items = [
         {

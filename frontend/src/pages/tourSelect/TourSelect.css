@@ -317,6 +317,10 @@
                         & .date{
                             font-weight: 500;
                             margin-bottom: 8px;
+
+                            & .description{
+                                font-weight: 400;
+                            }
                         }
                     }
                 }

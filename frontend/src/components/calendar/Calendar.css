@@ -46,25 +46,36 @@
             & td{
                 background-color: #F0F0F0;
                 font-weight: 500;
-            }
+
+                & .calendar-day{
+                    width: 100%;
+                    height: 100%;
+                    border: 0px;
+                }
+
+                & .available {
+                    background-color: #b9e96c96;
+                    transition: all ease 0.3s;
+                }
+        
+                & .available:hover {
+                    background-color: var(--green);
+                    color: #fff;
+                    font-weight: 700;
+                }
+        
+                & .selected {
+                    background-color: var(--green);
+                    color: #fff;
+                    font-weight: 700;
+                }
     
-            & .calendar-day.available {
-                background-color: #b9e96c96;
-                transition: all ease 0.3s;
-            }
-    
-            & .calendar-day.available:hover {
-                background-color: var(--green);
-                color: #fff;
-                font-weight: 700;
-            }
-    
-            & .calendar-day.selected {
-                background-color: var(--green);
-                color: #fff;
-                font-weight: 700;
-            }
+                & .full {
+                    background-color: var(--red);
+                    color: #fff;
+                    font-weight: 700;
+                }
+            } 
         }
     }
-    
 }
