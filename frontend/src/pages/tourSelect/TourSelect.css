@@ -293,6 +293,34 @@
                     }
                 }
             }
+
+            & .activities-box{
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0px 30px;
+
+                & .date-box{
+                    /* border: 1px solid red; */
+                    width: 50%;
+                    padding: 10px 20px;
+
+                    & .day-title{
+                        font-weight: 600;
+                        display: flex;
+                        margin-bottom: 8px;
+                    }
+
+                    & ul{
+                        list-style: none;
+                        margin-left: 15px;
+
+                        & .date{
+                            font-weight: 500;
+                            margin-bottom: 8px;
+                        }
+                    }
+                }
+            }
         }
     }
 }

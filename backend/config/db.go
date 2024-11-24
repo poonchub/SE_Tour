@@ -434,6 +434,13 @@ func SetupDatabase() {
 	EndDate2, _ := time.Parse("2006-01-02", "2024-11-27")
 	StartDate3, _ := time.Parse("2006-01-02", "2024-12-01")
 	EndDate3, _ := time.Parse("2006-01-02", "2024-12-02")
+
+	StartDate4, _ := time.Parse("2006-01-02", "2024-12-12")
+	EndDate4, _ := time.Parse("2006-01-02", "2024-12-15")
+	StartDate5, _ := time.Parse("2006-01-02", "2024-12-16")
+	EndDate5, _ := time.Parse("2006-01-02", "2024-12-19")
+	StartDate6, _ := time.Parse("2006-01-02", "2024-12-22")
+	EndDate6, _ := time.Parse("2006-01-02", "2024-12-25")
 	tourSchedules := []*entity.TourSchedules{
 		{
 			StartDate:            StartDate1,
@@ -454,6 +461,27 @@ func SetupDatabase() {
 			EndDate:              EndDate3,
 			AvailableSlots:       50,
 			TourPackageID:        1,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate:            StartDate4,
+			EndDate:              EndDate4,
+			AvailableSlots:       50,
+			TourPackageID:        2,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate:            StartDate5,
+			EndDate:              EndDate5,
+			AvailableSlots:       50,
+			TourPackageID:        2,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate:            StartDate6,
+			EndDate:              EndDate6,
+			AvailableSlots:       50,
+			TourPackageID:        2,
 			TourScheduleStatusID: 2,
 		},
 	}
@@ -607,23 +635,23 @@ func SetupDatabase() {
 	}
 
 	// Create Activity
-	DateTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 08:00:00")
-	DateTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 09:00:00")
-	DateTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-20 10:30:00")
-	DateTime4, _ := time.Parse("2006-01-02 15:04:05", "2024-11-21 07:30:00")
+	DateTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 08:00:00")
+	DateTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 09:00:00")
+	DateTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 10:30:00")
+	DateTime4, _ := time.Parse("2006-01-02 15:04:05", "2024-11-11 07:30:00")
 	activities := []*entity.Activities{
-		{
-			ActivityName:  "ถึงจุดนัดรับ",
-			Description:   "ทีมงานต้อนรับที่สนามบินระนอง (หรือจุดนัดพบ) พร้อมบริการรับส่งด้วยรถตู้ปรับอากาศ",
-			DateTime: DateTime1,
-			LocationID:    4,
-			TourPackageID: 1,
-		},
 		{
 			ActivityName:  "เดินทางไปยังท่าเรือ",
 			Description:   "เดินทางไปยังท่าเรือเพื่อขึ้นเรือสปีดโบ๊ท มุ่งหน้าสู่ เกาะพยาม (ใช้เวลาประมาณ 45 นาที) เพลิดเพลินกับบรรยากาศทะเลสวยงามและทิวทัศน์ระหว่างการเดินทาง",
 			DateTime: DateTime2,
 			LocationID:    5,
+			TourPackageID: 1,
+		},
+		{
+			ActivityName:  "ถึงจุดนัดรับ",
+			Description:   "ทีมงานต้อนรับที่สนามบินระนอง (หรือจุดนัดพบ) พร้อมบริการรับส่งด้วยรถตู้ปรับอากาศ",
+			DateTime: DateTime1,
+			LocationID:    4,
 			TourPackageID: 1,
 		},
 		{

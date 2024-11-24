@@ -1,10 +1,10 @@
-import { SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import "./Calendar.css"
 import { useDateContext } from "../../context/DateContext";
 
 function Calendar(props: { schedules: any; }) {
 
-    const { dateSelectedFormat, setDateSelectedFormat, dateID, setDateID } = useDateContext()
+    const { dateSelectedFormat, setDateSelectedFormat, setDateID } = useDateContext()
 
     const { schedules } = props
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -16,7 +16,7 @@ function Calendar(props: { schedules: any; }) {
         if (isAvailable) {
             setDSFM(dateStrFormat);
             setDateSelected(dateStr);
-            schedules.map((scd: any, index: number)=>{
+            schedules.map((scd: any)=>{
                 const startDate = scd.StartDate.slice(0,10)
                 if (startDate===dateStr){
                     setDateID(scd.ID)
