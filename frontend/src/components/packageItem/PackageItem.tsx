@@ -1,28 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./PackageItem.css";
 import { Link } from "react-router-dom";
 import { apiUrl } from "../../services/http";
 
-function PackageItem(props: { tour: any }) {
+function PackageItem(props: { tour: any; }) {
     const { tour } = props;
 
-    const [startPrice, setStartPrice] = useState(999999);
+    const [startPriceFormat, setStartPriceFormat] = useState("");
 
     const imageUrl = `${apiUrl}/${tour.TourImages[0]?.FilePath}`
 
-    tour.TourPrices.forEach((price: { Price: any; "": any }) => {
-        if (price.Price < startPrice){
-            setStartPrice(price.Price.toLocaleString('th-TH', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            }))
-        }
-    });
+    function handleSetStartPrice() {
+        let startPrice = 999999;
+        tour?.TourPrices?.forEach((price: any) => {
+            if (price.PersonTypeID !== 1 && price.Price && price.Price < startPrice) {
+                startPrice = price.Price;
+            }
+        });
+        setStartPriceFormat(startPrice.toLocaleString('th-TH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }))
+    }
 
-    function setPackageData(id: string){
-        localStorage.setItem("startPrice", startPrice.toString())
+    function setPackageData(id: string) {
+        localStorage.setItem("startPrice", startPriceFormat)
         localStorage.setItem("tourPackageID", id)
     }
+
+    useEffect(() => {
+        handleSetStartPrice()
+    }, [tour.TourPrices]);
+
 
     return (
         <div className="package-item-container">
@@ -47,10 +56,10 @@ function PackageItem(props: { tour: any }) {
                 <div className="price-tourDetail-box">
                     <div className="sub-box">
                         <span className="title">ราคาเริ่มต้น</span>
-                        <span className="price">฿{startPrice}</span>
+                        <span className="price">฿{startPriceFormat}</span>
                     </div>
                     <div className="sub-box">
-                        <Link to="/tour-select" onClick={()=>setPackageData(tour.ID)}>
+                        <Link to="/tour-select" onClick={() => setPackageData(tour.ID)}>
                             <div className="btn-detail">รายละเอียดทัวร์</div>
                         </Link>
                     </div>

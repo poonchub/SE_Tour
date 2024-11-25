@@ -14,7 +14,7 @@ func ListTourPackages(c *gin.Context) {
 
 	db := config.DB()
 
-	if err := db.Preload("Province").Preload("TourPrices").Preload("TourImages").Preload("TourDescriptions").Find(&tourPackages).Error; err != nil {
+	if err := db.Preload("Province").Preload("TourPrices").Preload("TourImages").Preload("TourDescriptions").Preload("TourSchedules").Find(&tourPackages).Error; err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }

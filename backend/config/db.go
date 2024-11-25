@@ -434,13 +434,15 @@ func SetupDatabase() {
 	EndDate2, _ := time.Parse("2006-01-02", "2024-11-27")
 	StartDate3, _ := time.Parse("2006-01-02", "2024-12-01")
 	EndDate3, _ := time.Parse("2006-01-02", "2024-12-02")
+	StartDate4, _ := time.Parse("2006-01-02", "2024-12-05")
+	EndDate4, _ := time.Parse("2006-01-02", "2024-12-06")
 
-	StartDate4, _ := time.Parse("2006-01-02", "2024-12-12")
-	EndDate4, _ := time.Parse("2006-01-02", "2024-12-15")
-	StartDate5, _ := time.Parse("2006-01-02", "2024-12-16")
-	EndDate5, _ := time.Parse("2006-01-02", "2024-12-19")
-	StartDate6, _ := time.Parse("2006-01-02", "2024-12-22")
-	EndDate6, _ := time.Parse("2006-01-02", "2024-12-25")
+	StartDate5, _ := time.Parse("2006-01-02", "2024-12-12")
+	EndDate5, _ := time.Parse("2006-01-02", "2024-12-15")
+	StartDate6, _ := time.Parse("2006-01-02", "2024-12-16")
+	EndDate6, _ := time.Parse("2006-01-02", "2024-12-19")
+	StartDate7, _ := time.Parse("2006-01-02", "2024-12-22")
+	EndDate7, _ := time.Parse("2006-01-02", "2024-12-25")
 	tourSchedules := []*entity.TourSchedules{
 		{
 			StartDate:            StartDate1,
@@ -466,9 +468,9 @@ func SetupDatabase() {
 		{
 			StartDate:            StartDate4,
 			EndDate:              EndDate4,
-			AvailableSlots:       50,
-			TourPackageID:        2,
-			TourScheduleStatusID: 2,
+			AvailableSlots:       0,
+			TourPackageID:        1,
+			TourScheduleStatusID: 1,
 		},
 		{
 			StartDate:            StartDate5,
@@ -480,6 +482,13 @@ func SetupDatabase() {
 		{
 			StartDate:            StartDate6,
 			EndDate:              EndDate6,
+			AvailableSlots:       50,
+			TourPackageID:        2,
+			TourScheduleStatusID: 2,
+		},
+		{
+			StartDate:            StartDate7,
+			EndDate:              EndDate7,
 			AvailableSlots:       50,
 			TourPackageID:        2,
 			TourScheduleStatusID: 2,

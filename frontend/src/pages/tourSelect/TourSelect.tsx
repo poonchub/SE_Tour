@@ -156,7 +156,7 @@ function TourSelect() {
     const activitiesElement = groupedDate && Object.entries(groupedDate).map(([date, items]) => {
         return (
             <div key={date} className="date-box">
-                <span className="day-title">วันที่ {date}</span>
+                <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
                 <ul>
                     {items.map((item, index) => (
                         <li className="date" key={index}>

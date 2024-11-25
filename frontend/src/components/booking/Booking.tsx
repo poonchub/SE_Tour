@@ -6,6 +6,7 @@ import { useDateContext } from "../../context/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
+import Loading from "../loading/Loading";
 
 
 function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messageApi: any; }) {
@@ -37,9 +38,10 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
 
     const [totalPrice, setTotalPrice] = useState<number>(0)
 
-    const [isDisabled, setIsDisabled] = useState(true);
-
+    const [isEditBtnDisabled, setIsEditBtnDisabled] = useState(true);
     const [isBookingBtnDisabled, setIsBookingDisabled] = useState(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
     async function getCustomerByID() {
         let res = await GetCustomerByID(1)
@@ -48,7 +50,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
         }
     }
 
-    async function getTourSchedule(){
+    async function getTourSchedule() {
         let res = await GetTourScheduleByID(dateID)
         if (res) {
             setTourSchedule(res)
@@ -61,6 +63,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
             getTourSchedule()
         } catch (error) {
             console.error('Failed to fetch data:', error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -90,11 +94,9 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
     }
 
     function handleCancle() {
-        setIsDisabled(true)
+        setIsEditBtnDisabled(true)
         setFName(customer?.FirstName)
     }
-
-    console.log(isBookingBtnDisabled)
 
     async function handleCreateBooking() {
         try {
@@ -102,7 +104,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
             const booking: BookingsInterface = {
                 TotalPrice: totalPrice,
                 CustomerID: 1,
-                TourScheduleID: dateID, 
+                TourScheduleID: dateID,
             }
             const resBooking = await CreateBooking(booking)
             if (resBooking) {
@@ -263,44 +265,39 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
         ) : ""
     })
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <div className="booking-container">
             <div className="card">
                 <span className="header">จองแพ็กเกจทัวร์</span>
                 <section className="section-cover">
                     <div className="select-persontype-card sub-card">
-                        <span className="title">โปรดระบุจำนวนผู้เดินทาง</span>
-                        <div className="add-quantity-box">
-                            <div className="title-box">
-                                <span className="span1">เด็ก/ผู้ใหญ่</span>
-                                <span className="span2">จำนวน (คน)</span>
-                                <span className="span3">ราคา (บาท)</span>
-                            </div>
-                            {priceElement}
-                        </div>
-                        <hr />
-                        <div className="total-price-box">
-                            <span className="title-total-price">ราคารวม</span>
-                            <span className="total-people">{totalPeople}</span>
-                            <span className="total-price">
-                                ฿{totalPrice.toLocaleString('th-TH', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                })}
-                            </span>
-                        </div>
-                        <hr />
-                        <div className="promotion-box">
-                            <div className="box-for-input">
-                                <span className="title-promotion">โค้ดส่วนลด (ถ้ามี)</span>
-                                <div className="sub-box-input">
-                                    <button className="promotion-btn">ใช้โค้ด</button>
+                        <div className="top-box">
+                            <span className="title">โปรดระบุจำนวนผู้เดินทาง</span>
+                            <div className="add-quantity-box">
+                                <div className="title-box">
+                                    <span className="span1">เด็ก/ผู้ใหญ่</span>
+                                    <span className="span2">จำนวน (คน)</span>
+                                    <span className="span3">ราคา (บาท)</span>
                                 </div>
+                                {priceElement}
                             </div>
-                            <div className="discount-box">
-                                <span className="description"></span>
-                                <span className="discount"></span>
+                        </div>
+                        <div className="bottom-box">
+                            <hr />
+                            <div className="total-price-box">
+                                <span className="title-total-price">ราคารวม</span>
+                                <span className="total-people">{totalPeople}</span>
+                                <span className="total-price">
+                                    ฿{totalPrice.toLocaleString('th-TH', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}
+                                </span>
                             </div>
+                            <hr />
+                            <hr />
                         </div>
                     </div>
                     <div className="card-box">
@@ -312,7 +309,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                     <input type="text"
                                         defaultValue={customer?.FirstName}
                                         placeholder="โปรดป้อนชื่อ"
-                                        disabled={isDisabled}
+                                        disabled={isEditBtnDisabled}
                                         onChange={(e) => setFName(e.target.value)} required
                                     />
                                 </div>
@@ -321,7 +318,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                     <input type="text"
                                         defaultValue={customer?.LastName}
                                         placeholder="โปรดป้อนนามสกุล"
-                                        disabled={isDisabled}
+                                        disabled={isEditBtnDisabled}
                                         onChange={(e) => setLName(e.target.value)} required
                                     />
                                 </div>
@@ -330,7 +327,7 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                     <input type="text"
                                         defaultValue={customer?.PhoneNumber}
                                         placeholder="โปรดป้อนเบอร์โทรศัพท์ (000-000-0000)"
-                                        disabled={isDisabled}
+                                        disabled={isEditBtnDisabled}
                                         pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                                         onChange={(e) => setPhoneNumber(e.target.value)} required
                                     />
@@ -340,13 +337,13 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                     <input type="email"
                                         defaultValue={customer?.Email}
                                         placeholder="โปรดป้อนอีเมล (sa@gmail.com)"
-                                        disabled={isDisabled}
+                                        disabled={isEditBtnDisabled}
                                         onChange={(e) => setEmail(e.target.value)} required />
                                 </div>
                                 <div className="btn-box">
                                     {
-                                        isDisabled ? (
-                                            <button className="edit-btn" onClick={() => setIsDisabled(false)}>แก้ไขข้อมูล</button>
+                                        isEditBtnDisabled ? (
+                                            <button className="edit-btn" onClick={() => setIsEditBtnDisabled(false)}>แก้ไขข้อมูล</button>
                                         ) : (
                                             <div className="sub-btn-box">
                                                 <div className="cancel-btn" onClick={() => handleCancle()}>ยกเลิก</div>
@@ -383,11 +380,11 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
                                 <div className="btn-box">
                                     <button className="cancel-btn btn" onClick={() => setPopUp(<></>)}>ยกเลิก </button>
                                     <button className="confirm-btn btn"
-                                        disabled={totalPeople!=0 ? isBookingBtnDisabled  : true}
+                                        disabled={totalPeople != 0 ? isBookingBtnDisabled : true}
                                         onClick={handleCreateBooking}
                                         style={{
-                                            pointerEvents: totalPeople!=0&&!isBookingBtnDisabled ? "auto" : "none",
-                                            opacity: totalPeople!=0&&!isBookingBtnDisabled ? "1" : "0.6"
+                                            pointerEvents: totalPeople != 0 && !isBookingBtnDisabled ? "auto" : "none",
+                                            opacity: totalPeople != 0 && !isBookingBtnDisabled ? "1" : "0.6"
                                         }}
                                     >ยืนยันการจอง</button>
                                 </div>

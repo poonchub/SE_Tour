@@ -36,7 +36,19 @@ body {
   margin-top: 50px;
 }
 
+input {
+  font-family: "Noto Sans Thai", sans-serif;
+}
+
 input:focus-visible{
+  outline: none;
+}
+
+select {
+  font-family: "Noto Sans Thai", sans-serif;
+}
+
+select:focus-visible{
   outline: none;
 }
 

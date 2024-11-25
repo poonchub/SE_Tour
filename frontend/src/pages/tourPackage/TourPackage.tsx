@@ -15,6 +15,13 @@ function TourPackage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const [searchText, setSearchText] = useState("")
+    const [provinceID, setProvinceID] = useState("")
+    const [startDate, setStartDate] = useState("")
+    const [endDate, setEndDate] = useState("")
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(10000)
+
     async function getTourPackages() {
         let res = await GetTourPackages()
         if (res) {
@@ -60,9 +67,46 @@ function TourPackage() {
 
     useEffect(() => {
         fetchData()
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        console.log(formattedDate)
+        setStartDate(formattedDate);
     }, [])
 
-    const tourElements = tourPackages.map((tour, index) => {
+    const filteredTours = tourPackages.filter((tour) => {
+        let Price = 999999
+        tour?.TourPrices?.forEach((price) => {
+            if (price.PersonTypeID != 1 && price.Price && price.Price < Price) {
+                Price = price.Price
+            }
+        });
+
+        const hasValidSchedule = (startDate != "" && endDate != "") ? (
+            tour?.TourSchedules?.some((schedule) => {
+                const std_ = schedule.StartDate?.slice(0, 10)
+                const ed_ = schedule.EndDate?.slice(0, 10)
+                return (ed_ && std_ && (std_ >= startDate) && (ed_ <= endDate))
+            })
+        ) : (startDate != "") ? (
+            tour?.TourSchedules?.some((schedule) => {
+                const std_ = schedule.StartDate?.slice(0, 10)
+                return (std_ && (std_ >= startDate))
+            })
+        ) : (endDate != "") ? (
+            tour?.TourSchedules?.some((schedule) => {
+                const ed_ = schedule.EndDate?.slice(0, 10)
+                return (ed_ && (ed_ <= endDate))
+            })
+        ) : (true)
+
+        return provinceID != "" ? (
+            (tour?.TourName?.toLowerCase().includes(searchText.toLowerCase())) && (Price >= minPrice && Price <= maxPrice) && (tour.ProvinceID == Number(provinceID)) && hasValidSchedule
+        ) : (
+            (tour?.TourName?.toLowerCase().includes(searchText.toLowerCase())) && (Price >= minPrice && Price <= maxPrice) && hasValidSchedule
+        )
+    })
+
+    const tourElements = filteredTours.map((tour, index) => {
         return <PackageItem key={index} tour={tour} />
     })
 
@@ -97,12 +141,17 @@ function TourPackage() {
                             <div className="img-box">
                                 <img src="./images/icons/search.png" alt="" />
                             </div>
-                            <input type="text" placeholder="ค้นหาแพ็กเกจ..." />
+                            <input
+                                type="text"
+                                placeholder="ค้นหาแพ็กเกจ..."
+                                onChange={(e) => setSearchText(e.target.value)}
+                            />
                         </div>
                         <div className="search-option-box">
                             <div className="option1-box option">
                                 <span className="text">แพ็กเกจในจังหวัด</span>
-                                <select name="" id="">
+                                <select name="" id="" onChange={(e) => setProvinceID(e.target.value)}>
+                                    <option value="">ทุกจังหวัด</option>
                                     {
                                         provinces.map((province, index) => (
                                             <option value={province.ID} key={index}>{province.ProvinceName}</option>
@@ -113,17 +162,27 @@ function TourPackage() {
                             <div className="option2-box option">
                                 <span className="text">ช่วงเวลา</span>
                                 <div className="input-box">
-                                    <input type="date" />
+                                    <input type="date" value={startDate} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStartDate(e.target.value)} />
                                     -
-                                    <input type="date" />
+                                    <input type="date" onChange={(e) => setEndDate(e.target.value)} />
                                 </div>
                             </div>
                             <div className="option3-box option">
                                 <span className="text">ช่วงราคา</span>
                                 <div className="input-box">
-                                    <input type="number" min={0} step={500} defaultValue={0} />
+                                    <input type="number"
+                                        min={0}
+                                        step={500}
+                                        value={minPrice}
+                                        onChange={(e) => setMinPrice(Number(e.target.value))}
+                                    />
                                     -
-                                    <input type="number" min={1000} step={500} defaultValue={1000} />
+                                    <input type="number"
+                                        min={1000}
+                                        step={500}
+                                        value={maxPrice}
+                                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                    />
                                 </div>
                             </div>
                             <div className="option4-box option">
