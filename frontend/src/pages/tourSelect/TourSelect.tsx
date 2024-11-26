@@ -12,17 +12,18 @@ import Booking from "../../components/booking/Booking";
 import { useDateContext } from "../../contexts/DateContext";
 
 import { message } from "antd";
-import { ActivitiesInterface } from "../../interfaces/IActivities";
+// import { ActivitiesInterface } from "../../interfaces/IActivities";
+import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
 
 function TourSelect() {
 
-    const { dateSelectedFormat } = useDateContext();
+    const { dateID, dateSelectedFormat } = useDateContext();
 
     const [tourPackage, setTourPackage] = useState<TourPackagesInterface>();
     const [personTypes, setPersonTypes] = useState<PersonTypesInterface[]>();
     const [roomTypes, setRoomTypes] = useState<RoomTypesInterface[]>();
-
-    const [activities, setActivities] = useState<ActivitiesInterface[] | undefined>([]);
+    // const [activities, setActivities] = useState<ActivitiesInterface[] | undefined>([]);
+    const [scheduleSelected, setScheduleSelected] = useState<TourSchedulesInterface>()
 
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -62,24 +63,33 @@ function TourSelect() {
         }
     }
 
-    const sortActivitiesByDateTime = () => {
-        if (tourPackage?.Activities) {
-            const sorted = [...tourPackage?.Activities].sort((a, b) =>
-                (a.DateTime ?? "").localeCompare(b.DateTime ?? "")
-            );
-            setActivities(sorted);
-        }
-    };
+    // const sortActivitiesByDateTime = () => {
+    //     if (tourPackage?.Activities) {
+    //         const sorted = [...tourPackage?.Activities].sort((a, b) =>
+    //             (a.DateTime ?? "").localeCompare(b.DateTime ?? "")
+    //         );
+    //         setActivities(sorted);
+    //     }
+    // };
 
     useEffect(() => {
         fetchData()
     }, [isLoading]);
 
     useEffect(() => {
-        sortActivitiesByDateTime()
+        // sortActivitiesByDateTime()
     }, [tourPackage])
 
     const schedules = tourPackage?.TourSchedules
+
+    useEffect(()=>{
+        schedules?.forEach((schedule, _)=>{
+            if (schedule.ID===dateID){
+                setScheduleSelected(schedule)
+            }
+        })
+    }, [schedules])
+
     const startPrice = localStorage.getItem("startPrice");
     const tourPackageID = localStorage.getItem("tourPackageID");
 
@@ -100,7 +110,7 @@ function TourSelect() {
 
     const imageElement = (tourPackage?.TourImages as any[])?.map(
         (image, index) => (
-            <div className={`sImage ${bigImage==image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
+            <div className={`sImage ${bigImage===image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
                 <img src={`${apiUrl}/${image.FilePath}`} />
             </div>
         )
@@ -144,34 +154,51 @@ function TourSelect() {
         ) : ""
     })
 
-    const groupedDate = activities?.reduce((groups: Record<string, typeof activities>, item) => {
-        const group = item.DateTime?.slice(0, 10) ?? "Unknown"
-        if (!groups[group]) {
-            groups[group] = []
-        }
-        groups[group].push(item)
-        return groups;
-    }, {});
+    console.log(scheduleSelected)
 
-    const activitiesElement = groupedDate && Object.entries(groupedDate).map(([date, items]) => {
-        return (
-            <div key={date} className="date-box">
-                <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
-                <ul>
-                    {items.map((item, index) => (
-                        <li className="date" key={index}>
-                            {item.DateTime?.slice(11,16)} น.
-                            <ul>
-                                <li className="description">
-                                    {item.Description}
-                                </li>
-                            </ul>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        )
-    })
+    // const groupedDate = activities?.reduce((groups: Record<string, typeof activities>, item) => {
+    //     const group = item.DateTime?.slice(0, 10) ?? "Unknown"
+    //     if (!groups[group]) {
+    //         groups[group] = []
+    //     }
+
+    //     if (group !== "Unknown" && scheduleSelected?.StartDate && scheduleSelected.EndDate) {
+    //         const date = new Date(group);
+    //         const start = new Date(scheduleSelected?.StartDate);
+    //         const end = new Date(scheduleSelected.EndDate);
+    
+    //         // ตรวจสอบว่า date อยู่ในช่วงระหว่าง startDate และ endDate
+    //         if (date < start || date > end) {
+    //             return groups; // ข้ามวันที่ไม่อยู่ในช่วง
+    //         }
+    //     }
+        
+    //     groups[group].push(item)
+    //     return groups;
+    // }, {});
+
+    // console.log(groupedDate)
+
+
+    // const activitiesElement = groupedDate && Object.entries(groupedDate).map(([date, items]) => {
+    //     return (
+    //         <div key={date} className="date-box">
+    //             <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
+    //             <ul>
+    //                 {items.map((item, index) => (
+    //                     <li className="date" key={index}>
+    //                         {item.DateTime?.slice(11,16)} น.
+    //                         <ul>
+    //                             <li className="description">
+    //                                 {item.Description}
+    //                             </li>
+    //                         </ul>
+    //                     </li>
+    //                 ))}
+    //             </ul>
+    //         </div>
+    //     )
+    // })
 
     return isLoading ? (
         <Loading />
@@ -257,7 +284,7 @@ function TourSelect() {
                         <h2 className="title">แผนการเดินทาง</h2>
                     </div>
                     <div className="activities-box">
-                        {activitiesElement}
+                        {/* {activitiesElement} */}
                     </div>
                 </div>
             </section>

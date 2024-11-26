@@ -21,4 +21,6 @@ type TourSchedules struct {
 	EmployeeSchedules	[]EmployeeSchedules	`gorm:"foreignKey:TourScheduleID"`
 
 	Bookings	[]Bookings	`gorm:"foreignKey:TourScheduleID"`
+
+	ScheduleActivities	[]ScheduleActivities	`gorm:"foreignKey:TourScheduleID"`
 }

@@ -22,6 +22,7 @@ function TourPackage() {
     const [endDate, setEndDate] = useState("")
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(10000)
+    const [sortOption, setSortOption] = useState(1)
 
     async function getTourPackages() {
         let res = await GetTourPackages()
@@ -105,8 +106,35 @@ function TourPackage() {
             (tour?.TourName?.toLowerCase().includes(searchText.toLowerCase())) && (Price >= minPrice && Price <= maxPrice) && hasValidSchedule
         )
     })
+    const sortedTours = (sortOption===1) ? (
+        filteredTours.sort((a, b) => {
+            const priceA = a?.TourPrices?.length ? 
+                a.TourPrices.reduce((min, price) => {
+                    return (price.PersonTypeID !== 1 && price.Price && price.Price < min) ? price.Price : min
+                }, 999999) : 999999
+        
+            const priceB = b?.TourPrices?.length ? 
+                b.TourPrices.reduce((min, price) => {
+                    return (price.PersonTypeID !== 1 && price.Price && price.Price < min) ? price.Price : min
+                }, 999999) : 999999
+            return priceA - priceB
+        })
+    ) : (
+        filteredTours.sort((a, b) => {
+            const priceA = a?.TourPrices?.length ? 
+                a.TourPrices.reduce((min, price) => {
+                    return (price.PersonTypeID !== 1 && price.Price && price.Price < min) ? price.Price : min
+                }, 999999) : 999999
+        
+            const priceB = b?.TourPrices?.length ? 
+                b.TourPrices.reduce((min, price) => {
+                    return (price.PersonTypeID !== 1 && price.Price && price.Price < min) ? price.Price : min
+                }, 999999) : 999999
+            return priceB - priceA
+        })
+    )
 
-    const tourElements = filteredTours.map((tour, index) => {
+    const tourElements = sortedTours.map((tour, index) => {
         return <PackageItem key={index} tour={tour} />
     })
 
@@ -187,9 +215,9 @@ function TourPackage() {
                             </div>
                             <div className="option4-box option">
                                 <span className="text">จัดเรียงตาม</span>
-                                <select name="" id="">
-                                    <option value="">ราคาต่ำ-สูง</option>
-                                    <option value="">ราคาสูง-ต่ำ</option>
+                                <select name="" id="" onChange={(e)=>setSortOption(Number(e.target.value))}>
+                                    <option value={1}>ราคาต่ำ-สูง</option>
+                                    <option value={2}>ราคาสูง-ต่ำ</option>
                                 </select>
                             </div>
                         </div>

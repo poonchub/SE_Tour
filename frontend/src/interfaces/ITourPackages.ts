@@ -1,4 +1,3 @@
-import { ActivitiesInterface } from "./IActivities";
 import { ProvincesInterface } from "./IProvinces";
 import { TourDescriptionsInterface } from "./ITourDescriptions";
 import { TourImagesInterface } from "./ITourImages";
@@ -17,5 +16,4 @@ export interface TourPackagesInterface {
 	TourImages?:		TourImagesInterface[];
 	TourDescriptions?:	TourDescriptionsInterface;
 	TourSchedules?:		TourSchedulesInterface[];
-	Activities?:	ActivitiesInterface[]
 }

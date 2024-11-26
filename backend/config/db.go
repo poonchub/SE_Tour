@@ -52,6 +52,7 @@ func SetupDatabase() {
 		&entity.Roles{},
 		&entity.RoomTypes{},
 		&entity.SalesReports{},
+		&entity.ScheduleActivities{},
 		&entity.Slips{},
 		&entity.TourDescriptions{},
 		&entity.TourImages{},
@@ -468,9 +469,9 @@ func SetupDatabase() {
 		{
 			StartDate:            StartDate4,
 			EndDate:              EndDate4,
-			AvailableSlots:       0,
+			AvailableSlots:       5,
 			TourPackageID:        1,
-			TourScheduleStatusID: 1,
+			TourScheduleStatusID: 2,
 		},
 		{
 			StartDate:            StartDate5,
@@ -644,46 +645,70 @@ func SetupDatabase() {
 	}
 
 	// Create Activity
-	DateTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 08:00:00")
-	DateTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 09:00:00")
-	DateTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-11-10 10:30:00")
-	DateTime4, _ := time.Parse("2006-01-02 15:04:05", "2024-11-11 07:30:00")
 	activities := []*entity.Activities{
 		{
 			ActivityName:  "เดินทางไปยังท่าเรือ",
 			Description:   "เดินทางไปยังท่าเรือเพื่อขึ้นเรือสปีดโบ๊ท มุ่งหน้าสู่ เกาะพยาม (ใช้เวลาประมาณ 45 นาที) เพลิดเพลินกับบรรยากาศทะเลสวยงามและทิวทัศน์ระหว่างการเดินทาง",
-			DateTime: DateTime2,
 			LocationID:    5,
-			TourPackageID: 1,
 		},
 		{
 			ActivityName:  "ถึงจุดนัดรับ",
 			Description:   "ทีมงานต้อนรับที่สนามบินระนอง (หรือจุดนัดพบ) พร้อมบริการรับส่งด้วยรถตู้ปรับอากาศ",
-			DateTime: DateTime1,
 			LocationID:    4,
-			TourPackageID: 1,
 		},
 		{
 			ActivityName:  "ถึงเกาะพยาม",
 			Description:   "ถึงเกาะพยาม และเยี่ยมชมวัดเกาะพยาม เที่ยวชมสถานที่สำคัญต่าง ๆ เช่น อ่าวเขาควาย และ อ่าวใหญ่",
-			DateTime: DateTime3,
 			LocationID:    1,
-			TourPackageID: 1,
+
 		},
 		{
 			ActivityName:  "เช็คเอาท์จากที่พัก",
 			Description:   "รับประทานอาหารเช้าที่รีสอร์ท และเช็คเอาท์จากที่พัก",
-			DateTime: DateTime4,
 			LocationID:    6,
-			TourPackageID: 1,
+
 		},
 	}
 	for _, activity := range activities {
 		db.FirstOrCreate(activity, &entity.Activities{
 			ActivityName: activity.ActivityName,
-			DateTime: activity.DateTime,
-			LocationID:   activity.LocationID,
-			TourPackageID: activity.TourPackageID,
+			Description: activity.Description,
+			LocationID: activity.LocationID,
+		})
+	}
+
+	// Create ScheduleActivities
+	DateTime1, _ := time.Parse("2006-01-02 15:04:05", "2024-12-01 08:00:00")
+	DateTime2, _ := time.Parse("2006-01-02 15:04:05", "2024-12-01 09:00:00")
+	DateTime3, _ := time.Parse("2006-01-02 15:04:05", "2024-12-01 10:30:00")
+	DateTime4, _ := time.Parse("2006-01-02 15:04:05", "2024-12-02 07:30:00")
+	scheduleAcs := []*entity.ScheduleActivities{
+		{
+			DateTime: DateTime1,
+			ActivityID: 2,
+			TourScheduleID: 1,
+		},
+		{
+			DateTime: DateTime2,
+			ActivityID: 1,
+			TourScheduleID: 1,
+		},
+		{
+			DateTime: DateTime3,
+			ActivityID: 3,
+			TourScheduleID: 1,
+		},
+		{
+			DateTime: DateTime4,
+			ActivityID: 4,
+			TourScheduleID: 1,
+		},
+	}
+	for _, scheAc := range scheduleAcs {
+		db.FirstOrCreate(scheAc, &entity.ScheduleActivities{
+			DateTime: scheAc.DateTime,
+			ActivityID: scheAc.ActivityID,
+			TourScheduleID: scheAc.TourScheduleID,
 		})
 	}
 

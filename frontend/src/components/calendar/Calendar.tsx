@@ -4,21 +4,21 @@ import { useDateContext } from "../../contexts/DateContext";
 
 function Calendar(props: { schedules: any; }) {
 
-    const { dateSelectedFormat, setDateSelectedFormat, setDateID } = useDateContext()
+    const { setDateSelected, dateSelectedFormat, setDateSelectedFormat, setDateID } = useDateContext()
 
     const { schedules } = props
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(new Date())
 
-    const [dateSelected, setDateSelected] = useState<string>("");
-    const [DSFM, setDSFM] = useState("")
+    const [dateS, setDateS] = useState("")
+    const [dateSFM, setDateSFM] = useState("")
+    const [scheID, setScheID] = useState(undefined)
 
     const [canGoToPrevMonth, setCanGoToPrevMonth] = useState(true)
-    const [warningMessage, setWarningMessage] = useState("");
 
     function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string) {
         if (isAvailable) {
-            setDSFM(dateStrFormat);
-            setDateSelected(dateStr);
+            setDateSFM(dateStrFormat);
+            setDateS(dateStr);
             schedules.map((scd: any) => {
                 const startDate = scd.StartDate.slice(0, 10)
                 if (startDate === dateStr) {
@@ -48,10 +48,8 @@ function Calendar(props: { schedules: any; }) {
 
             if (monthChangeCount === 1 && !hasAvailableDates) {
                 setCanGoToPrevMonth(false)
-                setWarningMessage(`เดือน ${months[tempDate.getMonth()]} ไม่มีวันที่เปิดจอง`)
             } else {
                 setCanGoToPrevMonth(true)
-                setWarningMessage("เดือนที่ต้องการเปลี่ยนไม่มีวันที่เปิดจอง")
             }
     
             if (hasAvailableDates) {
@@ -91,10 +89,6 @@ function Calendar(props: { schedules: any; }) {
             prevMonthDate.setMonth(prevMonthDate.getMonth() - 1)
             checkAvailableDatesInMonth(false)
         }
-    }
-
-    function showWorning(){
-        
     }
 
     function getCalendarDays() {
@@ -142,16 +136,24 @@ function Calendar(props: { schedules: any; }) {
             const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
 
             const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543} | ว่างจำนวน ${availableSlots} ที่นั่ง`;
-            if (isAvailable && status == 1 && dateSelectedFormat == "" && dateSelected == "" && scheduleStatus == "ยังไม่เต็ม") {
-                setDSFM(dateStrFormat);
-                setDateSelected(dateStr);
+            if (isAvailable && status == 1 && dateSelectedFormat == "" && dateS == "" && scheduleStatus == "ยังไม่เต็ม") {
+                setDateSFM(dateStrFormat);
+                setDateS(dateStr);
+
+                schedules.map((scd: any) => {
+                    const startDate = scd.StartDate.slice(0, 10)
+                    if (startDate === dateStr) {
+                        setScheID(scd.ID)
+                    }
+                })
                 status += 1
+
             }
 
             daysArray.push(
                 <td key={day}>
                     <button
-                        className={`calendar-day ${isAvailable ? (scheduleStatus === "เต็ม" ? "full" : "available") : ''} ${dateSelected === dateStr ? 'selected' : ""}`}
+                        className={`calendar-day ${isAvailable ? (scheduleStatus === "เต็ม" ? "full" : "available") : ''} ${dateS === dateStr ? 'selected' : ""}`}
                         onClick={() => handleSetDate(isAvailable, dateStrFormat, dateStr)}
                         disabled={scheduleStatus === "เต็ม" ? true : false}
                     >{scheduleStatus === "เต็ม" ? "เต็ม" : day}</button>
@@ -167,8 +169,10 @@ function Calendar(props: { schedules: any; }) {
     };
 
     useEffect(() => {
-        setDateSelectedFormat(DSFM)
-    }, [DSFM])
+        setDateSelected(dateS)
+        setDateSelectedFormat(dateSFM)
+        setDateID(Number(scheID))
+    }, [dateSFM])
 
     useEffect(() => {
         let isCancelled = false;

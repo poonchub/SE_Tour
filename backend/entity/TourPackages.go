@@ -25,7 +25,5 @@ type TourPackages struct {
 
 	Accommodations	[]Accommodations	`gorm:"foreignKey:TourPackageID"`
 
-	Activities	[]Activities	`gorm:"foreignKey:TourPackageID"`
-
 	TourDescriptions	*TourDescriptions	`gorm:"foreignKey:TourPackageID"`
 }
