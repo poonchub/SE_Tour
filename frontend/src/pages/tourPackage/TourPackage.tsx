@@ -6,6 +6,7 @@ import { TourPackagesInterface } from "../../interfaces/ITourPackages";
 import PackageItem from "../../components/packageItem/PackageItem";
 import Loading from "../../components/loading/Loading";
 import { ProvincesInterface } from "../../interfaces/IProvinces";
+import Footer from "../../components/footer/Footer";
 
 function TourPackage() {
 
@@ -69,7 +70,6 @@ function TourPackage() {
         fetchData()
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
-        console.log(formattedDate)
         setStartDate(formattedDate);
     }, [])
 
@@ -135,7 +135,7 @@ function TourPackage() {
                     <div className="show-mini-promotion">
 
                     </div>
-                    <form className="search-package-box">
+                    <div className="search-package-box">
                         <h3 className="title">ค้นหาแพ็กเกจทัวร์ที่คุณต้องการได้อย่างง่ายดาย✨</h3>
                         <div className="search-box">
                             <div className="img-box">
@@ -193,10 +193,13 @@ function TourPackage() {
                                 </select>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                {tourElements}
+                <div className="tour-element-container">
+                    {tourElements}
+                </div>
             </section>
+            <Footer/>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./Calendar.css"
-import { useDateContext } from "../../context/DateContext";
+import { useDateContext } from "../../contexts/DateContext";
 
 function Calendar(props: { schedules: any; }) {
 
@@ -11,6 +11,9 @@ function Calendar(props: { schedules: any; }) {
 
     const [dateSelected, setDateSelected] = useState<string>("");
     const [DSFM, setDSFM] = useState("")
+
+    const [canGoToPrevMonth, setCanGoToPrevMonth] = useState(true)
+    const [warningMessage, setWarningMessage] = useState("");
 
     function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string) {
         if (isAvailable) {
@@ -25,54 +28,107 @@ function Calendar(props: { schedules: any; }) {
         }
     }
 
+    function checkAvailableDatesInMonth(isCancelled: boolean) {
+        let tempDate = new Date(currentDate)
+        let monthChangeCount = 0
+        const maxMonthChange = 12
+        const today = new Date()
+    
+        while (monthChangeCount < maxMonthChange) {
+            const startOfMonth = new Date(tempDate.getFullYear(), tempDate.getMonth(), 1)
+            const endOfMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0)
+    
+            const hasAvailableDates = dateTime.some(([startDate]) => {
+                const date = new Date(startDate)
+                if (date < today) {
+                    return false
+                }
+                return date >= startOfMonth && date <= endOfMonth
+            })
+
+            if (monthChangeCount === 1 && !hasAvailableDates) {
+                setCanGoToPrevMonth(false)
+                setWarningMessage(`เดือน ${months[tempDate.getMonth()]} ไม่มีวันที่เปิดจอง`)
+            } else {
+                setCanGoToPrevMonth(true)
+                setWarningMessage("เดือนที่ต้องการเปลี่ยนไม่มีวันที่เปิดจอง")
+            }
+    
+            if (hasAvailableDates) {
+                if (!isCancelled && tempDate.getTime() !== currentDate.getTime()) {
+                    setCurrentDate(tempDate)
+                }
+                return
+            }
+
+            tempDate.setMonth(tempDate.getMonth() + 1)
+            tempDate.setDate(1)
+            monthChangeCount++
+        }
+    }
+
     let dateTime: string[][] = [];
     let availableDates: string[] = []
     schedules?.forEach((schedule: any, index: number) => {
         if (!dateTime[index]) {
-            dateTime[index] = [];
+            dateTime[index] = []
         }
         if (schedule.StartDate && schedule.EndDate) {
-            dateTime[index].push(schedule.StartDate.slice(0, 10));
-            dateTime[index].push(schedule.EndDate.slice(0, 10));
-            dateTime[index].push(schedule.TourScheduleStatus.StatusName);
-            dateTime[index].push(schedule.AvailableSlots);
+            dateTime[index].push(schedule.StartDate.slice(0, 10))
+            dateTime[index].push(schedule.EndDate.slice(0, 10))
+            dateTime[index].push(schedule.TourScheduleStatus.StatusName)
+            dateTime[index].push(schedule.AvailableSlots)
             availableDates.push(schedule.StartDate.slice(0, 10))
         }
-    });
+    })
 
-    const changeMonth = (offset: number) => {
-        const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset));
-        setCurrentDate(newDate);
-    };
+    function changeMonth(offset: number){
+        const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset))
+        setCurrentDate(newDate)
 
-    const getCalendarDays = () => {
-        const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-        const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-        const daysInMonth = endOfMonth.getDate();
-        const startDayOfWeek = startOfMonth.getDay();
+        if (offset === -1) {
+            const prevMonthDate = new Date(newDate)
+            prevMonthDate.setMonth(prevMonthDate.getMonth() - 1)
+            checkAvailableDatesInMonth(false)
+        }
+    }
 
-        const weeks: JSX.Element[][] = [];
-        let daysArray: JSX.Element[] = [];
+    function showWorning(){
+        
+    }
+
+    function getCalendarDays() {
+        const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+        const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
+        const daysInMonth = endOfMonth.getDate()
+        const startDayOfWeek = startOfMonth.getDay()
+
+        const weeks: JSX.Element[][] = []
+        let daysArray: JSX.Element[] = []
 
         for (let i = 0; i < startDayOfWeek; i++) {
-            daysArray.push(<td key={`empty-${i}`}></td>);
+            daysArray.push(<td key={`empty-${i}`}></td>)
         }
 
         var status = 0
         for (let day = 1; day <= daysInMonth; day++) {
-            const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+
+            const today = new Date()
+            const isPastDate = new Date(dateStr) < today
 
             let isAvailable = false
             let index = -1
             for (let i = 0; i < dateTime.length; i++) {
                 isAvailable = dateTime[i]?.[0] === dateStr ? true : false
-                if (isAvailable && dateTime[i]?.[2] === "ยังไม่เต็ม") {
-                    index = i
-                    break
-                }
-                if (isAvailable) {
+
+                if (isAvailable && dateTime[i]?.[2] === "ยังไม่เต็ม" && !isPastDate) {
                     index = i
                     status += 1
+                    break
+                }
+                if (isAvailable && !isPastDate) {
+                    index = i
                     break
                 }
             }
@@ -85,15 +141,8 @@ function Calendar(props: { schedules: any; }) {
 
             const dateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
 
-            const months = [
-                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
-                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
-            ];
-
             const dateStrFormat = `วันที่ ${dateObj.getDate()} - ${endTimeFormat} ${months[dateObj.getMonth()]} ${dateObj.getFullYear() + 543} | ว่างจำนวน ${availableSlots} ที่นั่ง`;
-
             if (isAvailable && status == 1 && dateSelectedFormat == "" && dateSelected == "" && scheduleStatus == "ยังไม่เต็ม") {
-                console.log(scheduleStatus)
                 setDSFM(dateStrFormat);
                 setDateSelected(dateStr);
                 status += 1
@@ -101,12 +150,11 @@ function Calendar(props: { schedules: any; }) {
 
             daysArray.push(
                 <td key={day}>
-                    <button    
-                        // className={`calendar-day ${isAvailable ? 'available' : ''} ${dateSelected === dateStr ? 'selected' : (scheduleStatus === "เต็ม" ? "full" : "")}`}
-                        className={`calendar-day ${isAvailable ? (scheduleStatus==="เต็ม" ? "full" : "available") : ''} ${dateSelected === dateStr ? 'selected' : ""}`}
+                    <button
+                        className={`calendar-day ${isAvailable ? (scheduleStatus === "เต็ม" ? "full" : "available") : ''} ${dateSelected === dateStr ? 'selected' : ""}`}
                         onClick={() => handleSetDate(isAvailable, dateStrFormat, dateStr)}
                         disabled={scheduleStatus === "เต็ม" ? true : false}
-                    >{scheduleStatus==="เต็ม" ? "เต็ม" : day }</button>
+                    >{scheduleStatus === "เต็ม" ? "เต็ม" : day}</button>
                 </td>
             );
 
@@ -122,12 +170,28 @@ function Calendar(props: { schedules: any; }) {
         setDateSelectedFormat(DSFM)
     }, [DSFM])
 
+    useEffect(() => {
+        let isCancelled = false;
+        checkAvailableDatesInMonth(isCancelled);
+        return () => {
+            isCancelled = true;
+        };
+    }, [currentDate, dateTime]);
+    
+
     const dayOfWeeks = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์"]
+    const months = [
+        "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+        "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
 
     return (
         <div className="calendar-container">
             <div className="calendar-header">
-                <button className="prev-btn btn" onClick={() => changeMonth(-1)}>«</button>
+                <button className="prev-btn btn" 
+                    onClick={() => changeMonth(-1)} 
+                    disabled={!canGoToPrevMonth}
+                >«</button>
                 <span>
                     {currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear() + 543}
                 </span>

@@ -2,7 +2,7 @@ import { Key, useState, useEffect } from "react"
 import "./Booking.css"
 import { CustomersInterface } from "../../interfaces/ICustomers";
 import { CreateBooking, CreateBookingDetail, GetCustomerByID, GetTourScheduleByID, UpdateTourScheduleByID } from "../../services/http";
-import { useDateContext } from "../../context/DateContext";
+import { useDateContext } from "../../contexts/DateContext";
 import { BookingsInterface } from "../../interfaces/IBookings";
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";

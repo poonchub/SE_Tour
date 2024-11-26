@@ -430,8 +430,8 @@ func SetupDatabase() {
 	// Create Tour Schedule
 	StartDate1, _ := time.Parse("2006-01-02", "2024-11-10")
 	EndDate1, _ := time.Parse("2006-01-02", "2024-11-11")
-	StartDate2, _ := time.Parse("2006-01-02", "2024-11-26")
-	EndDate2, _ := time.Parse("2006-01-02", "2024-11-27")
+	StartDate2, _ := time.Parse("2006-01-02", "2024-11-23")
+	EndDate2, _ := time.Parse("2006-01-02", "2024-11-24")
 	StartDate3, _ := time.Parse("2006-01-02", "2024-12-01")
 	EndDate3, _ := time.Parse("2006-01-02", "2024-12-02")
 	StartDate4, _ := time.Parse("2006-01-02", "2024-12-05")

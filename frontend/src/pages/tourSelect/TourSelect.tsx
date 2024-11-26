@@ -9,7 +9,7 @@ import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
 import { RoomTypesInterface } from "../../interfaces/IRoomTypes";
 import Footer from "../../components/footer/Footer";
 import Booking from "../../components/booking/Booking";
-import { useDateContext } from "../../context/DateContext";
+import { useDateContext } from "../../contexts/DateContext";
 
 import { message } from "antd";
 import { ActivitiesInterface } from "../../interfaces/IActivities";
@@ -100,7 +100,7 @@ function TourSelect() {
 
     const imageElement = (tourPackage?.TourImages as any[])?.map(
         (image, index) => (
-            <div className="sImage" id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
+            <div className={`sImage ${bigImage==image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
                 <img src={`${apiUrl}/${image.FilePath}`} />
             </div>
         )

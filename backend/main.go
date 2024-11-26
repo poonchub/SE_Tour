@@ -33,8 +33,6 @@ func main() {
 			AllowMethods: []string{"POST", "GET", "OPTIONS", "PATCH"},
 			AllowHeaders: []string{"Content-Type", "Authorization"},
 		}))
-
-		router.POST("/generate-qr", controllers.GenerateQR)
 		
 		// BookingDetails
 		router.GET("/booking-details", controllers.ListBookingDetails)
