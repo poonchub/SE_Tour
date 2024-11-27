@@ -15,7 +15,7 @@ const MainRoutes = (): RouteObject => {
                 element: <Home />,
             },
             {
-                path: "/Login-Customer",
+                path: "/login-customer",
                 element: <LoginForCustomer/>,
             },
             {

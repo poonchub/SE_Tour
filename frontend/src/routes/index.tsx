@@ -18,7 +18,6 @@ function ConfigRoutes() {
     // else {
     //     routes = [MainRoutes()];
     // }
-    console.log(isLoggedIn)
     if (isLoggedIn){
         routes = [CustomerRoutes()]
     }

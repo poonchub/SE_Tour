@@ -9,9 +9,18 @@ function LoginForCustomer() {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
-    const [messageApiLogin, contextHolderLogin] = message.useMessage();
+    const [messageApiLogin, contextHolderLogin] = message.useMessage()
+    const [focusedInput, setFocusedInput] = useState<string | null>(null)
 
-    async function handleSubmit(e: { preventDefault: () => void }){
+    const handleFocus = (inputName: string) => {
+        setFocusedInput(inputName)
+    };
+
+    const handleBlur = () => {
+        setFocusedInput(null)
+    }
+
+    async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();
         let hasError = false;
         const newErrors: { username?: string; password?: string } = {};
@@ -39,9 +48,7 @@ function LoginForCustomer() {
 
                 let resGetCustomer = await GetCustomerByID(resSignin.id);
 
-                localStorage.setItem("firstName", resGetCustomer.FirstName);
-                localStorage.setItem("lastName", resGetCustomer.LastName);
-                localStorage.setItem("profilePath", resGetCustomer.ProfilePath);
+                localStorage.setItem('customer', JSON.stringify(resGetCustomer))
 
                 setTimeout(() => {
                     location.href = "/";
@@ -62,7 +69,11 @@ function LoginForCustomer() {
                 <div className="box">
                     <form className="login-form" onSubmit={handleSubmit}>
                         <span className="title">Sign In</span>
-                        <div className="input-box">
+                        <div className="input-box"
+                            style={{
+                                border: focusedInput === "input1" ? "2px solid var(--yellow)" : "2px solid transparent"
+                            }}
+                        >
                             <span>Username</span>
                             <input
                                 type="text"
@@ -70,10 +81,16 @@ function LoginForCustomer() {
                                 value={username}
                                 autoComplete="off"
                                 onChange={(e) => setUsername(e.target.value)}
+                                onFocus={() => handleFocus("input1")}
+                                onBlur={handleBlur}
                             />
                             {errors.username && <p className="err-text">{errors.username}</p>}
                         </div>
-                        <div className="input-box">
+                        <div className="input-box"
+                            style={{
+                                border: focusedInput === "input2" ? "2px solid var(--yellow)" : "2px solid transparent"
+                            }}
+                        >
                             <span>Password</span>
                             <input
                                 type="password"
@@ -81,11 +98,16 @@ function LoginForCustomer() {
                                 value={password}
                                 autoComplete="off"
                                 onChange={(e) => setPassword(e.target.value)}
+                                onFocus={() => handleFocus("input2")}
+                                onBlur={handleBlur}
                             />
                             {errors.password && <p className="err-text">{errors.password}</p>}
                         </div>
-                        <button className="submit-btn" type="submit">
-                            Login
+                        <button className="submit-btn btn" type="submit">
+                            Log In
+                        </button>
+                        <button className="signup-btn btn" type="submit">
+                            Sign Up
                         </button>
                     </form>
                 </div>
