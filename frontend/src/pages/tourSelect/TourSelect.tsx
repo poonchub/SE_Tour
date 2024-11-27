@@ -154,7 +154,7 @@ function TourSelect() {
         ) : ""
     })
 
-    console.log(scheduleSelected)
+    console.log(tourPackage)
 
     // const groupedDate = activities?.reduce((groups: Record<string, typeof activities>, item) => {
     //     const group = item.DateTime?.slice(0, 10) ?? "Unknown"

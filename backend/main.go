@@ -71,6 +71,9 @@ func main() {
 		router.GET("/tour-schedule/:id", controllers.GetTourScheduleByID)
 		router.PATCH("/tour-schedule/:id", controllers.UpdateTourSchedule)
 
+		// ScheduleActivities
+		router.GET("/schedule-activity/:id", controllers.GetScheduleActivityByTourScheduleID)
+
 	}
 
 	r.GET("/", func(c *gin.Context) {
