@@ -1,9 +1,10 @@
 import { useRoutes, RouteObject } from "react-router-dom";
 import MainRoutes from "./MainRoutes";
+import CustomerRoutes from "./CustomerRoutes";
 
 function ConfigRoutes() {
 
-    // const isLoggedIn = localStorage.getItem("isLogin") === "true";
+    const isLoggedIn = localStorage.getItem("isLogin") === "true";
     // const loggedinByOwner = localStorage.getItem("loginByOwner") == "true";
 
     let routes: RouteObject[] = [];
@@ -17,7 +18,13 @@ function ConfigRoutes() {
     // else {
     //     routes = [MainRoutes()];
     // }
-    routes = [MainRoutes()];
+    console.log(isLoggedIn)
+    if (isLoggedIn){
+        routes = [CustomerRoutes()]
+    }
+    else {
+        routes = [MainRoutes()];
+    }
 
     return useRoutes(routes);
 }

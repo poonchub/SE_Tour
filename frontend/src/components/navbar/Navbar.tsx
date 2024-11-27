@@ -15,6 +15,7 @@ function Navbar(props: { page: string; }){
             <div className="link-page-box">
                 <Link to="/" className="link-home link">หน้าหลัก</Link>
                 <Link to="/tour-package" className="link-tour-package link">ทัวร์แพ็กเกจ</Link>
+                <Link to="" className="link-promotion link">โปรโมชั่น</Link>
                 <Link to="/profile" className="link-profile link">โปรไฟล์</Link>
             </div>
         </nav>

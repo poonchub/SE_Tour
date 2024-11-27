@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import "./TourSelect.css";
 import { TourPackagesInterface } from "../../interfaces/ITourPackages";
-import { apiUrl, GetPersonTypes, GetRoomTypes, GetTourPackageByID } from "../../services/http";
+import { apiUrl, GetPersonTypes, GetRoomTypes, GetScheduleActivityByTourScheduleID, GetTourPackageByID } from "../../services/http";
 import Loading from "../../components/loading/Loading";
 import Calendar from "../../components/calendar/Calendar";
 import { PersonTypesInterface } from "../../interfaces/IPersonTypes";
@@ -12,8 +12,7 @@ import Booking from "../../components/booking/Booking";
 import { useDateContext } from "../../contexts/DateContext";
 
 import { message } from "antd";
-// import { ActivitiesInterface } from "../../interfaces/IActivities";
-import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
+import { ScheduleActivities } from "../../interfaces/IScheduleActivitise";
 
 function TourSelect() {
 
@@ -22,8 +21,8 @@ function TourSelect() {
     const [tourPackage, setTourPackage] = useState<TourPackagesInterface>();
     const [personTypes, setPersonTypes] = useState<PersonTypesInterface[]>();
     const [roomTypes, setRoomTypes] = useState<RoomTypesInterface[]>();
-    // const [activities, setActivities] = useState<ActivitiesInterface[] | undefined>([]);
-    const [scheduleSelected, setScheduleSelected] = useState<TourSchedulesInterface>()
+    const [scheduleActivities, setScheduleActivities] = useState<ScheduleActivities[]>();
+    const [scheAcSort, setScheAcSort] = useState<ScheduleActivities[]>();
 
     const [bigImage, setBigImage] = useState<string>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -51,11 +50,19 @@ function TourSelect() {
         }
     }
 
+    async function getScheduleActivities() {
+        const resScheAc = await GetScheduleActivityByTourScheduleID(dateID);
+        if (resScheAc) {
+            setScheduleActivities(resScheAc)
+        }
+    }
+
     async function fetchData() {
         try {
             getTourPackage()
             getPersonTypes()
             getRoomTypes()
+            getScheduleActivities()
         } catch (error) {
             console.error('Failed to fetch data:', error);
         } finally {
@@ -63,32 +70,22 @@ function TourSelect() {
         }
     }
 
-    // const sortActivitiesByDateTime = () => {
-    //     if (tourPackage?.Activities) {
-    //         const sorted = [...tourPackage?.Activities].sort((a, b) =>
-    //             (a.DateTime ?? "").localeCompare(b.DateTime ?? "")
-    //         );
-    //         setActivities(sorted);
-    //     }
-    // };
-
     useEffect(() => {
         fetchData()
-    }, [isLoading]);
-
+    }, [isLoading, dateID]);
+    
     useEffect(() => {
-        // sortActivitiesByDateTime()
-    }, [tourPackage])
+        if (scheduleActivities) {
+            const sortedActivities = [...scheduleActivities].sort((a, b) => {
+                const dateA = a.DateTime ? new Date(a.DateTime).getTime() : 0;
+                const dateB = b.DateTime ? new Date(b.DateTime).getTime() : 0;
+                return dateA - dateB;
+            });
+            setScheAcSort(sortedActivities); 
+        }
+    }, [scheduleActivities])    
 
     const schedules = tourPackage?.TourSchedules
-
-    useEffect(()=>{
-        schedules?.forEach((schedule, _)=>{
-            if (schedule.ID===dateID){
-                setScheduleSelected(schedule)
-            }
-        })
-    }, [schedules])
 
     const startPrice = localStorage.getItem("startPrice");
     const tourPackageID = localStorage.getItem("tourPackageID");
@@ -110,7 +107,7 @@ function TourSelect() {
 
     const imageElement = (tourPackage?.TourImages as any[])?.map(
         (image, index) => (
-            <div className={`sImage ${bigImage===image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
+            <div className={`sImage ${bigImage === image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
                 <img src={`${apiUrl}/${image.FilePath}`} />
             </div>
         )
@@ -154,51 +151,39 @@ function TourSelect() {
         ) : ""
     })
 
-    console.log(tourPackage)
+    // console.log(dateID)
+    // console.log(scheAcSort)
 
-    // const groupedDate = activities?.reduce((groups: Record<string, typeof activities>, item) => {
-    //     const group = item.DateTime?.slice(0, 10) ?? "Unknown"
-    //     if (!groups[group]) {
-    //         groups[group] = []
-    //     }
-
-    //     if (group !== "Unknown" && scheduleSelected?.StartDate && scheduleSelected.EndDate) {
-    //         const date = new Date(group);
-    //         const start = new Date(scheduleSelected?.StartDate);
-    //         const end = new Date(scheduleSelected.EndDate);
+    const groupedActivities = scheAcSort?.reduce((groups: Record<string, typeof scheAcSort>, item) => {
+        const date = item?.DateTime?.slice(0, 10) ?? "Unknown"
+        if (!groups[date]) {
+            groups[date] = [];
+        }
+        groups[date].push(item);
+        return groups;
+    }, {});
     
-    //         // ตรวจสอบว่า date อยู่ในช่วงระหว่าง startDate และ endDate
-    //         if (date < start || date > end) {
-    //             return groups; // ข้ามวันที่ไม่อยู่ในช่วง
-    //         }
-    //     }
-        
-    //     groups[group].push(item)
-    //     return groups;
-    // }, {});
+    // console.log(groupedActivities);
 
-    // console.log(groupedDate)
-
-
-    // const activitiesElement = groupedDate && Object.entries(groupedDate).map(([date, items]) => {
-    //     return (
-    //         <div key={date} className="date-box">
-    //             <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
-    //             <ul>
-    //                 {items.map((item, index) => (
-    //                     <li className="date" key={index}>
-    //                         {item.DateTime?.slice(11,16)} น.
-    //                         <ul>
-    //                             <li className="description">
-    //                                 {item.Description}
-    //                             </li>
-    //                         </ul>
-    //                     </li>
-    //                 ))}
-    //             </ul>
-    //         </div>
-    //     )
-    // })
+    const activitiesElement = groupedActivities && Object.entries(groupedActivities).map(([date, items]) => {
+        return (
+            <div key={date} className="date-box">
+                <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
+                <ul>
+                    {items.map((item, index) => (
+                        <li className="date" key={index}>
+                            {item.DateTime?.slice(11,16)} น. {item.Activity?.ActivityName}
+                            <ul>
+                                <li className="description">
+                                    {item.Activity?.Description}
+                                </li>
+                            </ul>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )
+    })
 
     return isLoading ? (
         <Loading />
@@ -284,7 +269,7 @@ function TourSelect() {
                         <h2 className="title">แผนการเดินทาง</h2>
                     </div>
                     <div className="activities-box">
-                        {/* {activitiesElement} */}
+                        {activitiesElement}
                     </div>
                 </div>
             </section>

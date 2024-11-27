@@ -42,7 +42,6 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
     const [isBookingBtnDisabled, setIsBookingDisabled] = useState(false)
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
     async function getCustomerByID() {
         let res = await GetCustomerByID(1)
         if (res) {
@@ -69,6 +68,23 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
     }
 
     function handleChange(e: string, index: Key, p: number | undefined) {
+        const newCount = Number(e);
+        const newTotalPeople =
+        (index === 0 ? (newCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + infantAddBedCount + infantNoAddBedCount)
+            : index === 1 ? (childAdultSingleCount + 2*newCount + 3*childAdultThreeCount + infantAddBedCount + infantNoAddBedCount) 
+            : index === 2 ? (childAdultSingleCount + 2*childAdultDoubleCount + 3*newCount + infantAddBedCount + infantNoAddBedCount) 
+            : index === 3 ? (childAdultSingleCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + newCount + infantNoAddBedCount) 
+            : (childAdultSingleCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + infantAddBedCount + newCount) 
+        )
+
+        if (tourSchedule && newTotalPeople > (tourSchedule.AvailableSlots ?? 0)) {
+            messageApi.open({
+                type: "warning",
+                content: "จำนวนผู้เดินทางเกินกว่าที่นั่งที่เหลือ",
+            });
+            return;
+        }
+
         switch (index) {
             case 0:
                 setChildAdultSingleCount(Number(e))
@@ -110,7 +126,8 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
             if (resBooking) {
 
                 const tourScheduleData: TourSchedulesInterface = {
-                    AvailableSlots: (tourSchedule?.AvailableSlots ?? 0) - totalPeople
+                    AvailableSlots: (tourSchedule?.AvailableSlots ?? 0) - totalPeople,
+                    TourScheduleStatusID: tourSchedule?.AvailableSlots==totalPeople ? 1 : 2,
                 }
 
                 UpdateTourScheduleByID(tourScheduleData, dateID)
@@ -197,13 +214,16 @@ function Booking(props: { roomTypes: any; tourPackage: any; setPopUp: any; messa
         fetchData()
     }, [])
 
+    console.log(tourSchedule?.AvailableSlots)
+
     useEffect(() => {
-        const total = childAdultSinglePrice + 2 * childAdultDoublePrice + 3 * childAdultThreePrice + infantAddBedPrice + infantNoAddBedPrice
+        const total = childAdultSinglePrice + 2*childAdultDoublePrice + 3*childAdultThreePrice + infantAddBedPrice + infantNoAddBedPrice
         setTotalPrice(total)
     }, [childAdultSinglePrice, childAdultDoublePrice, childAdultThreePrice, infantAddBedPrice, infantNoAddBedPrice])
 
     useEffect(() => {
-        const count = childAdultSingleCount + 2 * childAdultDoubleCount + 3 * childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
+
+        const count = childAdultSingleCount + 2*childAdultDoubleCount + 3*childAdultThreeCount + infantAddBedCount + infantNoAddBedCount
         setTotalPeople(count)
 
         if (childAdultSingleCount == 0 && childAdultDoubleCount == 0 && childAdultThreeCount == 0) {

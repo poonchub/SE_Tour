@@ -1,26 +1,28 @@
 import { BookingDetailsInterface } from "../../interfaces/IBookingDetails";
 import { BookingsInterface } from "../../interfaces/IBookings";
+import { SignInInterface } from "../../interfaces/ISignIn";
 import { TourSchedulesInterface } from "../../interfaces/ITourSchedules";
 
 export const apiUrl = "http://localhost:8000";
 
-// async function SignInForCustomer(data: SignInInterface) {
-//     const requestOptions = {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(data),
-//     };
+// SignInForCustomer
+async function SignInForCustomer(data: SignInInterface) {
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    };
 
-//     let res = await fetch(`${apiUrl}/signin-customer`, requestOptions).then((res) => {
-//         if (res.status == 200) {
-//             return res.json();
-//         } else {
-//             return false;
-//         }
-//     });
+    let res = await fetch(`${apiUrl}/signin-customer`, requestOptions).then((res) => {
+        if (res.status == 200) {
+            return res.json();
+        } else {
+            return false;
+        }
+    });
 
-//     return res;
-// }
+    return res;
+}
 
 // async function SignInForOwner(data: SignInInterface) {
 //   const requestOptions = {
@@ -40,7 +42,7 @@ export const apiUrl = "http://localhost:8000";
 //   return res;
 // }
 
-// BookingDetail
+// BookingDetails
 async function GetBookingDetails() {
     const requestOptions = {
         method: "GET",
@@ -78,7 +80,7 @@ async function CreateBookingDetail(data: BookingDetailsInterface) {
     return res;
 }
 
-// Booking
+// Bookings
 async function GetBookings() {
     const requestOptions = {
         method: "GET",
@@ -150,7 +152,7 @@ async function CreateBooking(data: BookingsInterface) {
     return res;
 }
 
-// Customer
+// Customers
 async function GetCustomerByID(id: Number) {
     const requestOptions = {
         method: "GET",
@@ -169,7 +171,7 @@ async function GetCustomerByID(id: Number) {
     return res;
 }
 
-// PersonType
+// PersonTypes
 async function GetPersonTypes() {
     const requestOptions = {
         method: "GET",
@@ -190,7 +192,7 @@ async function GetPersonTypes() {
     return res;
 }
 
-// Promotion
+// Promotions
 async function GetPromotionByCode(code: string | undefined) {
     const requestOptions = {
         method: "GET",
@@ -209,7 +211,7 @@ async function GetPromotionByCode(code: string | undefined) {
     return res;
 }
 
-// Province
+// Provinces
 async function GetProvinces() {
     const requestOptions = {
         method: "GET",
@@ -230,7 +232,7 @@ async function GetProvinces() {
     return res;
 }
 
-// RoomType
+// RoomTypes
 async function GetRoomTypes() {
     const requestOptions = {
         method: "GET",
@@ -345,7 +347,28 @@ async function UpdateTourScheduleByID(data: TourSchedulesInterface, id: Number |
     return res;
 }
 
+// ScheduleActivities
+async function GetScheduleActivityByTourScheduleID(id: Number | undefined) {
+    const requestOptions = {
+        method: "GET",
+    };
+
+    let res = await fetch(`${apiUrl}/schedule-activity/${id}`, requestOptions).then(
+        (res) => {
+            if (res.status == 200) {
+                return res.json();
+            } else {
+                return false;
+            }
+        }
+    );
+
+    return res;
+}
+
 export {
+    // SignInForCustomer
+    SignInForCustomer,
 
     // BookingDetails
     GetBookingDetails,
@@ -382,4 +405,7 @@ export {
     // TourSchedules
     GetTourScheduleByID,
     UpdateTourScheduleByID,
+
+    // ScheduleActivities
+    GetScheduleActivityByTourScheduleID,
 }

@@ -19,8 +19,8 @@ func main() {
 
 	r.Use(CORSMiddleware())
 
-	// r.POST("/signin-customer", controller.SignInForCustomer)
-	// r.POST("/signin-owner", controller.SignInForOwner)
+	r.POST("/signin-customer", controllers.SignInForCustomer)
+	// r.POST("/signin-owner", controllers.SignInForOwner)
 
 	r.Static("/images", "./images")
 

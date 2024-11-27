@@ -4,7 +4,7 @@ import { useDateContext } from "../../contexts/DateContext";
 
 function Calendar(props: { schedules: any; }) {
 
-    const { setDateSelected, dateSelectedFormat, setDateSelectedFormat, setDateID } = useDateContext()
+    const {dateID, setDateSelected, dateSelectedFormat, setDateSelectedFormat, setDateID } = useDateContext()
 
     const { schedules } = props
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -22,7 +22,7 @@ function Calendar(props: { schedules: any; }) {
             schedules.map((scd: any) => {
                 const startDate = scd.StartDate.slice(0, 10)
                 if (startDate === dateStr) {
-                    setDateID(scd.ID)
+                    setScheID(scd.ID)
                 }
             })
         }
