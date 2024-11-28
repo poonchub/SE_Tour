@@ -378,7 +378,7 @@ func SetupDatabase() {
 		Email:       "spider@gmail.com",
 		Password:    hashedPassword,
 		PhoneNumber: "098-594-4576",
-		ProfilePath: "images/profileCustomers/customer1.jpg",
+		ProfilePath: "images/profileCustomers/customer1.png",
 	}
 	db.FirstOrCreate(customer, &entity.Customers{
 		Email: customer.Email,

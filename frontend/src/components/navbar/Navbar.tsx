@@ -9,7 +9,6 @@ function Navbar(props: { page: string; }) {
 
     const customer = storedCustomer ? JSON.parse(storedCustomer) : ""
 
-    console.log(customer)
     const imageUrl = `${apiUrl}/${customer.ProfilePath}`
 
     return (

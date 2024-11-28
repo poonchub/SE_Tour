@@ -158,7 +158,6 @@ function TourPackage() {
                         ))}
                     </div>
                 </div>
-
                 <div className="subsection">
                     <div className="show-mini-promotion">
 
