@@ -1,6 +1,7 @@
 @import "../../styles/ColorSheet.css";
 
 .tour-select-page {
+    width: 100vw;
     height: 100vh;
     overflow: scroll;
     overflow-y: auto;
@@ -8,12 +9,11 @@
 
     & section {
         width: 100%;
+        padding: 40px;
         display: flex;
         flex-direction: column;
-        flex-direction: column;
         align-items: center;
-        margin-top: 50px;
-        padding: 40px;
+        margin-top: 35px;
 
         & .package-detail {
             width: 75%;
@@ -191,23 +191,21 @@
                     & .date-booking-box {
                         display: flex;
                         width: 100%;
-                        height: 50px;
                         justify-content: space-between;
-                        align-items: center;
+                        gap: 10px;
 
                         & .date-booking {
                             width: 80%;
-                            height: 100%;
                             border: 2px solid #B1B1B1;
                             box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
                             display: flex;
                             align-items: center;
-                            padding: 0px 25px;
+                            padding: 5px 25px;
                             font-weight: 500;
                         }
 
                         & .booking-btn {
-                            width: 17%;
+                            width: 20%;
                             height: 100%;
                             background-color: var(--green);
                             transition: all ease 0.5s;
@@ -215,6 +213,7 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            text-align: center;
                             font-weight: 700;
                             box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
                             cursor: pointer;
@@ -231,7 +230,7 @@
                         display: flex;
                         flex-direction: column;
                         border: 2px dashed #B1B1B1;
-                        margin-top: 28px;
+                        margin-top: 15px;
                         padding: 25px 25px;
                         height: 100%;
 
@@ -244,11 +243,11 @@
                         & .person-type-title {
                             display: flex;
                             justify-content: space-between;
-                            /* margin-bottom: 30px; */
+                            gap: 15px;
 
                             & .type-box {
                                 display: flex;
-                                width: 46%;
+                                width: 50%;
                                 flex-direction: column;
                                 padding: 0px 20px;
 
@@ -314,7 +313,6 @@
                 padding: 0px 30px;
 
                 & .date-box {
-                    /* border: 1px solid red; */
                     width: 50%;
                     padding: 10px 20px;
 
@@ -345,33 +343,154 @@
 
 @media only screen and (max-width: 1600px) {
     .tour-select-page section {
-        & .package-detail {
+        .package-detail {
             flex-direction: column;
 
-            & .image-box {
+            .image-box {
                 width: 100%;
-                margin: 22px;
+                margin-bottom: 22px;
 
-                & .big-image {
-                    height: 500px;
+                .big-image {
+                    height: 475px;
                 }
 
-                & .small-image {
-                    height: 180px;
+                .small-image {
+                    height: 150px;
                 }
             }
 
-            & .description-box {
+            .description-box {
                 width: 100%;
             }
         }
 
-        & .travel-schedule {
-            & .subsection {
-                & .date-booking-box {
-                    /* width: auto; */
+        .travel-schedule {
+            .subsection {
+                gap: 15px;
+                .calendar-box{
+                    min-width: 365px;
                 }
             }
+        }
+    }
+}
+
+@media only screen and (max-width: 1480px) {
+    .tour-select-page section {
+        .package-detail {
+            flex-direction: column;
+
+            .image-box {
+                .big-image {
+                    height: 380px;
+                }
+
+                .small-image {
+                    height: 160px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1180px) {
+    .tour-select-page section {
+        .package-detail {
+            flex-direction: column;
+
+            .image-box {
+                .big-image {
+                    height: 320px;
+                }
+
+                .small-image {
+                    height: 150px;
+                }
+            }
+        }
+        .travel-schedule {
+            .subsection {
+                .travel-schedule-detail .price-detail .person-type-title{
+                    flex-direction: column;
+
+                    .type-box{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .tour-select-page section {
+        .travel-schedule {
+            .subsection {
+                flex-direction: column;
+                .calendar-box {
+                    width: 100%;
+                }
+
+                .travel-schedule-detail{
+                    width: 100%;
+
+                    .date-booking-box{
+                        display: flex;
+                        height: 38px;
+                        
+                        .booking-btn{
+                            height: 100%;
+                        }
+                    }
+                }
+                .travel-schedule-detail .price-detail .person-type-title{
+                    flex-direction: row;
+
+                    .type-box{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 855px) {
+    .tour-select-page section {
+        .travel-schedule {
+            .subsection {
+                flex-direction: column;
+                .calendar-box {
+                    width: 100%;
+                }
+
+                .travel-schedule-detail{
+                    width: 100%;
+
+                    .date-booking-box{
+                        display: flex;
+                        height: 62px;
+                        
+                        .booking-btn{
+                            height: 100%;
+                        }
+                    }
+                }
+                .travel-schedule-detail .price-detail .person-type-title{
+                    flex-direction: column;
+
+                    .type-box{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .travel-plane .activities-box {
+            flex-direction: column;
+                .date-box{
+                    width: 100%;
+                }
         }
     }
 }
