@@ -202,6 +202,9 @@ function TourSelect() {
                     </div>
                     <div className="description-box">
                         <h2 className="tour-name">{tourPackage?.TourName}</h2>
+                        <span className="package-code">
+                            {`รหัสแพ็กเกจ: ${tourPackage?.PackageCode}`}
+                        </span>
                         <div className="package-detail-box des-box">
                             <span className="title">รายละเอียดแพ็กเกจ</span>
                             <p className="content1 detail"></p>
