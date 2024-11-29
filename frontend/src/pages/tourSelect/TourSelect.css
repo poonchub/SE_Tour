@@ -26,7 +26,7 @@
                 display: flex;
                 flex-direction: column;
 
-                & .big-image{
+                & .big-image {
                     width: 100%;
                     height: 50%;
                     overflow: hidden;
@@ -37,9 +37,9 @@
                     align-items: center;
                     justify-content: center;
                     background: var(--orange-yellow-for-bg);
-                    padding: 2px;             
+                    padding: 2px;
 
-                    & img{
+                    & img {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
@@ -47,7 +47,7 @@
                     }
                 }
 
-                & .small-image{
+                & .small-image {
                     height: 24%;
                     width: 100%;
                     display: flex;
@@ -57,7 +57,7 @@
                     padding: 15px 0px;
                     gap: 10px;
 
-                    & .sImage{
+                    & .sImage {
                         height: 100%;
                         min-width: 220px;
                         border-radius: 10px;
@@ -65,30 +65,31 @@
                         overflow: hidden;
                         box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
 
-                        & img{
+                        & img {
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
                         }
                     }
 
-                    & .selected{
+                    & .selected {
                         background: var(--orange-yellow-for-bg);
                         padding: 2px;
 
-                        & img{
+                        & img {
                             width: 100%;
                             height: 100%;
                             border-radius: 8px;
                         }
                     }
                 }
+                
                 .small-image::-webkit-scrollbar-thumb {
                     border-radius: 15px;
                     -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
                     background-color: #b4b4b4;
                     margin-top: 50px;
-                  }
+                }
             }
 
             & .description-box {
@@ -105,29 +106,29 @@
                 }
 
                 & .des-box {
-                    & .title{
+                    & .title {
                         font-weight: 600;
                     }
 
-                    & .detail{
+                    & .detail {
                         padding: 5px 15px;
                     }
                 }
 
-                & .package-detail-box{
+                & .package-detail-box {
                     margin: 15px 0px;
                 }
 
-                & .price-box{
+                & .price-box {
                     display: flex;
                     flex-direction: column;
                     align-items: end;
 
-                    & .price-title{
+                    & .price-title {
                         font-weight: 600;
                     }
 
-                    & .price{
+                    & .price {
                         font-weight: 700;
                         font-size: 1.3rem;
                         color: var(--orange);
@@ -142,7 +143,7 @@
             }
         }
 
-        & .travel-schedule{
+        & .travel-schedule {
             width: 75%;
             height: auto;
             background-color: rgb(255, 255, 255);
@@ -153,16 +154,17 @@
             display: flex;
             flex-direction: column;
 
-            & .title-box{
+            & .title-box {
                 width: 100%;
                 height: 40px;
                 display: flex;
-                & .img-box{
+
+                & .img-box {
                     width: 30px;
                     height: 30px;
                     margin-right: 15px;
 
-                    & img{
+                    & img {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
@@ -170,30 +172,30 @@
                 }
             }
 
-            & .subsection{
+            & .subsection {
                 width: 100%;
                 display: flex;
                 margin-top: 20px;
 
-                & .calendar-box{
+                & .calendar-box {
                     width: 40%;
                     display: flex;
                     justify-content: center;
                 }
-    
-                & .travel-schedule-detail{
+
+                & .travel-schedule-detail {
                     width: 60%;
                     display: flex;
                     flex-direction: column;
 
-                    & .date-booking-box{
+                    & .date-booking-box {
                         display: flex;
                         width: 100%;
                         height: 50px;
                         justify-content: space-between;
                         align-items: center;
 
-                        & .date-booking{
+                        & .date-booking {
                             width: 80%;
                             height: 100%;
                             border: 2px solid #B1B1B1;
@@ -204,7 +206,7 @@
                             font-weight: 500;
                         }
 
-                        & .booking-btn{
+                        & .booking-btn {
                             width: 17%;
                             height: 100%;
                             background-color: var(--green);
@@ -218,51 +220,52 @@
                             cursor: pointer;
 
                         }
-                        & .booking-btn:hover{
+
+                        & .booking-btn:hover {
                             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
                             border-radius: 5px;
                         }
                     }
 
-                    & .price-detail{
+                    & .price-detail {
                         display: flex;
                         flex-direction: column;
                         border: 2px dashed #B1B1B1;
                         margin-top: 28px;
                         padding: 25px 25px;
                         height: 100%;
-    
-                        & .title{
+
+                        & .title {
                             font-weight: 600;
                             margin-bottom: 10px;
                             font-size: 1.1rem;
                         }
 
-                        & .person-type-title{
+                        & .person-type-title {
                             display: flex;
                             justify-content: space-between;
                             /* margin-bottom: 30px; */
 
-                            & .type-box{
+                            & .type-box {
                                 display: flex;
                                 width: 46%;
                                 flex-direction: column;
                                 padding: 0px 20px;
 
-                                & .type-title{
+                                & .type-title {
                                     width: 100%;
                                     color: var(--blue);
                                     margin-bottom: 10px;
                                     font-weight: 500;
                                 }
 
-                                & .price-box{
+                                & .price-box {
                                     display: flex;
                                     width: 100%;
                                     justify-content: space-between;
                                     margin: 3px 0px;
 
-                                    & .price{
+                                    & .price {
                                         color: var(--orange);
                                         font-weight: 600;
                                     }
@@ -272,11 +275,11 @@
                     }
                 }
 
-                
-            } 
+
+            }
         }
 
-        & .travel-plane{
+        & .travel-plane {
             width: 75%;
             height: auto;
             background-color: rgb(255, 255, 255);
@@ -287,16 +290,17 @@
             display: flex;
             flex-direction: column;
 
-            & .title-box{
+            & .title-box {
                 width: 100%;
                 height: 40px;
                 display: flex;
-                & .img-box{
+
+                & .img-box {
                     width: 30px;
                     height: 30px;
                     margin-right: 15px;
 
-                    & img{
+                    & img {
                         width: 100%;
                         height: 100%;
                         object-fit: cover;
@@ -304,35 +308,68 @@
                 }
             }
 
-            & .activities-box{
+            & .activities-box {
                 display: flex;
                 flex-wrap: wrap;
                 padding: 0px 30px;
 
-                & .date-box{
+                & .date-box {
                     /* border: 1px solid red; */
                     width: 50%;
                     padding: 10px 20px;
 
-                    & .day-title{
+                    & .day-title {
                         font-weight: 600;
                         display: flex;
                         margin-bottom: 8px;
                     }
 
-                    & ul{
+                    & ul {
                         list-style: none;
                         margin-left: 15px;
 
-                        & .date{
+                        & .date {
                             font-weight: 500;
                             margin-bottom: 8px;
 
-                            & .description{
+                            & .description {
                                 font-weight: 400;
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    .tour-select-page section {
+        & .package-detail {
+            flex-direction: column;
+
+            & .image-box {
+                width: 100%;
+                margin: 22px;
+
+                & .big-image {
+                    height: 500px;
+                }
+
+                & .small-image {
+                    height: 180px;
+                }
+            }
+
+            & .description-box {
+                width: 100%;
+            }
+        }
+
+        & .travel-schedule {
+            & .subsection {
+                & .date-booking-box {
+                    /* width: auto; */
                 }
             }
         }

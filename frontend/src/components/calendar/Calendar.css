@@ -38,9 +38,11 @@
     
             & th, td{
                 width: 14.28%;
+                min-width: 38px;
                 height: 40px;
                 text-align: center;
                 cursor: pointer;
+                font-size: 0.8rem;
             }
     
             & td{
@@ -78,5 +80,16 @@
                 }
             } 
         }
+    }
+}
+
+@media only screen and (max-width: 1600px){
+    .calendar-container{
+    }
+}
+
+@media only screen and (max-width: 1650px){
+    .calendar-container{
+        min-width: 365px;
     }
 }

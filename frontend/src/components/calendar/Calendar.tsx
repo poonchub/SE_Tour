@@ -15,6 +15,8 @@ function Calendar(props: { schedules: any; }) {
 
     const [canGoToPrevMonth, setCanGoToPrevMonth] = useState(true)
 
+    console.log(window.innerWidth)
+
     function handleSetDate(isAvailable: boolean, dateStrFormat: string, dateStr: string) {
         if (isAvailable) {
             setDateSFM(dateStrFormat);
