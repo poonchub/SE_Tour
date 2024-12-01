@@ -105,13 +105,13 @@ function TourSelect() {
         content3.innerHTML = tourPackage.TourDescriptions.PlacesHighlight.replace(/\n/g, "<br>");
     }
 
-    const imageElement = (tourPackage?.TourImages as any[])?.map(
-        (image, index) => (
+    const imageElement = (tourPackage?.TourImages as any[])?.map((image, index) => {
+        return (
             <div className={`sImage ${bigImage === image.FilePath ? "selected" : ""}`} id={`image${index + 1}`} key={index} onClick={() => setBigImage(image.FilePath)}>
                 <img src={`${apiUrl}/${image.FilePath}`} />
             </div>
         )
-    );
+    })
 
     const priceElement1 = roomTypes?.map((type, index) => {
         const tourPrices = tourPackage?.TourPrices

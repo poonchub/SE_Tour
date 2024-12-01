@@ -70,7 +70,6 @@
                     flex-direction: column;
                     gap: 8px;
 
-
                     & .btn{
                         width: 100%;
                         height: 45px;
@@ -80,12 +79,17 @@
                         font-weight: 500;
                         color: var(--description-color);
                         font-size: 14px;
+                        transition: all ease-in-out 0.3s;
                     }
 
                     & .btn.active{
                         background-color: var(--btn-color-4);
                         font-weight: 600;
                         color: var(--text-btn-color-2);
+                    }
+
+                    & .btn:hover{
+                        box-shadow: 0 0px 4px rgba(0, 0, 0, 0.2);
                     }
 
                     & .logout-btn{
@@ -102,37 +106,59 @@
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            padding: 30px 22px;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
 
-            & .your-booking-container{
+            & .con{
                 width: 100%;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                position: absolute;
+                padding: 22px;
+                left: 50%;
+                opacity: 0;
+                transition: all 0.5s ease-in-out;
 
                 & .title{
                     color: var(--title-color-2);
                     font-size: 16px;
-                }
+                    margin-bottom: 10px;
+                }   
+            }
 
+            & .your-booking-container{
                 & .booking-box{
-                    border: 1px solid;
                     border-radius: 10px;
-                    padding: 15px 20px;
+                    padding: 20px 20px;
                     display: flex;
                     font-size: 14px;
                     flex-direction: column;
+                    /* background-color: yellow; */
+                    border: 1px solid var(--border-color-2);
 
                     & .container{
                         width: 100%;
                         display: flex;
                         justify-content: space-between;
 
-                        & .tour-name{
-                            color: var();
+                        & .text-box{
+                            display: flex;
+                            flex-direction: column;
+                            font-weight: 500;
+
+                            & .tour-name{
+                                color: var();
+                            }
+
+                            & .tourID{
+                                color: var(--description-color);
+                            }
                         }
+                        
     
                         & .btn-box{
                             display: flex;
@@ -142,16 +168,31 @@
                                 padding: 0px 5px;
                                 border: 0px;
                             }
+
+                            & .check-detail-btn{
+                                /* color: #0003c9; */
+                            }
+
+                            & .check-status-btn{
+                                /* color: #eb2d56; */
+                            }
                         }
                     }
 
                     & .status-box{
                         width: 100%;
                         margin-top: 20px;
+                        display: flex;
+                        justify-content: center;
+
+                        & .step-error{
+                            display: flex;
+                        }
                         
                         & .ant-steps-item-title{
                             font-family: "Noto Sans Thai", sans-serif;
                             font-size: 14px;
+                            height: 20px;
                         }
 
                         & .ant-steps-item-icon{
@@ -175,6 +216,22 @@
                         }
                     }
                 }
+            }
+
+            
+
+            & .payment-history-container{
+            }
+
+            & .edit-profile-container{
+                
+            }
+            & .your-booking-container.active, 
+            .payment-history-container.active, 
+            .edit-profile-container.active{
+                transform: translateX(-50%);
+                opacity: 1;
+                z-index: 99;
             }
         }
     }

@@ -26,7 +26,7 @@ function Navbar(props: { page: string; }) {
             </div>
             <Link to="/login-customer">
                 <div className="login-box">
-                    <div className='text'>{customer ? `${customer.FirstName} ${customer.LastName}` : "Sign In"}</div>
+                    <div className='text'>{customer ? `${customer.UserName}` : "Sign In"}</div>
                     <div className="img-box">
                         <img src={customer ? imageUrl : "./images/icons/log-in.png"} alt="" />
                     </div>
