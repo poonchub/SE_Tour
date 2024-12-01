@@ -229,7 +229,7 @@ function TourSelect() {
                         <div className="img-box">
                             <img src="./images/icons/calendar.png" alt="" />
                         </div>
-                        <h2 className="title">กำหนดการเดินทาง</h2>
+                        <h3 className="title">กำหนดการเดินทาง</h3>
                     </div>
                     <div className="subsection">
                         <div className="calendar-box">
@@ -269,7 +269,7 @@ function TourSelect() {
                         <div className="img-box">
                             <img src="./images/icons/plans.png" alt="" />
                         </div>
-                        <h2 className="title">แผนการเดินทาง</h2>
+                        <h3 className="title">แผนการเดินทาง</h3>
                     </div>
                     <div className="activities-box">
                         {activitiesElement}

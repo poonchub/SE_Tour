@@ -1,3 +1,5 @@
+import { TourPackagesInterface } from "./ITourPackages";
+
 export interface TourSchedulesInterface{
     ID?:    number;
     StartDate?: string;
@@ -5,4 +7,5 @@ export interface TourSchedulesInterface{
     AvailableSlots?:    number;
     TourPackageID?:     number;
     TourScheduleStatusID?:  number;
+    TourPackage?:   TourPackagesInterface;
 }

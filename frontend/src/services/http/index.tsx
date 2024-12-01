@@ -122,7 +122,7 @@ async function GetBookingByCustomerID(customerid: Number) {
         method: "GET",
     };
 
-    let res = await fetch(`${apiUrl}/booking/${customerid}`, requestOptions).then(
+    let res = await fetch(`${apiUrl}/bookings/${customerid}`, requestOptions).then(
         (res) => {
             if (res.status == 200) {
                 return res.json();

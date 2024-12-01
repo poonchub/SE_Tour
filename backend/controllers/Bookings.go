@@ -43,7 +43,7 @@ func GetBookingByCustomerID(c *gin.Context) {
 	var bookings []entity.Bookings
 
 	db := config.DB()
-	results := db.Preload("Customer").Preload("TourSchedule").Preload("BookingStatus").Preload("Promotion").Find(&bookings, "customer_id=?", ID)
+	results := db.Preload("Customer").Preload("TourSchedule.TourPackage").Preload("BookingStatus").Preload("Promotion").Find(&bookings, "customer_id=?", ID)
 	if results.Error != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": results.Error.Error()})
 		return

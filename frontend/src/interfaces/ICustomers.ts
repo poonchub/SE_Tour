@@ -1,5 +1,6 @@
 export interface CustomersInterface {
     ID?:    number;
+    UserName?:  string;
     FirstName?: string;
     LastName?:  string;
     Email?:     string;

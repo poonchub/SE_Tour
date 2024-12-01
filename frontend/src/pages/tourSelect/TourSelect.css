@@ -14,14 +14,16 @@
         flex-direction: column;
         align-items: center;
         margin-top: 35px;
+        gap: 22px;
 
         & .package-detail {
             width: 75%;
             display: flex;
             justify-content: space-between;
+            gap: 22px;
 
             & .image-box {
-                width: 40%;
+                width: 45%;
                 height: auto;
                 display: flex;
                 flex-direction: column;
@@ -36,7 +38,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: var(--orange-yellow-for-bg);
+                    background: var(--background-head-title);
                     padding: 2px;
 
                     & img {
@@ -73,7 +75,7 @@
                     }
 
                     & .selected {
-                        background: var(--orange-yellow-for-bg);
+                        background: var(--background-head-title);
                         padding: 2px;
 
                         & img {
@@ -83,40 +85,39 @@
                         }
                     }
                 }
-                
-                .small-image::-webkit-scrollbar-thumb {
-                    border-radius: 15px;
-                    -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
-                    background-color: #b4b4b4;
-                    margin-top: 50px;
+
+                & .small-image::-webkit-scrollbar {
+                    display: none;
                 }
             }
 
             & .description-box {
-                width: 57%;
+                width: 55%;
                 display: flex;
                 flex-direction: column;
-                background-color: rgb(255, 255, 255);
+                background-color: var(--card-color);
                 box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
                 border-radius: 10px;
                 padding: 25px 50px;
 
                 & .tour-name {
-                    color: var(--blue);
+                    color: var(--title-color-2);
                 }
 
-                & .package-code{
+                & .package-code {
                     font-weight: 600;
-                    color: rgb(128, 128, 128);
+                    color: var(--description-color);
                 }
 
                 & .des-box {
                     & .title {
                         font-weight: 600;
+                        color: var(--title-color-3);
                     }
 
                     & .detail {
                         padding: 5px 15px;
+                        color: var(--description-color);
                     }
                 }
 
@@ -152,11 +153,10 @@
         & .travel-schedule {
             width: 75%;
             height: auto;
-            background-color: rgb(255, 255, 255);
+            background-color: var(--card-color);
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
             padding: 30px 50px;
             border-radius: 10px;
-            margin-top: 40px;
             display: flex;
             flex-direction: column;
 
@@ -164,6 +164,7 @@
                 width: 100%;
                 height: 40px;
                 display: flex;
+                color: var(--title-color-3);
 
                 & .img-box {
                     width: 30px;
@@ -202,7 +203,7 @@
 
                         & .date-booking {
                             width: 80%;
-                            border: 2px solid #B1B1B1;
+                            border: 2px solid var(--border-color-2);
                             box-shadow: 0 0px 3px rgba(0, 0, 0, 0.2);
                             display: flex;
                             align-items: center;
@@ -213,9 +214,9 @@
                         & .booking-btn {
                             width: 20%;
                             height: 100%;
-                            background-color: var(--green);
+                            background-color: var(--btn-color-2);
                             transition: all ease 0.5s;
-                            color: var(--white);
+                            color: var(--text-btn-color-1);
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -235,7 +236,7 @@
                     & .price-detail {
                         display: flex;
                         flex-direction: column;
-                        border: 2px dashed #B1B1B1;
+                        border: 2px dashed var(--border-color-2);
                         margin-top: 15px;
                         padding: 25px 25px;
                         height: 100%;
@@ -244,6 +245,7 @@
                             font-weight: 600;
                             margin-bottom: 10px;
                             font-size: 1.1rem;
+                            color: var(--title-color-3);
                         }
 
                         & .person-type-title {
@@ -259,7 +261,7 @@
 
                                 & .type-title {
                                     width: 100%;
-                                    color: var(--blue);
+                                    color: var(--title-color-2);
                                     margin-bottom: 10px;
                                     font-weight: 500;
                                 }
@@ -271,7 +273,7 @@
                                     margin: 3px 0px;
 
                                     & .price {
-                                        color: var(--orange);
+                                        color: var(--price-color);
                                         font-weight: 600;
                                     }
                                 }
@@ -287,11 +289,10 @@
         & .travel-plane {
             width: 75%;
             height: auto;
-            background-color: rgb(255, 255, 255);
+            background-color: var(--card-color);
             box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
             padding: 30px 50px;
             border-radius: 10px;
-            margin-top: 40px;
             display: flex;
             flex-direction: column;
 
@@ -326,6 +327,7 @@
                         font-weight: 600;
                         display: flex;
                         margin-bottom: 8px;
+                        color: var(--title-color-2);
                     }
 
                     & ul {
@@ -338,6 +340,7 @@
 
                             & .description {
                                 font-weight: 400;
+                                color: var(--description-color);
                             }
                         }
                     }
@@ -373,7 +376,8 @@
         .travel-schedule {
             .subsection {
                 gap: 15px;
-                .calendar-box{
+
+                .calendar-box {
                     min-width: 365px;
                 }
             }
@@ -414,12 +418,13 @@
                 }
             }
         }
+
         .travel-schedule {
             .subsection {
-                .travel-schedule-detail .price-detail .person-type-title{
+                .travel-schedule-detail .price-detail .person-type-title {
                     flex-direction: column;
 
-                    .type-box{
+                    .type-box {
                         width: 100%;
                     }
                 }
@@ -433,26 +438,28 @@
         .travel-schedule {
             .subsection {
                 flex-direction: column;
+
                 .calendar-box {
                     width: 100%;
                 }
 
-                .travel-schedule-detail{
+                .travel-schedule-detail {
                     width: 100%;
 
-                    .date-booking-box{
+                    .date-booking-box {
                         display: flex;
                         height: 38px;
-                        
-                        .booking-btn{
+
+                        .booking-btn {
                             height: 100%;
                         }
                     }
                 }
-                .travel-schedule-detail .price-detail .person-type-title{
+
+                .travel-schedule-detail .price-detail .person-type-title {
                     flex-direction: row;
 
-                    .type-box{
+                    .type-box {
                         width: 100%;
                     }
                 }
@@ -466,26 +473,28 @@
         .travel-schedule {
             .subsection {
                 flex-direction: column;
+
                 .calendar-box {
                     width: 100%;
                 }
 
-                .travel-schedule-detail{
+                .travel-schedule-detail {
                     width: 100%;
 
-                    .date-booking-box{
+                    .date-booking-box {
                         display: flex;
                         height: 62px;
-                        
-                        .booking-btn{
+
+                        .booking-btn {
                             height: 100%;
                         }
                     }
                 }
-                .travel-schedule-detail .price-detail .person-type-title{
+
+                .travel-schedule-detail .price-detail .person-type-title {
                     flex-direction: column;
 
-                    .type-box{
+                    .type-box {
                         width: 100%;
                     }
                 }
@@ -494,9 +503,10 @@
 
         .travel-plane .activities-box {
             flex-direction: column;
-                .date-box{
-                    width: 100%;
-                }
+
+            .date-box {
+                width: 100%;
+            }
         }
     }
 }

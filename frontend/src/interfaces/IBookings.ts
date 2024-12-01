@@ -1,3 +1,5 @@
+import { TourSchedulesInterface } from "./ITourSchedules";
+
 export interface BookingsInterface {
     ID?:            number;
     TotalPrice?:    number;
@@ -5,4 +7,5 @@ export interface BookingsInterface {
     TourScheduleID?:    number;
     BookingStatusID?:   number;
     PromotionID?:   number;
+    TourSchedule?:  TourSchedulesInterface;
 }
