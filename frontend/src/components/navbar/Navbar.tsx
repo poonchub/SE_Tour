@@ -9,6 +9,7 @@ function Navbar(props: { page: string; }) {
 
     const customer = storedCustomer ? JSON.parse(storedCustomer) : ""
 
+    const isLoggedIn = localStorage.getItem("isLogin") === "true";
     const imageUrl = `${apiUrl}/${customer.ProfilePath}`
 
     return (
@@ -24,7 +25,7 @@ function Navbar(props: { page: string; }) {
                 <Link to="" className="link-promotion link">โปรโมชั่น</Link>
                 <Link to="/profile" className="link-promotion link">โปรไฟล์</Link>
             </div>
-            <Link to="/login-customer">
+            <Link to={isLoggedIn ? "/profile" : "/login-customer"}>
                 <div className="login-box">
                     <div className='text'>{customer ? `${customer.UserName}` : "Sign In"}</div>
                     <div className="img-box">
