@@ -1,58 +1,15 @@
 @import "../../styles/ColorSheet.css";
 
-.show-text-container{
+.show-text-container {
     /* border: 1px solid red; */
     position: absolute;
     right: 5%;
     top: 120px;
     width: 35%;
+    height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    & .text-box{
-        /* border: 1px solid red; */
-        width: 100%;
-        height: 150px;
-        position: relative;
-        display: flex;
-        margin: auto;
-        overflow: scroll;
-        overflow-y: hidden;
-        overflow-x: hidden;
-
-        & .show-box{
-            position: absolute;
-            /* display: none; */
-
-            & .title-show{
-                color: var(--yellow);
-                margin-bottom: 7px;
-                word-wrap: break-word;
-                word-break: break-word;
-            }
-
-            & .des-show{
-                font-weight: 200;
-            }
-        }
-    }
-
-    & .dot-box{
-        width: 75px;
-        display: flex;
-        justify-content: space-around;
-
-        & .dot{
-            width: 13px;
-            height: 13px;
-            background-color: transparent;
-            border: 2px solid var(--yellow);
-            border-radius: 50%;
-        }
-
-        .active, .dot:hover {
-            background-color: var(--yellow);
-        }
-    }
+    z-index: 999;
+    
 }

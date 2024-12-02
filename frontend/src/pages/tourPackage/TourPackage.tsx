@@ -56,7 +56,7 @@ function TourPackage() {
         './images/sliceshow/pic4.jpg',
         './images/sliceshow/pic5.jpg',
         './images/sliceshow/pic6.jpg',
-    ];
+    ]
 
     useEffect(() => {
         const interval = setInterval(() => {
