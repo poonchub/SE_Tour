@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/Navbar"
 import { apiUrl, GetBookingByCustomerID } from "../../services/http"
 import "./Profile.css"
 import { BookingsInterface } from "../../interfaces/IBookings"
-import { Button, message, Modal, Popconfirm, PopconfirmProps, Steps } from "antd"
+import { Button, message, Modal, Steps } from "antd"
 
 const { confirm } = Modal;
 

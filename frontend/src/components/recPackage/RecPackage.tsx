@@ -5,7 +5,7 @@ function RecPackage(){
         <div className="rec-package-container">
             <div className="title">
                 <div className="icon-box">
-
+                    
                 </div>
                 <div className="text-box">
                     

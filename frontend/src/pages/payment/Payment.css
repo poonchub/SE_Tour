@@ -9,11 +9,12 @@
 
     & .payment-box-card {
         width: 100%;
-        padding: 40px;
+        padding: 22px;
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-top: 50px;
+        gap: 22px;
 
         & .card{
             background: var(--white);
@@ -27,10 +28,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 250px 0px 250px;
+            padding: 8px 150px 0px 150px;
 
             & .ant-steps-item-title{
                 font-family: "Noto Sans Thai", sans-serif;
+                font-size: 14px;
             }
 
             & .ant-steps-item-content{
@@ -51,8 +53,8 @@
         & .sub-section-card{
             width: 75%;
             display: flex;
-            margin-top: 40px;
             justify-content: space-between;
+            gap: 22px;
 
             & .booking-detail-card{
                 width: 60%;
@@ -60,7 +62,7 @@
             }
 
             & .qr-code-card{
-                width: 38%;
+                width: 40%;
                 height: auto;
                 display: flex;
                 align-items: center;
