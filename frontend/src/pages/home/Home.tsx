@@ -5,6 +5,9 @@ import RecPackage from "../../components/recPackage/RecPackage";
 import ShowPromotion from "../../components/showPromotion/ShowPromotion";
 import Footer from "../../components/footer/Footer";
 import { Carousel } from "antd";
+import { useEffect, useState } from "react";
+import { TourPackagesInterface } from "../../interfaces/ITourPackages";
+import { GetTourPackages } from "../../services/http";
 
 const texts = [
     {
@@ -26,6 +29,31 @@ const texts = [
 ]
 
 function Home() {
+    const [tourPackages, setTourPackages] = useState<TourPackagesInterface[]>([]);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+
+    async function getTourPackages() {
+        let res = await GetTourPackages()
+        if (res) {
+            setTourPackages(res);
+        }
+    }
+
+    async function fetchData() {
+        try {
+            getTourPackages()
+        } catch (error) {
+            console.error('Failed to fetch data:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
     const textElement = texts.map((text, index) => {
         return (
             <div key={index} className="text-box">
@@ -45,9 +73,9 @@ function Home() {
                     </Carousel>
                 </div>
             </div>
-            <ShowTourSlice />
+            <ShowTourSlice tourPackages={tourPackages}/>
             <section>
-                <RecPackage />
+                <RecPackage tourPackages={tourPackages}/>
                 <ShowPromotion />
             </section>
             <Footer />

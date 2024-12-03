@@ -1,32 +1,13 @@
-import { useEffect, useState } from "react"
+import { Key, useEffect, useState } from "react"
 import "./ShowTourSlice.css"
-import { TourPackagesInterface } from "../../interfaces/ITourPackages";
-import { apiUrl, GetTourPackages } from "../../services/http";
+import { apiUrl} from "../../services/http";
 import { Carousel } from "antd";
 
-function ShowTourSlice() {
-    const [tourPackages, setTourPackages] = useState<TourPackagesInterface[]>([]);
+function ShowTourSlice(props: { tourPackages: any; }) {
+    const { tourPackages } = props
 
-    const [isLoading, setIsLoading] = useState<boolean>(true)
     const [currentSlide, setCurrentSlide] = useState(0);
     const [startPriceFormat, setStartPriceFormat] = useState<string>("");
-
-    async function getTourPackages() {
-        let res = await GetTourPackages()
-        if (res) {
-            setTourPackages(res);
-        }
-    }
-
-    async function fetchData() {
-        try {
-            getTourPackages()
-        } catch (error) {
-            console.error('Failed to fetch data:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
 
     function handleSetStartPrice() {
         let startPrice = 999999;
@@ -49,21 +30,13 @@ function ShowTourSlice() {
         });
     }
 
-    console.log(startPriceFormat)
-
     useEffect(() => {
         handleSetStartPrice()
     }, [currentSlide, tourPackages]);
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-
-    console.log(tourPackages?.[0]?.TourDescriptions?.Intro)
-
     const bigImageUrl = `${apiUrl}/${tourPackages[currentSlide]?.TourImages?.[0]?.FilePath}`
 
-    const imageElement = tourPackages.map((tour, index) => {
+    const imageElement = tourPackages.map((tour: { TourImages: { FilePath: any; }[]; ID: number | undefined; }, index: Key | null | undefined) => {
         const imageUrl = `${apiUrl}/${tour?.TourImages?.[0]?.FilePath}`
         return (
             <div className="image-box" key={index} onClick={()=>setPackageData(tour.ID)}>
