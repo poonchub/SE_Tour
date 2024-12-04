@@ -29,6 +29,8 @@ function TourSelect() {
     const [bookingPopUp, setBookingPopUp] = useState(<></>);
     const [messageApi, contextHolder] = message.useMessage();
 
+    const [popupImage, setPopupImage] = useState(<></>)
+
     async function getTourPackage() {
         const resTourPackage = await GetTourPackageByID(Number(tourPackageID));
         if (resTourPackage) {
@@ -70,10 +72,21 @@ function TourSelect() {
         }
     }
 
+    function handleSetPopup() {
+        console.log(bigImage)
+        setPopupImage(
+            <div className="popup-container" onClick={()=>setPopupImage(<></>)}>
+                <div className="img-box">
+                    <img src={`${apiUrl}/${bigImage ? bigImage : tourPackage?.TourImages ? tourPackage?.TourImages[0].FilePath : ""}`} alt="" />
+                </div>
+            </div>
+        )
+    }
+
     useEffect(() => {
         fetchData()
     }, [isLoading, dateID]);
-    
+
     useEffect(() => {
         if (scheduleActivities) {
             const sortedActivities = [...scheduleActivities].sort((a, b) => {
@@ -81,9 +94,9 @@ function TourSelect() {
                 const dateB = b.DateTime ? new Date(b.DateTime).getTime() : 0;
                 return dateA - dateB;
             });
-            setScheAcSort(sortedActivities); 
+            setScheAcSort(sortedActivities);
         }
-    }, [scheduleActivities])    
+    }, [scheduleActivities])
 
     const schedules = tourPackage?.TourSchedules
 
@@ -151,9 +164,6 @@ function TourSelect() {
         ) : ""
     })
 
-    // console.log(dateID)
-    // console.log(scheAcSort)
-
     const groupedActivities = scheAcSort?.reduce((groups: Record<string, typeof scheAcSort>, item) => {
         const date = item?.DateTime?.slice(0, 10) ?? "Unknown"
         if (!groups[date]) {
@@ -162,17 +172,15 @@ function TourSelect() {
         groups[date].push(item);
         return groups;
     }, {});
-    
-    // console.log(groupedActivities);
 
     const activitiesElement = groupedActivities && Object.entries(groupedActivities).map(([date, items]) => {
         return (
             <div key={date} className="date-box">
-                <span className="day-title">{`วันที่ ${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)}`}</span>
+                <span className="day-title">{`วันที่ ${date.slice(8, 10)}-${date.slice(5, 7)}-${date.slice(0, 4)}`}</span>
                 <ul>
                     {items.map((item, index) => (
                         <li className="date" key={index}>
-                            {item.DateTime?.slice(11,16)} น. {item.Activity?.ActivityName}
+                            {item.DateTime?.slice(11, 16)} น. {item.Activity?.ActivityName}
                             <ul>
                                 <li className="description">
                                     {item.Activity?.Description}
@@ -191,11 +199,12 @@ function TourSelect() {
         <div className="tour-select-page">
             {contextHolder}
             {bookingPopUp}
+            {popupImage}
             <Navbar page={"tourSelect"} />
             <section>
                 <div className="package-detail">
                     <div className="image-box">
-                        <div className="big-image">
+                        <div className="big-image" onClick={handleSetPopup}>
                             <img src={`${apiUrl}/${bigImage ? bigImage : tourPackage?.TourImages ? tourPackage?.TourImages[0].FilePath : ""}`} alt="" />
                         </div>
                         <div className="small-image">{imageElement}</div>

@@ -160,7 +160,7 @@ function TourPackage() {
                 </div>
                 <div className="subsection">
                     <div className="show-mini-promotion">
-
+                        
                     </div>
                     <div className="search-package-box">
                         <h3 className="title">ค้นหาแพ็กเกจทัวร์ที่คุณต้องการได้อย่างง่ายดาย✨</h3>

@@ -5,9 +5,10 @@ import RecPackage from "../../components/recPackage/RecPackage";
 import ShowPromotion from "../../components/showPromotion/ShowPromotion";
 import Footer from "../../components/footer/Footer";
 import { Carousel } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TourPackagesInterface } from "../../interfaces/ITourPackages";
 import { GetTourPackages } from "../../services/http";
+import Loading from "../../components/loading/Loading";
 
 const texts = [
     {
@@ -54,6 +55,20 @@ function Home() {
         fetchData()
     }, [])
 
+    const [group1, group2] = useMemo(() => {
+        const total = tourPackages.length
+        if (total < 8) {
+            return [[], []]
+        }
+
+        const lastFive = tourPackages.slice(-5)
+        const remaining = tourPackages.slice(0, total - 5)
+        const shuffledRemaining = [...remaining].sort(() => Math.random() - 0.5)
+        const randomThree = shuffledRemaining.slice(0, 3)
+
+        return [lastFive, randomThree]
+    }, [tourPackages])
+
     const textElement = texts.map((text, index) => {
         return (
             <div key={index} className="text-box">
@@ -63,7 +78,9 @@ function Home() {
         )
     })
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) :  (
         <div className="home-page">
             <Navbar page="home" />
             <div className="full-bg">
@@ -73,9 +90,9 @@ function Home() {
                     </Carousel>
                 </div>
             </div>
-            <ShowTourSlice tourPackages={tourPackages}/>
+            <ShowTourSlice tourPackages={group1}/>
             <section>
-                <RecPackage tourPackages={tourPackages}/>
+                <RecPackage tourPackages={group2}/>
                 <ShowPromotion />
             </section>
             <Footer />

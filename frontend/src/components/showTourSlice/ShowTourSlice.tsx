@@ -7,7 +7,7 @@ function ShowTourSlice(props: { tourPackages: any; }) {
     const { tourPackages } = props
 
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [startPriceFormat, setStartPriceFormat] = useState<string>("");
+    const [startPriceF, setStartPriceF] = useState<string>("");
 
     function handleSetStartPrice() {
         let startPrice = 999999;
@@ -16,14 +16,14 @@ function ShowTourSlice(props: { tourPackages: any; }) {
                 startPrice = price.Price;
             }
         });
-        setStartPriceFormat(startPrice.toLocaleString('th-TH', {
+        setStartPriceF(startPrice.toLocaleString('th-TH', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         }))
     }
 
     function setPackageData(id: number | undefined) {
-        localStorage.setItem("startPrice", startPriceFormat)
+        localStorage.setItem("startPrice", startPriceF)
         localStorage.setItem("tourPackageID", String(id))
         setTimeout(() => {
             location.href = "/tour-select";

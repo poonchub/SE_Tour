@@ -40,6 +40,7 @@
                     justify-content: center;
                     background: var(--background-head-title);
                     padding: 2px;
+                    cursor: zoom-in;
 
                     & img {
                         width: 100%;
@@ -348,6 +349,28 @@
             }
         }
     }
+
+    & .popup-container{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 100;
+        background-color: rgba(0, 0, 0, 0.700);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & .img-box{
+            width: 45%;
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+
+            & img{
+                width: 100%;
+            }
+        }
+    }
 }
 
 @media only screen and (max-width: 1600px) {
@@ -360,7 +383,7 @@
                 margin-bottom: 22px;
 
                 .big-image {
-                    height: 475px;
+                    height: 495px;
                 }
 
                 .small-image {
@@ -392,7 +415,7 @@
 
             .image-box {
                 .big-image {
-                    height: 380px;
+                    height: 400px;
                 }
 
                 .small-image {
